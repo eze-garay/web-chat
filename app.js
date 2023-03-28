@@ -1,4 +1,4 @@
-import express  from 'express';
+import express from 'express'
 import handlebars from 'express-handlebars';
 import {Server} from 'socket.io';
 
@@ -36,28 +36,29 @@ const httpServer = app.listen(PORT, () => {
     console.log(`server run on port: ${PORT}`);
 })
 
+
+
 const socketServer = new Server(httpServer);
+let messages = []
 
 socketServer.on('connection', socket => {
-    console.log('cliente conectado')
-    socket.on('mensaje', data =>{
-        console.log(data)
+  
+    socket.on('message', data =>{
+        messages.push(data);
+        socketServer.emit('messageLogs', messages )
+    });
+
+    socket.on('userConnected', data =>{
+        socket.broadcast.emit('userConnected', data.user)
     })
-    //Ejercicio 1
-socket.on("message1",data=>{
-    console.log("Recibiendo texto:");
-    console.log(data);
-    socketServer.emit('log',data);
-});
-
-
- //Ejercicio 2
- const logs = [];
- //Message2 se utiliza para la parte de almacenar y devolver los logs completos.
- socket.on("message2",data=>{
-     logs.push({socketid:socket.id,message:data})
-     socketServer.emit('log',{logs});
- });
+    socket.on('authenticated', () => { 
+        let length = messages.length
+        if (length > 10) {
+            socketServer.emit('messageLogs', [...messages].splice(length-10,length))
+        } else if (length > 0) {
+            socketServer.emit('messageLogs', messages)
+        }
+    })
 
 
 })
