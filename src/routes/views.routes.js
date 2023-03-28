@@ -1,8 +1,8 @@
 
-const router = express.Router();
+import { Router } from 'express';
 import manager from '../service/productManager.js'
+const router = Router();
 
-import express from express
 
 
 
