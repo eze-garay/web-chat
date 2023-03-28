@@ -1,0 +1,58 @@
+[
+  {
+    "title": "prueba6",
+    "description": "prueba",
+    "price": "200",
+    "code": "666",
+    "stock": "20",
+    "status": true,
+    "thumbnail": "/Users/ezequielgaray/Desktop/Entrega/Nuevo/src/public/img/box.png",
+    "id": 5
+  },
+  {
+    "title": "prueba7",
+    "description": "prueba",
+    "price": "200",
+    "code": "777",
+    "stock": "20",
+    "status": true,
+    "thumbnail": "/Users/ezequielgaray/Desktop/Entrega/Nuevo/src/public/img/box.png",
+    "id": 6
+  },
+  {
+    "title": "prueba8",
+    "description": "prueba",
+    "price": "200",
+    "code": "888",
+    "stock": "20",
+    "thumbnail": "sin imagen",
+    "id": 7
+  },
+  {
+    "title": "prueba9",
+    "description": "prueba",
+    "price": "200",
+    "code": "999",
+    "stock": "20",
+    "thumbnail": "sin imagen",
+    "id": 8
+  },
+  {
+    "title": "prueba10",
+    "description": "sasdasda",
+    "price": "12312",
+    "code": "123123",
+    "stock": "1232",
+    "thumbnail": "sin imagen",
+    "id": 9
+  },
+  {
+    "title": "prueba 5",
+    "description": "asdadasd",
+    "price": "3..",
+    "code": "333",
+    "stock": ".",
+    "thumbnail": "sin imagen",
+    "id": 10
+  }
+]
