@@ -2,6 +2,7 @@ import { Router } from "express";
 const router = Router();
 // import { uploader } from "../utils.js";
 import manager from '../service/productManager.js'
+import validateProduct from "../middlewares/validar.js";
 
 router.get('/', async (req,res)=> {
     let limit = req.query?.limit
@@ -48,7 +49,7 @@ router.get('/:pid', async (req,res)=>{
 
 
 
-router.post('/product', async (req,res)=> {
+router.post('/product',validateProduct, async (req,res)=> {
     let product = req.body
     try {
         let prod = await manager.addProduct((product))

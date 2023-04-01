@@ -14,23 +14,23 @@ class productManager {
                 
     
     }
+
+    async createProductFileIfNotExists() {
+      await fs.promises.mkdir(this.productDir, { recursive: true })
+      if (!fs.existsSync(this.path)) {
+        await fs.promises.writeFile(this.path, "[]");
+      }
+      let productsFile = await fs.promises.readFile(this.path, "utf-8");
+      this.products = JSON.parse(productsFile);
+    }
     
     addProduct = async ({title,description,price,code,stock,status,thumbnail}) => {   
-      let product = {title,description,price,code,stock,status,thumbnail}     
-      
-    await fs.promises.mkdir(this.productDir,{recursive: true})        
-    if (!fs.existsSync(this.path)) {
-      await fs.promises.writeFile(this.path, "[]");
-    }
-    let productsFile = await fs.promises.readFile(this.path, "utf-8");
-    this.products = JSON.parse(productsFile)
+      let product = {title,description,price,code,stock,status,thumbnail}
+    await this.createProductFileIfNotExists();
     if (this.products.length>0) {
       product.id = this.products[this.products.length-1].id+1
     } else {
       product.id = 1
-    }
-    if (product.title === '' || product.description === '' || product.price <0 || product.thumbnail === ''|| product.stock < 0) {
-    return 'Todos los campos son necesarios'
     }
       try {
         if (! this.products.find((prod) => prod.code == code)) {
@@ -66,13 +66,7 @@ class productManager {
 
     getProductById = async (id) =>{
       try {
-        await fs.promises.mkdir(this.productDir,{recursive: true})
-        if (!fs.existsSync(this.path)) {
-          await fs.promises.writeFile(this.path, "[]");
-        }
-      let productFile = await fs.promises.readFile(this.path, "utf-8");
-      this.product = JSON.parse(productFile);
-
+      await this.createProductFileIfNotExists();
       let founded = this.products.find(prod => prod.id === id)
       if (founded){
         console.log(founded)

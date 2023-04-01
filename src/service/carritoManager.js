@@ -11,19 +11,25 @@ class cartManager {
         this.path = this.productDir + "/carrito.json";     
     
     }
-    
-    addCart = async (id) => {   
-      await fs.promises.mkdir(this.productDir,{recursive: true})        
+
+    async createCartFileIfNotExists() {
+      await fs.promises.mkdir(this.productDir, { recursive: true })
       if (!fs.existsSync(this.path)) {
         await fs.promises.writeFile(this.path, "[]");
       }
+      let cartsFile = await fs.promises.readFile(this.path, "utf-8");
+      this.carts = JSON.parse(cartsFile)
+    }
+    
+    addCart = async (id) => {   
+
       let Cart = {
         id,
         products: []
       }
       try {
-        let cartsFile = await fs.promises.readFile(this.path, "utf-8");
-        this.carts = JSON.parse(cartsFile)
+        await this.createCartFileIfNotExists();
+  
         if (this.carts.length>0) {
           Cart.id = this.carts[this.carts.length-1].id+1
         } else {
@@ -41,12 +47,7 @@ class cartManager {
   }
     getCartById = async (id) => {
     try {
-      await fs.promises.mkdir(this.productDir,{recursive: true})
-      if (!fs.existsSync(this.path)) {
-        await fs.promises.writeFile(this.path, "[]");
-      }
-      let cartsFile = await fs.promises.readFile(this.path, "utf-8");
-      this.carts = JSON.parse(cartsFile)
+    await this.createCartFileIfNotExists();
   
     let founded = this.carts.find(prod => prod.id === id)
     if (founded){
@@ -85,9 +86,6 @@ class cartManager {
 
 
   }
-
-
-
     
 };
 

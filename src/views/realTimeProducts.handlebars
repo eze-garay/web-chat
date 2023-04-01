@@ -5,6 +5,11 @@
         <div class="d-raw text-center">
             <hi class="h3">{{title}} </hi>
         </div>
+            {{#if message}}
+                <div class="alert alert-danger" role="alert">
+                    {{message}}
+                </div>
+            {{/if}}
         <divclass="row">
             {{#each manager}}
         <ul class="list-group">
