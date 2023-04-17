@@ -36,21 +36,9 @@ const Schema = new mongoose.Schema(
             required: true,
             minlength: 3,
         },
-        carts: {
-            type: [
-                {
-                    cart: {
-                        type: mongoose.Schema.Types.ObjectId,
-                        ref: "Carts"
-                    }
-                }
-            ],
-            default:[]
-        }
+
     }
 );
 
-Schema.pre('findOne', function() {
-    this.populate("Carts.Cart");
-});
+
 export const ProductModel = mongoose.model("Products", Schema);

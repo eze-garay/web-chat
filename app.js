@@ -3,6 +3,7 @@ import handlebars from 'express-handlebars';
 import morgan from 'morgan';
 import "./src/db.js"
 import {Server} from 'socket.io';
+import { messageModel } from './src/Dao/DB/models/messagesModel.js';
 
 import viewsRouters from './src/routes/views.routes.js'
 import cartsRouters from './src/routes/cart.routes.js'
@@ -47,9 +48,14 @@ let messages = []
 
 socketServer.on('connection', socket => {
   
-    socket.on('message', data =>{
-        messages.push(data);
-        socketServer.emit('messageLogs', messages )
+    socket.on('message', async data =>{
+       // messages.push(data);
+        // socketServer.emit('messageLogs', messages )
+        let result = await messageModel.create(data)
+        let message = await messageModel.find()
+
+        socketServer.emit("messageLogs", message)
+
     });
 
     socket.on('userConnected', data =>{

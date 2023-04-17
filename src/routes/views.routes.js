@@ -1,5 +1,6 @@
 
 import { Router } from 'express';
+import { ProductModel } from '../Dao/DB/models/productsModel.js';
 import manager from '../Dao/FileSystem/productManager.js'
 const router = Router();
 
@@ -8,36 +9,32 @@ const router = Router();
 
 
 router.get('/', async(req, res,) => {
-    let limit = req.query?.limit
     try {
-        let response = await manager.getProduct(limit)
-        if (!response) {
-            return res.status(404).render('error',{
-                message: 'no hay profuctos'
-            })
-        }
-        return res.status(200).render('home', {
-            title: "lista de productos",
-            manager: response
-        })
-    } catch(error) {
-        return res.status(500).render('error',{
-            message: error.message
-        })
-    }
+        let products = []
+        products = await ProductModel.find().lean()
+        res.render("home", {products})
+      } catch (error) {
+        console.log(error)
+        res.render("home", "NO SE PUDIERON OBTENER LOS PRODUCTOS")
+      }
 })
 
  router.get('/realtimeproducts', async (req, res) => {
-        let response = await manager.getProduct() 
-        if (!response) {
-            return res.status(404).render('error',{
-                message: 'no products yet'
-            })
-        }
-        return res.status(200).render('realTimeProducts', {
-            title: "Productos en tiempo real",
-            manager: response})
-      })
+    try {
+        let products = []
+        products = await ProductModel.find().lean()
+        res.render("realTimeProducts", {products} )
+      } catch (error) {
+        console.log(error)
+        res.render("realTimeProducts", "NO SE PUDIERON OBTENER LOS PRODUCTOS")
+      }
+
+    })
+    
+    router.get("/chat", (req, res) => {
+      res.render("chat")
+    })
+    
       
     
  router.post('/realtimeproducts/crear', async (req, res) => {

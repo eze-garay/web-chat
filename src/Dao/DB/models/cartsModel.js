@@ -1,3 +1,4 @@
+
 import mongoose from "mongoose";
 
 
@@ -7,7 +8,9 @@ import mongoose from "mongoose";
 const Schema = new mongoose.Schema(
     {
         product: {
-            type: [],
+            type: Array,
+            require: true,
+            
             
         },
     }
