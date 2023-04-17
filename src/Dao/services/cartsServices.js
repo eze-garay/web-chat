@@ -1,5 +1,5 @@
-import { CartsModel } from "../Dao/DB/models/cartsModel.js";
-import { ProductModel} from "../Dao/DB/models/productsModel.js"
+import { CartsModel } from "../DB/models/cartsModel.js";
+
 
 export async function addCart (cart){
   

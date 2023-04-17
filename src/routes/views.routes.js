@@ -51,16 +51,18 @@ router.get('/', async(req, res,) => {
  router.post('/realtimeproducts/eliminar/:id', async (req, res) => {
         let id = req.params.id
         try {
-            let one = await manager.deleteProduct(Number(id))
-            if (one) {
-                res.redirect('/realtimeproducts');   
-            }
+          const product = await ProductModel.findById(id);
+          if (!product) {
+            throw new Error('Producto no encontrado');
+          }
+          await product.remove();
+          return true;
         } catch (error) {
-            return res.status(500).render('error',{
-                message: error.message
-            })
-        }      
+          console.error(error);
+          return false;
+        }
       })
+     
 
 router.get('/message', async (req, res) =>{
     res.render('message');
