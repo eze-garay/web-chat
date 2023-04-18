@@ -1,4 +1,4 @@
-import {ProductModel} from "../Dao/DB/models/productsModel.js"
+import {ProductModel} from "../DB/models/productsModel.js"
 
 
 export async function getProduct () {
