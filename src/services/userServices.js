@@ -1,5 +1,5 @@
 
-import {UserModel} from "../DB/models/userModel.js"
+import {UserModel} from "../Dao/DB/models/userModel.js"
 
 
 

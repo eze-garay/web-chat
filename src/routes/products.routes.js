@@ -1,6 +1,6 @@
 import { Router } from "express";
 const router = Router();
-import * as productsControllers from "../Dao/controller/productsControllers.js"
+import * as productsControllers from "../controller/productsControllers.js"
 
 router.get("/", productsControllers.getAll)
 

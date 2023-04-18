@@ -9,7 +9,6 @@ import viewsRouters from './src/routes/views.routes.js'
 import cartsRouters from './src/routes/cart.routes.js'
 import productsRoutes from './src/routes/products.routes.js'
 import userRoutes from './src/routes/user.routes.js'
-import messageRoutes from './src/routes/message.routes.js'
 import __dirname from './src/utils.js';
 
 
@@ -32,7 +31,7 @@ app.use('/api/products', productsRoutes)
 app.use('/api/carts', cartsRouters)
 app.use('/', viewsRouters)
 app.use('/api/users', userRoutes)
-app.use('/api/messages', messageRoutes);
+
 
 
 
