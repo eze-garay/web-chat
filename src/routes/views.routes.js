@@ -1,7 +1,7 @@
 
 import { Router } from 'express';
 import { ProductModel } from '../Dao/DB/models/productsModel.js';
-import manager from '../Dao/FileSystem/productManager.js'
+//import manager from '../Dao/FileSystem/productManager.js'
 const router = Router();
 
 
@@ -23,7 +23,10 @@ router.get('/', async(req, res,) => {
     try {
         let products = []
         products = await ProductModel.find().lean()
-        res.render("realTimeProducts", {products} )
+        res.render("realTimeProducts", {
+          products,
+          title: "Lista de productos actuales",
+        } );
       } catch (error) {
         console.log(error)
         res.render("realTimeProducts", "NO SE PUDIERON OBTENER LOS PRODUCTOS")
@@ -31,9 +34,7 @@ router.get('/', async(req, res,) => {
 
     })
     
-    router.get("/chat", (req, res) => {
-      res.render("chat")
-    })
+ 
     
       
     
@@ -51,11 +52,11 @@ router.get('/', async(req, res,) => {
  router.post('/realtimeproducts/eliminar/:id', async (req, res) => {
         let id = req.params.id
         try {
-          const product = await ProductModel.findById(id);
-          if (!product) {
+          const productFind = await ProductModel.findById(id);
+          if (!productFind) {
             throw new Error('Producto no encontrado');
           }
-          await product.remove();
+          await product.deleteOne(id);
           return true;
         } catch (error) {
           console.error(error);

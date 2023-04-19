@@ -14,7 +14,7 @@
             {{#each products}}
         <ul class="list-group">
             <li class="list-group-item">{{this.title}}</li>
-                <form method="POST" action="/realtimeproducts/eliminar/{{this.id}}">
+                <form method="POST" action="/realtimeproducts/eliminar'{{this.id}}">
                 <input type="hidden" name="id" value={{this.id}} >
                 <button type="submit" class="btn btn-primary mt-2">Eliminar</button>
                 </form>
