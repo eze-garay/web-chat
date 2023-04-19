@@ -36,11 +36,11 @@ export async function getCart (req,res) {
 
 
 export async function addProduct (req,res) {
-    let cid = parseInt(req.params.cid)
-    let pid = parseInt(req.params.pid)
+    let cId = (req.params.cid)
+    let pId = (req.params.pid)
   
       try {
-          let cart = await CartsServices.addProductToCart((cid),(pid))
+          let cart = await CartsServices.addProductToCart((cId),(pId))
           if (!cart) {
               return res.status(404).send('no se puede encontrar el carrito')
           }
