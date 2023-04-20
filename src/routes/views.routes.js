@@ -42,7 +42,7 @@ router.get('/', async(req, res,) => {
         let product = req.body
       
         // Agregar el nuevo producto a la lista
-        product = await manager.addProduct((product))
+        product = await ProductModel.create((product))
 
         // Redirigir de vuelta a la vista de productos en tiempo real
         res.redirect('/realtimeproducts');

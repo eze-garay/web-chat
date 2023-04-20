@@ -4,7 +4,7 @@ const Schema = new mongoose.Schema(
     {
         title:{
             type: String,
-            required: true,
+            default: true,
             minlength: 3,
             maxlength: [20, "El nombre es muy largo"],
 
