@@ -50,14 +50,16 @@ router.get('/', async(req, res,) => {
 
 
  router.post('/realtimeproducts/eliminar/:id', async (req, res) => {
-        let id = req.params.id
         try {
-          const productFind = await ProductModel.findById(id);
-          if (!productFind) {
+          const productFind = await ProductModel.findById({_id: req.params.pid});
+          console.log(productFind)
+           if (!productFind) {
             throw new Error('Producto no encontrado');
-          }
-          await product.deleteOne(id);
+           }
+           await product.deleteOne(productFind);
+    
           return true;
+          
         } catch (error) {
           console.error(error);
           return false;
