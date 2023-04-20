@@ -55,29 +55,27 @@ router.get('/', async(req, res,) => {
         let product = req.body
       
         // Agregar el nuevo producto a la lista
-        product = await manager.addProduct((product))
+        product = await ProductModel.create((product))
 
         // Redirigir de vuelta a la vista de productos en tiempo real
         res.redirect('/realtimeproducts');
       })
 
 
- router.post('/realtimeproducts/eliminar/:id', async (req, res) => {
+      router.post('/realtimeproducts/eliminar/:_id', async (req, res) => {
         try {
-          const productFind = await ProductModel.findById({_id: req.params.pid});
-          console.log(productFind)
-           if (!productFind) {
+          const deletedProduct = await ProductModel.findOneAndDelete({_id: req.params._id});
+      
+          if (!deletedProduct) {
             throw new Error('Producto no encontrado');
-           }
-           await product.deleteOne(productFind);
-    
-          return true;
-          
+          }
+          console.log(deletedProduct); // opcional: imprimir el producto eliminado
+          res.redirect('/realtimeproducts');
         } catch (error) {
           console.error(error);
           return false;
         }
-      })
+      });
      
 
 router.get('/message', async (req, res) =>{

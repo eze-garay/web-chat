@@ -4,36 +4,36 @@ const Schema = new mongoose.Schema(
     {
         title:{
             type: String,
-            required: true,
+            default: true,
             minlength: 3,
             maxlength: [20, "El nombre es muy largo"],
 
         },
         description:{
             type: String,
-            required: true,
+            default: true,
             minlength: 3,
             maxlength: [50, "El nombre es muy largo"],
         },
         price:{
             type: Number,
-            required: true,
+            default: true,
         },
         code:{
             type: Number,
-            required: true,
+            default: true,
         },
         stock:{
             type: Number,
-            required: true,
+            default: true,
         },
         status:{
             type: Boolean,
-            required: true,
+            default: true,
         },
         thumbnail:{
             type: String,
-            required: true,
+            default: true,
             minlength: 3,
         },
 
