@@ -1,6 +1,7 @@
 
 import { Router } from 'express';
 import { ProductModel } from '../Dao/DB/models/productsModel.js';
+import * as productsServices from "../services/productsServices.js"
 //import manager from '../Dao/FileSystem/productManager.js'
 const router = Router();
 
@@ -9,9 +10,21 @@ const router = Router();
 
 
 router.get('/', async(req, res,) => {
+  let limit = req.query?.limit
+  if (!limit) {
+    limit = "10"
+  }
     try {
         let products = []
-        products = await ProductModel.find().lean()
+        let title = req.query?.limit
+        products = await ProductModel.find().limit(parseInt(limit)).lean()
+        if (title) {
+          products = ProductModel.aggregate([
+            { $match:{title:title}
+            },
+          ])
+          console.log(products)
+        }      
         res.render("home", {products})
       } catch (error) {
         console.log(error)

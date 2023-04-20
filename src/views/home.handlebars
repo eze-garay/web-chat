@@ -1,14 +1,49 @@
 
 	
     <div class="container">
-    <div class="d-raw text-center">
+    <div class="col-md-6 offset-md-3">
+      <form action="/" method="get">
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Límite de resultados" name="limit">
+          <div class="input-group-append">
+            <button class="btn btn-primary" type="submit">Actualizar</button>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Nombre del producto" name="title">
+          <div class="input-group-append">
+            <button class="btn btn-primary" type="submit">Buscar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+        <div class="d-raw text-center">
         <hi class="h3">Lista de productos </hi>
     </div>
-    <divclass="row">
-        {{#each products}}
-    <ul class="list-group">
-        <li class="list-group-item">{{this.title}}</li>
-    </ul>
-        {{/each}}  
     </div>
+
+
+{{#each products}}
+<div class="container"> 
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="card text-center " style="max-width: 540px;">
+            <div class="col-md-4">
+            <img src="..." class="img-fluid rounded-start"  alt="...">
+            </div>
+            <div class="col-md-8">
+            <div class="card-body">
+                <h5 class="card-title">Nombre del producto:{{this.title}}</h5>
+                <p class="card-text">Precio: ${{this.price}}</p>
+                <p class="card-text">Cantidades disponibles:{{this.stock}}</p>
+                <p class="card-text">Disponibilidad:{{this.status}}</p>
+            </div>
+            </div>
+        </div>
     </div>
+ 
+</div>  
+
+  
+{{/each}}  
+
+
