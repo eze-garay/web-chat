@@ -1,6 +1,9 @@
 
 	
-    <div class="container">
+<div class="container"> 
+    <div class="d-raw text-center">
+          <hi class="h3">Lista de productos </hi>
+    </div>
     <div class="col-md-6 offset-md-3">
       <form action="/" method="get">
         <div class="input-group mb-3">
@@ -13,19 +16,24 @@
           <input type="text" class="form-control" placeholder="Nombre del producto" name="title">
           <div class="input-group-append">
             <button class="btn btn-primary" type="submit">Buscar</button>
-          </div>
+            <button class="btn btn-primary" type="submit">volver al inicio</button>
+         </div>   
         </div>
       </form>
     </div>
-        <div class="d-raw text-center">
-        <hi class="h3">Lista de productos </hi>
-    </div>
-    </div>
-
-
-{{#each products}}
-<div class="container"> 
+      <div class="dropdown" action="/" method="get">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+          Ordenar los productos
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+          <li><a class="btn" type="submit" name="mayorPrecio" >Mayor Precio</a></li>
+          <li><a class="btn" type="submit" name="menorPrecio" >Menor Precio</a></li>
+          <li><a class="btn" type="submit" >No ordenar</a></li>
+        </ul>
+      </div>
     <div class="row row-cols-1 row-cols-md-3 g-4">
+      {{#each products}}
+      <div class="col">
         <div class="card text-center " style="max-width: 540px;">
             <div class="col-md-4">
             <img src="..." class="img-fluid rounded-start"  alt="...">
@@ -39,11 +47,13 @@
             </div>
             </div>
         </div>
+      </div>
+      {{/each}}  
     </div>
  
 </div>  
 
   
-{{/each}}  
+ 
 
 

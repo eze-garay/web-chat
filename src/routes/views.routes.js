@@ -10,21 +10,29 @@ const router = Router();
 
 
 router.get('/', async(req, res,) => {
-  let limit = req.query?.limit
+  let limit = req.query.limit
   if (!limit) {
     limit = "10"
   }
     try {
         let products = []
-        let title = req.query?.limit
+        let title = req.query.title
+        let ordenarPor = req.query.ordenarPor 
         products = await ProductModel.find().limit(parseInt(limit)).lean()
         if (title) {
-          products = ProductModel.aggregate([
-            { $match:{title:title}
-            },
-          ])
-          console.log(products)
-        }      
+          products = await ProductModel.aggregate([
+            { $match: { title: title } }
+          ]).exec();
+        }
+        if (ordenarPor === 'mayorPrecio') { 
+          products = await ProductModel.aggregate([
+            { $sort: {price: -1} }
+          ]).exec();
+        } else if (ordenarPor === 'menorPrecio') { 
+          products = await ProductModel.aggregate([
+            { $sort: {price: 1} }
+          ]).exec();
+        }       
         res.render("home", {products})
       } catch (error) {
         console.log(error)
@@ -69,7 +77,6 @@ router.get('/', async(req, res,) => {
           if (!deletedProduct) {
             throw new Error('Producto no encontrado');
           }
-          console.log(deletedProduct); // opcional: imprimir el producto eliminado
           res.redirect('/realtimeproducts');
         } catch (error) {
           console.error(error);
