@@ -19,18 +19,13 @@
             <button class="btn btn-primary" type="submit">volver al inicio</button>
          </div>   
         </div>
+        <div class="input-group p-3">
+            <button class="btn btn-secondary col" type="submit" name= "ordenarPor" value="mayorPrecio" >Mayor Precio</button>
+            <button class="btn btn-secondary col" type="submit"  name= "ordenarPor"  value="menorPrecio" >Menor Precio</button>
+            <button class="btn btn-secondary col" type="submit">No ordenar</button>
+        </div>
       </form>
     </div>
-      <div class="dropdown" action="/" method="get">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-          Ordenar los productos
-        </button>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-          <li><a class="btn" type="submit" name="mayorPrecio" >Mayor Precio</a></li>
-          <li><a class="btn" type="submit" name="menorPrecio" >Menor Precio</a></li>
-          <li><a class="btn" type="submit" >No ordenar</a></li>
-        </ul>
-      </div>
     <div class="row row-cols-1 row-cols-md-3 g-4">
       {{#each products}}
       <div class="col">
