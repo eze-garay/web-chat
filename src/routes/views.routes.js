@@ -1,7 +1,7 @@
 
 import { Router } from 'express';
 import { ProductModel } from '../Dao/DB/models/productsModel.js';
-import * as productsServices from "../services/productsServices.js"
+import { CartsModel } from '../Dao/DB/models/cartsModel.js';
 //import manager from '../Dao/FileSystem/productManager.js'
 const router = Router();
 
@@ -17,12 +17,20 @@ router.get('/', async(req, res,) => {
     try {
         let products = []
         let title = req.query.title
+        let page = parseInt(req.query.page);
+        if(!page) page=1;
+        let result = await ProductModel.paginate({},{page,limit:10,lean:true})
+        result.prevLink = result.hasPrevPage?`http://localhost:8080/?page=${result.prevPage}`:'';
+        result.nextLink = result.hasNextPage?`http://localhost:8080/?page=${result.nextPage}`:'';
+        result.isValid= !(page<=0||page>result.totalPages) 
+
         let ordenarPor = req.query.ordenarPor 
-        products = await ProductModel.find().limit(parseInt(limit)).lean()
         if (title) {
           products = await ProductModel.aggregate([
             { $match: { title: title } }
           ]).exec();
+        } else {
+          products = await ProductModel.find().limit(parseInt(limit)).lean()
         }
         if (ordenarPor === 'mayorPrecio') { 
           products = await ProductModel.aggregate([
@@ -32,8 +40,8 @@ router.get('/', async(req, res,) => {
           products = await ProductModel.aggregate([
             { $sort: {price: 1} }
           ]).exec();
-        }       
-        res.render("home", {products})
+        }      
+        res.render("home",{...result, docs: products})
       } catch (error) {
         console.log(error)
         res.render("home", "NO SE PUDIERON OBTENER LOS PRODUCTOS")
