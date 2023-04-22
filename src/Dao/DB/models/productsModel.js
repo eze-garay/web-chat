@@ -37,9 +37,7 @@ const Schema = new mongoose.Schema(
             default: true,
             minlength: 3,
         },
-
-        
-
+  
     }
 );
 

@@ -29,11 +29,11 @@ export async function getCartById (){
       if (!cart) {
         return 'Carrito no encontrado';
       }
-      const productIndex = cart.product.findIndex(product => product.productId == pId);
+      const productIndex = cart.Products.findIndex(product => product.Product == pId);
       if (productIndex >= 0) {
-        cart.product[productIndex].quantity++;
+        cart.Products[productIndex].quantity++;
       } else {
-        cart.product.push({ productId: pId, quantity: 1 });
+        cart.Products.push({ productId: pId, quantity: 1 });
       }
       await cart.save();
       return 'Producto añadido';

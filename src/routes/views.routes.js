@@ -50,32 +50,30 @@ router.get('/', async(req, res,) => {
 
  router.get('/realtimeproducts', async (req, res) => {
     try {
-        let products = []
-        products = await ProductModel.find().lean()
+        let cart = await CartsModel.find().lean()
         res.render("realTimeProducts", {
-          products,
-          title: "Lista de productos actuales",
+          cart,
+          title: "Lista de carritos  actuales",
         } );
       } catch (error) {
         console.log(error)
         res.render("realTimeProducts", "NO SE PUDIERON OBTENER LOS PRODUCTOS")
       }
 
-    })
-    
- 
-    
-      
-    
- router.post('/realtimeproducts/crear', async (req, res) => {
-        let product = req.body
-      
-        // Agregar el nuevo producto a la lista
-        product = await ProductModel.create((product))
+  })
 
-        // Redirigir de vuelta a la vista de productos en tiempo real
-        res.redirect('/realtimeproducts');
-      })
+  router.get('/realtimeproducts/:_id', async (req, res) => {
+    try {
+        let cart = await CartsModel.findOne({_id: req.params._id}).lean()
+        console.log(cart)
+        res.render('realTimeProducts',{cart ,products: cart.Products} );
+      } catch (error) {
+        console.log(error)
+        res.render("realTimeProducts", "NO SE PUDIERON OBTENER LOS PRODUCTOS")
+      }
+
+  })
+    
 
 
       router.post('/realtimeproducts/eliminar/:_id', async (req, res) => {
