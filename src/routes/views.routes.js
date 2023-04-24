@@ -64,7 +64,7 @@ router.get('/', async(req, res,) => {
 
   router.get('/realtimeproducts/:_id', async (req, res) => {
     try {
-        let cart = await CartsModel.findOne({_id: req.params._id}).populate("products.product")
+        let cart = await CartsModel.findOne({_id: req.params._id}).populate("products.product").lean()
         console.log(cart)
         res.render('realtimeproducts',{cart} );
       } catch (error) {
@@ -73,10 +73,7 @@ router.get('/', async(req, res,) => {
       }
 
   })
-
-
-
-      router.post('/realtimeproducts/eliminar/:_id', async (req, res) => {
+  router.post('/realtimeproducts/eliminar/:_id', async (req, res) => {
         try {
           const deletedProduct = await ProductModel.findOneAndDelete({_id: req.params._id});
       
@@ -88,7 +85,13 @@ router.get('/', async(req, res,) => {
           console.error(error);
           return false;
         }
-      });
+  });
+
+  router.post('/add-to-cart', async (req, res) => {
+    const { cartId, productId } = req.body;
+    const cart = await CartsModel.findByIdAndUpdate(cartId, productId);
+    res.redirect('/cart'); // Redirecciona a la vista del carrito después de agregar un producto
+  });
 
       
      
