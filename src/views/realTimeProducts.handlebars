@@ -11,23 +11,21 @@
                 </div>
             {{/if}}
         <div class="row">
-        {{#each cart}}
+             {{#each cart}}
         <div class="input-group mb-3">
         <form method="get" action="/realtimeproducts/{{this._id}}">
           <input type="text" class="form-control" placeholder="ingrese el id del carrito que desea bucar" name="_id">
           <div class="input-group-append">
             <button class="btn btn-primary" type="submit">Buscar</button>
           </div>
-          </form>
+        </form>
         </div>
-        {{#if product}}
-        <div>
-        <h3>{{product.title}}</h3>
-        <p>category:{{product.category}} </p>
-        <p>price: ${{product.price}} </p>
+        <div class="container col-sm-6">
+        <h3>{{products.title}}</h3>
+        <p>category:{{products.category}} </p>
+        <p>price: ${{products.price}} </p>
         <p>Quantity: {{Quantity}} </p> 
         </div>
-        {{/if}}
         {{/each}} 
         </div>
     </div>

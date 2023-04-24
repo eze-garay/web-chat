@@ -12,9 +12,9 @@ export async function addCart (cart){
 }
 
 
-export async function getCartById (){
+export async function getCartById (cartId) {
     try {
-        let carts = await CartsModel.findOne();
+        let carts = await CartsModel.findById({_id: cartId });
         return carts
     } catch (error) {
         throw Error(error)
@@ -23,24 +23,34 @@ export async function getCartById (){
 
 
 
-  export async function addProductToCart(cId, pId) {
-    try {
-      const cart = await CartsModel.findById(cId);
-      if (!cart) {
-        return 'Carrito no encontrado';
-      }
-      const productIndex = cart.Products.findIndex(product => product.Product == pId);
-      if (productIndex >= 0) {
-        cart.Products[productIndex].quantity++;
-      } else {
-        cart.Products.push({ productId: pId, quantity: 1 });
-      }
-      await cart.save();
-      return 'Producto añadido';
-    } catch (error) {
-      console.error(error);
-      return { error: error.message };
+
+export const addToCart = async (cartId, productId) => {
+  try {
+  
+    let cart = await CartsModel.findOne({ cartId });
+
+   
+    const productIndex = cart.products.findIndex(
+      (product) => product.product === productId
+    );
+    
+    if (productIndex >= 0) {
+
+      cart.products[productIndex].quantity++;
+    } else {
+      cart.products.push({ product: productId, quantity: 1 });
     }
+    await cart.save();
+
+    await cart.populate("products.product");
+
+    return cart;
+  } catch (error) {
+    console.log(error);
   }
+}
+
+
+
 
 

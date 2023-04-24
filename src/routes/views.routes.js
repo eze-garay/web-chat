@@ -64,16 +64,16 @@ router.get('/', async(req, res,) => {
 
   router.get('/realtimeproducts/:_id', async (req, res) => {
     try {
-        let cart = await CartsModel.findOne({_id: req.params._id}).lean()
+        let cart = await CartsModel.findOne({_id: req.params._id}).populate("products.product")
         console.log(cart)
-        res.render('realTimeProducts',{cart ,products: cart.Products} );
+        res.render('realtimeproducts',{cart} );
       } catch (error) {
         console.log(error)
         res.render("realTimeProducts", "NO SE PUDIERON OBTENER LOS PRODUCTOS")
       }
 
   })
-    
+
 
 
       router.post('/realtimeproducts/eliminar/:_id', async (req, res) => {
@@ -89,6 +89,8 @@ router.get('/', async(req, res,) => {
           return false;
         }
       });
+
+      
      
 
 router.get('/message', async (req, res) =>{

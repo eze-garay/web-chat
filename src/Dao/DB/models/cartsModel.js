@@ -7,23 +7,25 @@ import mongoose from "mongoose";
 
 const Schema = new mongoose.Schema(
     {
-        Products: {
-        type: [
+        products: {
+          type: [
             {
-                Product: {
+                product: {
                     type: mongoose.Schema.Types.ObjectId,
-                    ref: "Products"
-                }
+                    ref: "products"
+                },
             }
         ],
-        default:[]
         }
     });
     Schema.pre('findOne', function() {
-        this.populate("Products.Product");
+        this.populate( "products.product")
     });
     Schema.pre('findById', function() {
-        this.populate("Products.Product");
+        this.populate("products.product")
+    });
+    Schema.pre('findByIdAndUpdate', function() {
+        this.populate("products.product")
     });
 
-export const CartsModel = mongoose.model("Carts", Schema);
+export const CartsModel = mongoose.model("carts", Schema);

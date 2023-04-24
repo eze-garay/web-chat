@@ -50,3 +50,4 @@ export async function updateProductById (...data){
         throw new Error (error)
       }
   }
+

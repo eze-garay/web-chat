@@ -26,7 +26,7 @@ export async function getCart (req,res) {
         if (one) {
             return res.status(200).send(one)
         } else {
-            return res.status(404).send({error: 'Producto no econtrado'})
+            return res.status(404).send({error: 'Carrito no econtrado'})
         } 
     } catch (error) {
         return res.status(500).send(error.message)
@@ -36,11 +36,9 @@ export async function getCart (req,res) {
 
 
 export async function addProduct (req,res) {
-    let cId = (req.params.cid)
-    let pId = (req.params.pid)
-  
+
       try {
-          let cart = await CartsServices.addProductToCart((cId),(pId))
+          let cart = await CartsServices.addToCart()
           if (!cart) {
               return res.status(404).send('no se puede encontrar el carrito')
           }
