@@ -90,7 +90,7 @@ router.get('/', async(req, res,) => {
   router.post('/add-to-cart', async (req, res) => {
     const { cartId, productId } = req.body;
     const cart = await CartsModel.findByIdAndUpdate(cartId, productId);
-    res.redirect('/cart'); // Redirecciona a la vista del carrito después de agregar un producto
+    res.redirect('home');
   });
 
       
