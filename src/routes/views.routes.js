@@ -9,7 +9,7 @@ const router = Router();
 
 
 
-router.get('/', async(req, res,) => {
+router.get('/products', async(req, res,) => {
   let limit = req.query.limit
   if (!limit) {
     limit = "10"
@@ -20,8 +20,8 @@ router.get('/', async(req, res,) => {
         let page = parseInt(req.query.page);
         if(!page) page=1;
         let result = await ProductModel.paginate({},{page,limit:10,lean:true})
-        result.prevLink = result.hasPrevPage?`http://localhost:8080/?page=${result.prevPage}`:'';
-        result.nextLink = result.hasNextPage?`http://localhost:8080/?page=${result.nextPage}`:'';
+        result.prevLink = result.hasPrevPage?`http://localhost:8080/products?page=${result.prevPage}`:'';
+        result.nextLink = result.hasNextPage?`http://localhost:8080/products?page=${result.nextPage}`:'';
         result.isValid= !(page<=0||page>result.totalPages) 
 
         let ordenarPor = req.query.ordenarPor 
@@ -48,28 +48,33 @@ router.get('/', async(req, res,) => {
       }
 })
 
- router.get('/realtimeproducts', async (req, res) => {
-    try {
-        let cart = await CartsModel.find().lean()
-        res.render("realTimeProducts", {
-          cart,
-          title: "Lista de carritos  actuales",
-        } );
-      } catch (error) {
-        console.log(error)
-        res.render("realTimeProducts", "NO SE PUDIERON OBTENER LOS PRODUCTOS")
-      }
+router.post('/add-to-cart', async (req, res) => {
+  try {
+    const { cartId, productId } = req.body;
+    const cart = await CartsModel.findById(cartId);
+    const product = {
+      _id: productId,
+      quantity: 1 
+    };
+    cart.products.push(product);
+    await cart.save();
+    res.redirect('/products');
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+});
 
-  })
 
-  router.get('/realtimeproducts/:_id', async (req, res) => {
+
+  router.get('/cart/:_id', async (req, res) => {
     try {
         let cart = await CartsModel.findOne({_id: req.params._id}).populate("products.product").lean()
         console.log(cart)
-        res.render('realtimeproducts',{cart} );
+        res.render('cart',{cart} );
       } catch (error) {
         console.log(error)
-        res.render("realTimeProducts", "NO SE PUDIERON OBTENER LOS PRODUCTOS")
+        res.render("cart", "NO SE PUDIERON OBTENER LOS PRODUCTOS")
       }
 
   })
@@ -87,11 +92,6 @@ router.get('/', async(req, res,) => {
         }
   });
 
-  router.post('/add-to-cart', async (req, res) => {
-    const { cartId, productId } = req.body;
-    const cart = await CartsModel.findByIdAndUpdate(cartId, productId);
-    res.redirect('home');
-  });
 
       
      

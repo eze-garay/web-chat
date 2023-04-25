@@ -4,7 +4,7 @@
           <hi class="h3">Lista de productos </hi>
     </div>
     <div class="col-md-6 offset-md-3">
-      <form action="/" method="get">
+      <form action="/products" method="get">
         <div class="input-group mb-3">
           <input type="text" class="form-control" placeholder="Límite de resultados" name="limit">
           <div class="input-group-append">
@@ -39,9 +39,8 @@
                 <p class="card-text">Precio: ${{this.price}}</p>
                 <p class="card-text">Cantidades disponibles:{{this.stock}}</p>
                 <p class="card-text">Disponibilidad:{{this.status}}</p>
-            </form>
           <form method="post" action="/add-to-cart">
-            <input type="hidden" name="cartId" value="{{cartId}}">
+            <input type="hidden" name="cartId" value="64453f2a900a3730a1696cca">
             <input type="hidden" name="productId" value="{{this._id}}">
             <button type="submit" class="btn btn-primary">Agregar al carrito</button>
           </form>
