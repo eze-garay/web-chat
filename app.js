@@ -4,6 +4,7 @@ import morgan from 'morgan';
 import "./src/db.js"
 import {Server} from 'socket.io';
 import { messageModel } from './src/Dao/DB/models/messagesModel.js';
+import session from 'express-session';
 
 import viewsRouters from './src/routes/views.routes.js'
 import cartsRouters from './src/routes/cart.routes.js'
@@ -21,7 +22,11 @@ const PORT = process.env.PORT || 8080;
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(express.static(__dirname + '/public'));
-app.use(morgan("dev"));
+app.use(session({
+    secret:"CoderS3cret",
+    resave: true,
+    saveUninitialized: true
+}))
 
 app.engine('handlebars',handlebars.engine());
 app.set('views', __dirname + "/views");
@@ -31,6 +36,8 @@ app.use('/api/products', productsRoutes)
 app.use('/api/carts', cartsRouters)
 app.use('/', viewsRouters)
 app.use('/api/users', userRoutes)
+
+
 
 
 
