@@ -31,7 +31,7 @@ export const addToCart = async (cartId, productId) => {
 
    
     const productIndex = cart.products.findIndex(
-      (product) => product.product === productId
+      (product) => (product.product._id).toString() === productId
     );
     
     if (productIndex >= 0) {

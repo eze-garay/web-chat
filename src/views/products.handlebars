@@ -1,0 +1,92 @@
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="/">Inicio</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" 
+          data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" 
+          aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/">Home <span class="sr-only"></span></a>
+      </li>
+        <li class="nav-item">
+        <a class="nav-link" href="/products">Productos</a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link" href="/cart/64453f2a900a3730a1696cca">Carrito</a>
+        </li>
+    </ul>
+  </div>
+</nav>
+<div class="container"> 
+  <div class="d-raw text-center">
+          <hi class="h3">Lista de productos </hi>
+  </div>
+  <div class="col-md-6 offset-md-3">
+      <form action="/products" method="get">
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Límite de resultados" name="limit">
+          <div class="input-group-append">
+            <button class="btn btn-primary" type="submit">Actualizar</button>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Nombre del producto" name="title">
+          <div class="input-group-append">
+            <button class="btn btn-primary" type="submit">Buscar</button>
+            <button class="btn btn-primary" type="submit">volver al inicio</button>
+         </div>   
+        </div>
+        <div class="input-group p-3">
+            <button class="btn btn-secondary col" type="submit" name= "ordenarPor" value="mayorPrecio" >Mayor Precio</button>
+            <button class="btn btn-secondary col" type="submit"  name= "ordenarPor"  value="menorPrecio" >Menor Precio</button>
+            <button class="btn btn-secondary col" type="submit">No ordenar</button>
+        </div>
+      </form>
+  </div>
+  {{#if isValid}}
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+       {{#each docs }}
+      <div class="col">
+        <div class="card text-center " style="max-width: 400px;">
+            <div class="col-md-4">
+            <img src="..." class="img-fluid rounded-start"  alt="...">
+            </div>
+            <div class="col-md-8">
+            <div class="card-body">
+                <h5 class="card-title">Nombre del producto:{{this.title}}</h5>
+                <p class="card-text">Precio: ${{this.price}}</p>
+                <p class="card-text">Cantidades disponibles:{{this.stock}}</p>
+                <p class="card-text">Disponibilidad:{{this.status}}</p>
+          <form method="post" action="/add-to-cart">
+            <input type="hidden" name="cartId" value="64453f2a900a3730a1696cca">
+            <input type="hidden" name="productId" value="{{this._id}}">
+            <button type="submit" class="btn btn-primary">Agregar al carrito</button>
+          </form>
+            </div>
+            </div>
+        </div>
+      </div>
+       {{/each}}
+  </div>
+  <div>
+              {{#if hasPrevPage}}
+                  <a href={{this.prevLink}}>Anterior</a>
+              {{/if}}
+              &nbsp;
+              {{this.page}}
+              &nbsp;
+              {{#if hasNextPage}}
+                  <a href={{this.nextLink}}>Siguiente</a>
+              {{/if}} 
+  </div> 
+</div>  
+{{/if}}
+
+  
+ 
+
+

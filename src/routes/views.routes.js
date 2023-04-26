@@ -7,7 +7,13 @@ const router = Router();
 
 
 
-
+router.get('/', async (req, res)=> {
+  try {
+    res.render("home");
+  } catch (error) {
+    throw Error (error);
+  }
+})
 
 router.get('/products', async(req, res,) => {
   let limit = req.query.limit
@@ -41,10 +47,10 @@ router.get('/products', async(req, res,) => {
             { $sort: {price: 1} }
           ]).exec();
         }      
-        res.render("home",{...result, docs: products})
+        res.render("products",{...result, docs: products})
       } catch (error) {
         console.log(error)
-        res.render("home", "NO SE PUDIERON OBTENER LOS PRODUCTOS")
+        res.render("products", "NO SE PUDIERON OBTENER LOS PRODUCTOS")
       }
 })
 
@@ -91,10 +97,6 @@ router.post('/add-to-cart', async (req, res) => {
           return false;
         }
   });
-
-
-      
-     
 
 router.get('/message', async (req, res) =>{
     res.render('message');
