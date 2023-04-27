@@ -8,22 +8,22 @@ import mongoose from "mongoose";
 const Schema = new mongoose.Schema(
     {
         products: {
-          type: [
-            {
-                product: {
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: "products"
-                },
-                quantity: {
-                    type: Number,
-                    default: 1,
-                    
-                }
-            }
-        ],
-        required: true,
+            type: [
+                    {
+                        product: {
+                                type: mongoose.Schema.Types.ObjectId,
+                                ref: "products"
+                                },
+                        quantity:{
+                                type: Number,
+                                require: true
+                        }
+                    }
+                  ],
         }
-    });
+    },
+)
+
     Schema.pre('findOne', function() {
         this.populate( "products.product")
     });

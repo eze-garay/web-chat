@@ -16,7 +16,7 @@
         <a class="nav-link" href="/products">Productos</a>
         </li>
         <li class="nav-item">
-        <a class="nav-link" href="/cart/6449be173e9edb1131d72300">Carrito</a>
+        <a class="nav-link" href="/cart/644afa619e807476d0a6da8e">Carrito</a>
         </li>
     </ul>
   </div>
@@ -34,31 +34,30 @@
             {{/if}}
         <div class="row">
     <div class="row">
-    <div class="row col-sm-6">
-        <div class="container col-sm-6 ">
-        <div class="d-raw text-center">
-            <hi class="h3">{{title}} </hi>
-        </div>
+    
             {{#if message}}
                 <div class="alert alert-danger" role="alert">
                     {{message}}
                 </div>
             {{/if}}
         {{#each cart.products}}
-        <form method="get" action="/cart/{{../_id}}">
-        <div class="col">
-        <h3>{{this.product.title}}</h3>
-        <p>Description: {{this.product.description}}</p>
-        <p>Price: ${{this.product.price}}</p>
-        <p>Quantity: {{this.Quantity}}</p> 
+        <div class="row">
+        <div class="col-xl p-2">    
+        <div class="card">
+          <div class="card-header">
+            {{this.product.title}}
+          </div>
+          <div class="card-body">
+            <h5 class="card-title"> Precio por producto: ${{this.product.price}}</h5>
+            <p class="card-text">Descripcion: {{this.product.description}}</p>
+            <p class="card-text">Cantidades de producto seleccionado {{this.quantity}}</p>
+          </div>
         </div>
         </div>
-        </form>
+        </div>
           {{/each}} 
     </div>
-</div>
-</div>
-</div>
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/socket.io/socket.io.js" ></script>
 <script src="/js/index.js" ></script>

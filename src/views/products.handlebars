@@ -16,7 +16,7 @@
         <a class="nav-link" href="/products">Productos</a>
         </li>
         <li class="nav-item">
-        <a class="nav-link" href="/cart/644aaf354454dcfb41dc6585">Carrito</a>
+        <a class="nav-link" href="/cart/644afbd4483344a1d2570cbc">Carrito</a>
         </li>
     </ul>
   </div>
@@ -62,10 +62,11 @@
                 <p class="card-text">Cantidades disponibles:{{this.stock}}</p>
                 <p class="card-text">Disponibilidad:{{this.status}}</p>
           <form method="post" action="/add-to-cart">
-            <input type="hidden" name="cartId" value="644aaf354454dcfb41dc6585">
+            <input type="hidden" name="cartId" value="644afbd4483344a1d2570cbc">
             <input type="hidden" name="productId" value="{{this._id}}">
             <button type="submit" class="btn btn-primary">Agregar al carrito</button>
           </form>
+          
             </div>
             </div>
         </div>

@@ -56,15 +56,29 @@ router.get('/products', async(req, res,) => {
         res.render("products", "NO SE PUDIERON OBTENER LOS PRODUCTOS")
       }
 });
+
+
 router.post('/add-to-cart', async (req, res) => {
   try {
     const { cartId, productId } = req.body;
     const cart = await CartsModel.findById(cartId);
-    const product = {
-      _id: productId,
-      quantity: 1 
-    };
-    cart.products.push(product);
+    const product = await ProductModel.findById(productId);
+    const productIndex = cart.products.findIndex(
+      (p) => p.product.equals(product._id)
+    );
+
+    if (productIndex !== -1) {
+     
+      cart.products[productIndex].quantity++;
+    } else {
+     
+      const newProduct = {
+        product: product._id,
+        quantity: 1 
+      };
+      cart.products.push(newProduct);
+    }
+
     await cart.save();
     res.redirect('/products');
   } catch (error) {
@@ -72,7 +86,6 @@ router.post('/add-to-cart', async (req, res) => {
     return false;
   }
 });
-
 
 //Carrito
 
@@ -87,19 +100,7 @@ router.get('/cart/:_id', async (req, res) => {
       }
 
 });
-router.post('/realtimeproducts/eliminar/:_id', async (req, res) => {
-        try {
-          const deletedProduct = await ProductModel.findOneAndDelete({_id: req.params._id});
-      
-          if (!deletedProduct) {
-            throw new Error('Producto no encontrado');
-          }
-          res.redirect('/realtimeproducts');
-        } catch (error) {
-          console.error(error);
-          return false;
-        }
-});
+
 
 //Chat
 router.get('/message', async (req, res) =>{
