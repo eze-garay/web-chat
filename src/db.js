@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { ProductModel } from "./Dao/DB/models/productsModel.js";
+
 
 mongoose.connect(
     "mongodb+srv://ezequielgaray37:eze251@cluster0.jwum4cn.mongodb.net/ecommerce",

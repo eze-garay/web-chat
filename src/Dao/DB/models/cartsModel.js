@@ -16,11 +16,12 @@ const Schema = new mongoose.Schema(
                 },
                 quantity: {
                     type: Number,
-                    required: true,
+                    default: 1,
                     
                 }
             }
         ],
+        required: true,
         }
     });
     Schema.pre('findOne', function() {
