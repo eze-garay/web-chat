@@ -1,12 +1,17 @@
 import mongoose from "mongoose";
 
 import { CartsModel } from "../Dao/DB/models/cartsModel.js";
+import { ProductModel } from "../Dao/DB/models/productsModel.js";
 
 
 export async function addCart() {
+
   try {
-    let product
-    let cart = await CartsModel.create(product)
+    let prod = {
+      product :"Id",
+      quantity : 1,
+    }
+    let cart = await CartsModel.create(prod);
     return cart;
   } catch (error) {
     throw Error(error);
@@ -29,24 +34,15 @@ export async function getCartById (cartId) {
 export const addToCart = async (cartId, productId) => {
   try {
   
-    let cart = await CartsModel.findOne({ cartId });
-
-   
-    const productIndex = cart.products.findIndex((product) => product.product._id.toString() == productId);
-    const Index = cart.products.findIndex((product) => product.product._id.toString())
-    console.log(Index);
-    
-    if (productIndex >= 0) {
-
-      cart.products[productIndex].quantity+=1;
-    } else {
-      cart.products.push({ product: productId, quantity: 1 });
-    }
+    let cart = await CartsModel.findById(cartId);
+    let product = await ProductModel.findById(productId);
+    cart.products.forEach((product)=>{
+      if (product._id == productId) {
+        product.quantity+=1;
+      }
+    });
     await cart.save();
-
     await cart.populate("products.product");
-
-    return cart;
   } catch (error) {
     console.log(error);
   }

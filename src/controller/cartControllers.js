@@ -4,6 +4,7 @@ import  * as CartsServices from "../services/cartsServices.js"
 
 export async function create (req,res){
     try {
+        
         let prod = await CartsServices.addCart()
         if (prod) {
             return res.json({

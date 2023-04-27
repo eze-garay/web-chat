@@ -10,6 +10,12 @@ const Schema = new mongoose.Schema(
             maxlength: [10, "El nombre es muy largo"],
 
         },
+        last_name:{
+            type: String,
+            required: true,
+            minlength: 3,
+            maxlength: [10, "El apellido es muy largo"],
+        },
         age:{
             type: Number,
             required: true,
@@ -34,6 +40,10 @@ const Schema = new mongoose.Schema(
                 },
             ],
 
+        },
+        password:{
+            type: Number,
+            require: true,
         },
     },
     {timestamps:true}

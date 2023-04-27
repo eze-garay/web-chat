@@ -7,7 +7,10 @@ import session from 'express-session';
 //import FileStore  from 'session-file-store';
 import MongoStore from 'connect-mongo';
 
+
 import viewsRouters from './src/routes/views.routes.js'
+import userViewRouters from './src/routes/user.views.routes.js'
+import sessionRouter from './src/routes/sessions.routes.js'
 import cartsRouters from './src/routes/cart.routes.js'
 import productsRoutes from './src/routes/products.routes.js'
 import userRoutes from './src/routes/user.routes.js'
@@ -20,6 +23,8 @@ const PORT = process.env.PORT || 8080;
 
 //const fileStore = FileStore(session)
 
+
+//server
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(express.static(__dirname + '/public'));
@@ -35,26 +40,31 @@ app.use(session({
     saveUninitialized: true
 }))
 
+
+
+//rutas
+
 app.engine('handlebars',handlebars.engine());
 app.set('views', __dirname + "/views");
 app.set('view engine','handlebars');
 
-app.use('/api/products', productsRoutes)
-app.use('/api/carts', cartsRouters)
-app.use('/', viewsRouters)
-app.use('/api/users', userRoutes)
+app.use('/api/products', productsRoutes);
+app.use('/api/carts', cartsRouters);
+app.use('/', viewsRouters);
+app.use('/user', userViewRouters);
+app.use('/api/sessions', sessionRouter);
+
+app.use('/api/users', userRoutes);
 
 
 
 
 
-
+//chat
 
 const httpServer = app.listen(PORT, () => {
     console.log(`server run on port: ${PORT}`);
 })
-
-
 
 const socketServer = new Server(httpServer);
 let messages = []
