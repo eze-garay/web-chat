@@ -53,6 +53,25 @@ export async function addToCart (cartId, productId) {
 }
 
 
+export async function deleteProduct (cartId, productId) {
+  const cart = await CartsModel.findOne({cartId}).populate("products")
+  if (!cart) {
+    return "El carrito no existe"
+  }
+  let prod = cart.products.find(p => p.product.equals(productId))
+  console.log(prod)
+  if (!prod) {
+    return "El producto no existe"
+  } else {
+    if (prod.quantity == 1) {
+      cart.products = cart.products.filter(p => !p.product.equals(productId))
+    } else {
+      prod.quantity -= 1
+    }
+    await cart.save()
+  }
+}
+
 
 
 

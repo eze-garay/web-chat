@@ -50,7 +50,7 @@ router.get('/products', async(req, res,) => {
             { $sort: {price: 1} }
           ]).exec();
         }      
-        res.render("products",{...result, docs: products})
+        res.render("products",{...result, docs: products, user: req.session.user })
       } catch (error) {
         console.log(error)
         res.render("products", "NO SE PUDIERON OBTENER LOS PRODUCTOS")
@@ -87,6 +87,31 @@ router.post('/add-to-cart', async (req, res) => {
   }
 });
 
+router.post('/cart/eliminar', async (req, res) => {
+  try {
+    const {cartId, productId} = req.body;
+    const cart = await CartsModel.findOne({cartId}).populate("products")
+    if (!cart) {
+      return res.send("El carrito no existe")
+    }
+    let prod = cart.products.find(p => p.product.equals(productId))
+    console.log(prod)
+    if (!prod) {
+      return res.send("El producto no existe")
+    } else {
+      if (prod.quantity == 1) {
+        cart.products = cart.products.filter(p => !p.product.equals(productId))
+      } else {
+        prod.quantity -= 1
+      }
+      await cart.save()
+    }
+    res.redirect('/cart/' + cart._id)
+  } catch (error) {
+    console.error(error);
+    return res.send(false);
+  }
+});
 //Carrito
 
 router.get('/cart/:_id', async (req, res) => {
@@ -100,6 +125,8 @@ router.get('/cart/:_id', async (req, res) => {
       }
 
 });
+
+
 
 
 //Chat

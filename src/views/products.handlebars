@@ -1,4 +1,5 @@
 
+<div class="Container">
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <a class="navbar-brand" href="/">Inicio</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" 
@@ -6,8 +7,7 @@
           aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+<div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
         <a class="nav-link" href="/">Home <span class="sr-only"></span></a>
@@ -19,11 +19,23 @@
         <a class="nav-link" href="/cart/644afbd4483344a1d2570cbc">Carrito</a>
         </li>
     </ul>
-  </div>
+       <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <a class="btn btn-outline-light" href="/user/register" role="button">Registrar</a>
+        <a class="btn btn-outline-light" href="/user/login" role="button">Login</a>
+        </div>
+</div>
 </nav>
+</div>
+
+{{#each user}}
+  <div class=" text-center"> 
+          <hi class="h3">Bienvenido {{user.name.}} , tenemos los siguientes productos para vos: </hi>
+  </div>
+{{/each}} 
+ 
 <div class="container"> 
   <div class="d-raw text-center">
-          <hi class="h3">Lista de productos </hi>
+          <h2 class="h3">Lista de productos </h2>
   </div>
   <div class="col-md-6 offset-md-3">
       <form action="/products" method="get">
@@ -72,7 +84,9 @@
         </div>
       </div>
        {{/each}}
+       
   </div>
+  {{/if}}
   <div>
               {{#if hasPrevPage}}
                   <a href={{this.prevLink}}>Anterior</a>
@@ -84,8 +98,9 @@
                   <a href={{this.nextLink}}>Siguiente</a>
               {{/if}} 
   </div> 
-</div>  
-{{/if}}
+</div> 
+
+
 
   
  

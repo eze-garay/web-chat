@@ -39,7 +39,7 @@ router.post('/login', async (req,res)=>{
         email: user.email,
         age: user.age
     }
-    res.send({status:"success", payload:req.session.user, message:"Se ha logueado con exito" });
+    res.send({ user: req.session.user });
 })
 
 

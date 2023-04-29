@@ -1,4 +1,5 @@
 
+<div class="Container">
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <a class="navbar-brand" href="/">Inicio</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" 
@@ -6,8 +7,7 @@
           aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+<div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
         <a class="nav-link" href="/">Home <span class="sr-only"></span></a>
@@ -16,11 +16,16 @@
         <a class="nav-link" href="/products">Productos</a>
         </li>
         <li class="nav-item">
-        <a class="nav-link" href="/cart/644afa619e807476d0a6da8e">Carrito</a>
+        <a class="nav-link" href="/cart/644afbd4483344a1d2570cbc">Carrito</a>
         </li>
     </ul>
-  </div>
+       <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <a class="btn btn-outline-light" href="/user/register" role="button">Registrar</a>
+        <a class="btn btn-outline-light" href="/user/login" role="button">Login</a>
+        </div>
+</div>
 </nav>
+</div>
 <div class="container">
 <div class="row col-sm-6">
 <div class="container col-sm-6 ">
@@ -51,6 +56,11 @@
             <h5 class="card-title"> Precio por producto: ${{this.product.price}}</h5>
             <p class="card-text">Descripcion: {{this.product.description}}</p>
             <p class="card-text">Cantidades de producto seleccionado {{this.quantity}}</p>
+            <form action="/cart/eliminar" method="POST">
+          <input type="hidden" name="cartId" value="{{this.cart._id}}">
+          <input type="hidden" name="productId" value="{{this.product._id}}">
+          <button type="submit" class="btn btn-primary">Eliminar</button>
+           </form>
           </div>
         </div>
         </div>

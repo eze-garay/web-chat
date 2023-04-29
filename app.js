@@ -54,7 +54,7 @@ app.use('/', viewsRouters);
 app.use('/user', userViewRouters);
 app.use('/api/sessions', sessionRouter);
 
-app.use('/api/users', userRoutes);
+//app.use('/api/users', userRoutes);
 
 
 
