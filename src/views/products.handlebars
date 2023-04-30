@@ -1,4 +1,3 @@
-
 <div class="Container">
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <a class="navbar-brand" href="/">Inicio</a>
@@ -10,7 +9,7 @@
 <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="/">Home <span class="sr-only"></span></a>
+        <a class="nav-link" href="/Home">Home <span class="sr-only"></span></a>
       </li>
         <li class="nav-item">
         <a class="nav-link" href="/products">Productos</a>
@@ -25,14 +24,15 @@
         </div>
 </div>
 </nav>
-</div>
-
 {{#each user}}
-  <div class=" text-center"> 
-          <hi class="h3">Bienvenido {{user.name.}} , tenemos los siguientes productos para vos: </hi>
+<form  method='get' action="/logout">
+  <h4><ins>Bienvenido {{user.name}} , tenemos los siguientes productos para vos: </ins></h4>  
+  <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+ <a type="submit" class="btn btn-outline-light" href="/user/login" role="button">Cerrar Sesion</a> 
   </div>
+</form>
 {{/each}} 
- 
+</div>
 <div class="container"> 
   <div class="d-raw text-center">
           <h2 class="h3">Lista de productos </h2>

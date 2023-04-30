@@ -1,7 +1,8 @@
 import { Router } from "express";
 import { UserModel } from "../Dao/DB/models/userModel.js";
-
+import { auth } from "../services/userServices.js";
 const router = Router();
+
 
 router.post('/register', async (req,res)=> {
     const {name, last_name, age ,email , password} = req.body;
@@ -18,29 +19,44 @@ router.post('/register', async (req,res)=> {
     last_name,
     age,
     email,
-    password
+    password,
+    
  }
 
  const result = await UserModel.create(user);
- res.status(201).send({status: "success", msg: "Usuario creado con exito"+ result.id})
+ res.status(200).send({status: "success", msg: "Usuario creado con exito"+ result.id})
 
 })
 
-router.post('/login', async (req,res)=>{
-    const {email, password}= req.body;
-    const user = await UserModel.findOne({email, password});
 
-    if (!user) {
-        return res.status(401).send({status: "error", msg:"Usuario o Password incorrectos"})
-    }
-
-    req.session.user= {
-        name : `${user.name} ${user.last_name}`,
+router.post('/login', async (req, res) => {
+    const { email, password } = req.body;
+    const user = await UserModel.findOne({ email, password });
+  
+    if (user) {
+      req.session.user = {
+        name: `${user.name} ${user.last_name}`,
         email: user.email,
-        age: user.age
+        age: user.age,
+      };
+      res.send({ user: req.session.user });
+    } else if (email === 'adminCoder@coder.com' && password === 'adminCod3r123') {
+      req.session.admin = true;
+      res.send('Inicio sesión como administrador');
+    } else {
+      return res.status(401).send({ status: 'error', msg: 'Usuario o Password incorrectos' });
     }
-    res.send({ user: req.session.user });
-})
+});
+
+
+router.get('/private', auth , async (req, res) => {
+
+    const users = await UserModel.find()
+
+    return res.render('users', {users}).send({status: 'ok', msg:'Lista de usuarios'});
+
+});
+
 
 
 

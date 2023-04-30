@@ -19,8 +19,7 @@ const Schema = new mongoose.Schema(
         age:{
             type: Number,
             required: true,
-            min: 18,
-            max: 50,
+
 
         },
         email:{
@@ -42,8 +41,7 @@ const Schema = new mongoose.Schema(
 
         },
         password:{
-            type: Number,
-            require: true,
+            type: String,
         },
     },
     {timestamps:true}

@@ -1,3 +1,4 @@
+<div class="Container">
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <a class="navbar-brand" href="/">Inicio</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" 
@@ -5,24 +6,27 @@
           aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+<div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="/">Home <span class="sr-only"></span></a>
+        <a class="nav-link" href="/Home">Home <span class="sr-only"></span></a>
       </li>
         <li class="nav-item">
         <a class="nav-link" href="/products">Productos</a>
         </li>
         <li class="nav-item">
-        <a class="nav-link" href="/cart/6449be173e9edb1131d72300">Carrito</a>
+        <a class="nav-link" href="/cart/644afbd4483344a1d2570cbc">Carrito</a>
         </li>
     </ul>
-  </div>
+       <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <a class="btn btn-outline-light" href="/user/register" role="button">Registrar</a>
+        <a class="btn btn-outline-light" href="/user/login" role="button">Login</a>
+        </div>
+</div>
 </nav>
+</div>
 <form id="registerForm">
-  <div class="form-row">
-      <div class="form-group">
+  <div class="form-group">
     <label for="inputNombre">Nombre</label>
     <input type="text" class="form-control" name="name" placeholder="Nombre">
   </div>
@@ -42,9 +46,9 @@
       <label for="inputPassword4">Contraseña</label>
       <input type="password" class="form-control" name="password" placeholder="Password">
     </div>
-  </div>
   <button type="submit" class="btn btn-primary">Registrar</button>
     <p>Si ya esta registrado<a href="/user/login">Haga click aquí</a></p>
 </form>
 
 <script src="/js/register.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

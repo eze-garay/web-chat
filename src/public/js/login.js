@@ -14,6 +14,13 @@ form.addEventListener('submit',e=>{
     }).then(result=>{
         if(result.status===200){
             window.location.replace('/products');
-        }
-    })
+        } else {
+            // Mostrar una alerta de SweetAlert si se ingresaron datos incorrectos
+            Swal.fire({
+              icon: 'error',
+              title: 'Error de inicio de sesión',
+              text: 'Los datos ingresados son incorrectos. Por favor, inténtelo de nuevo.'
+            });
+    }
 })
+});

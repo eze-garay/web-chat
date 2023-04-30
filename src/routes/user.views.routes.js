@@ -11,10 +11,18 @@ router.get('/register', (req,res)=> {
 })
 
 
-router.get('/', (req,res)=> {
-    res.render("profile",{
-        user: req.session.user
-    });
+router.get('/logout', (req, res)=>{
+    req.session.destroy(error => {
+        if(error){
+            res.json({error: "Error de logout", msg: 'Error al cerrar session'})
+        }
+        res.clearCookie('connect.sid').send("Sesion cerrada correctamente!!")
+    })
+})
+
+router.get('/private', (req, res) =>{
+    res.render('profile')
+
 })
 
 
