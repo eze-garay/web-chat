@@ -24,14 +24,14 @@
         </div>
 </div>
 </nav>
-{{#each user}}
+
 <form  method='get' action="/logout">
-  <h4><ins>Bienvenido {{user.name}} , tenemos los siguientes productos para vos: </ins></h4>  
+  <h4><ins>Bienvenido {{user.name}} , tenemos los siguientes productos para vos </ins></h4>  
   <div class="d-grid gap-2 d-md-flex justify-content-md-end">
- <a type="submit" class="btn btn-outline-light" href="/user/login" role="button">Cerrar Sesion</a> 
+ <a type="submit" class="btn btn-primary" href="/user/logout" role="button">Cerrar Sesion</a> 
   </div>
 </form>
-{{/each}} 
+ 
 </div>
 <div class="container"> 
   <div class="d-raw text-center">
