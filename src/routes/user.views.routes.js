@@ -16,8 +16,10 @@ router.get('/logout', (req, res)=>{
         if(error){
             res.json({error: "Error de logout", msg: 'Error al cerrar session'})
         }
-        res.clearCookie('connect.sid').send("Sesion cerrada correctamente!!")
+        res.clearCookie('connect.sid').redirect('login')
+        
     })
+    
 })
 
 router.get('/private', (req, res) =>{

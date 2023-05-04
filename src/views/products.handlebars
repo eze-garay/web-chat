@@ -26,7 +26,11 @@
 </nav>
 
 <form  method='get' action="/logout">
-  <h4><ins>Bienvenido {{user.name}} , tenemos los siguientes productos para vos </ins></h4>  
+<figure class="text-center">
+  <blockquote class="blockquote">
+    <h2><ins>Bienvenido {{user.name}}, tenemos los siguientes productos para vos</ins></h2>
+  </blockquote>
+</figure>
   <div class="d-grid gap-2 d-md-flex justify-content-md-end">
  <a type="submit" class="btn btn-primary" href="/user/logout" role="button">Cerrar Sesion</a> 
   </div>
