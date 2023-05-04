@@ -3,46 +3,28 @@ import mongoose from "mongoose";
 
 const Schema = new mongoose.Schema(
     {
-        name:{
+        first_name:{
             type: String,
-            required: true,
-            minlength: 3,
-            maxlength: [10, "El nombre es muy largo"],
+          
 
         },
         last_name:{
             type: String,
-            required: true,
-            minlength: 3,
-            maxlength: [10, "El apellido es muy largo"],
+       
         },
         age:{
             type: Number,
-            required: true,
-
+        
 
         },
         email:{
             type: String,
-            required: true,
-            unique: true,
-            match: /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/,
-            lowercase: true,
-            trim: true,
-            validate: [
-                {
-                    validator: (value)=> {
-                        if(value.length <10)return false;
-                        return true;
-                    },
-                    message: "El email es muy corto",
-                },
-            ],
 
         },
         password:{
             type: String,
         },
+        loggedBy: String,
     },
     {timestamps:true}
 );

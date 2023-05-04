@@ -1,5 +1,6 @@
 import passport from "passport";
 import passportlocal from "passport-local";
+import GitHubStrategy from "passport-github2";
 import { UserModel } from "../Dao/DB/models/userModel.js";
 import { createHash, isValidPassword } from "../utils.js";
 
@@ -11,11 +12,50 @@ const localStrategy = passportlocal.Strategy;
 //register
 
 const initializePassaport = () => {
+
+    passport.use('github', new GitHubStrategy (
+    {
+
+        clientID: 'Iv1.c3172e5a826a3428',
+        clientSecret: 'c38bb806d28ea13f25657a117876106085919319',
+        callbackUrl: 'http://localhost:8080/api/sessions/githubcallback'
+
+    },
+    async (accessToken, refreshToken, profile, done)=>{
+        console.log("Perfil de GitHub")
+        console.log(profile)
+        try {
+            const user = await UserModel.findOne({email: profile._json.email}) ;
+            console.log("Usuario encontrado")
+            console.log ("User")  
+            
+        if (!user) {
+            console.warn("Usuario no existe en la base de datos"+ profile._json.email);
+            let newUser = {
+                first_name: profile._json.name,
+                last_name: '',
+                age: 18,
+                email: profile._json.email,
+                password: '',
+                loggedBy: "GitHub"
+            };
+            result = await UserModel.create(newUser)
+            return done (null, result)
+            
+        } else {
+            return done(null, user)
+        }
+        } catch (error) {
+            return done(error);
+        }
+    }),
+    );
+
     passport.use('register', new localStrategy(
     
         { passReqToCallback: true, usernameField: 'email' },
         async(req, username, password, done) =>{
-            const { name, last_name, email, age } = req.body;
+            const { first_name, last_name, email, age } = req.body;
             try {
 
                 const exists = await UserModel.findOne({ email });
@@ -24,7 +64,7 @@ const initializePassaport = () => {
                     return done(null, false);
                 }
                 const user = {
-                    name,
+                    first_name,
                     last_name,
                     age,
                     email,

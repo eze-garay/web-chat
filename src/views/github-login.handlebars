@@ -25,30 +25,12 @@
 </div>
 </nav>
 </div>
-<form id="registerForm">
-  <div class="form-group">
-    <label for="inputNombre">Nombre</label>
-    <input type="text" class="form-control" name="first_name" placeholder="Nombre">
-  </div>
-   <div class="form-group">
-    <label for="inputApellido">Apellido</label>
-    <input type="text" class="form-control" name="last_name" placeholder="Apellido">
-  </div>
-    <div class="form-group">
-    <label for="inputEdad">Edad</label>
-    <input type="text" class="form-control" name="age"  placeholder="Edad">
-  </div>
-    <div class="form-group col-md-6">
-      <label for="inputEmail4">Email</label>
-      <input type="email" class="form-control" name="email" placeholder="Email">
-    </div>
-    <div class="form-group col-md-6">
-      <label for="inputPassword4">Contraseña</label>
-      <input type="password" class="form-control" name="password" placeholder="Password">
-    </div>
-  <button type="submit" class="btn btn-primary">Registrar</button>
-    <p>Si ya esta registrado<a href="/user/login">Haga click aquí</a></p>
-</form>
+<div class="Container">
+    <h1>Logueate usando Github!</h1>
+    <a href="/api/sessions/github"> <button>Entrar con Github</button> </a>
+    <br>
+    <h2>No quieres usar Github? Puedes usa nuestros enlaces:</h2>
+    <p>¿No estás registrado? <a href="/user/register">Regístrate aquí</a></p>
+    <p>¿Ya tienes cuenta con nosotros? <a href="/user/login">Haz Login aquí</a></p>
 
-<script src="/js/register.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</div>

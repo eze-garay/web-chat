@@ -6,6 +6,12 @@ import { messageModel } from './src/Dao/DB/models/messagesModel.js';
 import session from 'express-session';
 //import FileStore  from 'session-file-store';
 import MongoStore from 'connect-mongo';
+import __dirname from './src/utils.js';
+import passport from 'passport';
+import initializePassaport from './src/config/passport.config.js';
+
+
+
 
 
 import viewsRouters from './src/routes/views.routes.js'
@@ -14,9 +20,14 @@ import sessionRouter from './src/routes/sessions.routes.js'
 import cartsRouters from './src/routes/cart.routes.js'
 import productsRoutes from './src/routes/products.routes.js'
 import userRoutes from './src/routes/user.routes.js'
-import __dirname from './src/utils.js';
-import passport from 'passport';
-import initializePassaport from './src/config/passport.config.js';
+import githubLoginViewRouter from './src/routes/github-login.views.router.js'
+
+
+
+
+
+
+
 
 
 
@@ -59,6 +70,7 @@ app.use('/api/carts', cartsRouters);
 app.use('/', viewsRouters);
 app.use('/user', userViewRouters);
 app.use('/api/sessions', sessionRouter);
+app.use("/github", githubLoginViewRouter);
 
 //app.use('/api/users', userRoutes);
 
