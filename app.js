@@ -15,6 +15,8 @@ import cartsRouters from './src/routes/cart.routes.js'
 import productsRoutes from './src/routes/products.routes.js'
 import userRoutes from './src/routes/user.routes.js'
 import __dirname from './src/utils.js';
+import passport from 'passport';
+import initializePassaport from './src/config/passport.config.js';
 
 
 
@@ -39,6 +41,10 @@ app.use(session({
     resave: false,
     saveUninitialized: true
 }))
+
+initializePassaport();
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 
