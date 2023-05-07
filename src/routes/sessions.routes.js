@@ -79,7 +79,7 @@ router.post("/register", passport.authenticate('register', { failureRedirect: '/
 //   }
 // });
 
-router.get('/private', authToken , async (req, res) => {
+router.get('/private', async (req, res) => {
   res.render('profile');
 
 });
