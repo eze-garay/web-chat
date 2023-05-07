@@ -93,6 +93,9 @@ const initializePassaport = () => {
                 if (!isValidPassword(user, password)) {
                     console.warn("Invalid credentials for user: " + username);
                     return done(null, false);
+                }      
+                if (user.email === 'adminCoder@coder.com' && password === 'adminCod3r123') {
+                    user.isAdmin = true;
                 }
                 return done(null, user);
             } catch (error) {

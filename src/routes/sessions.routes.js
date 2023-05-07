@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { UserModel } from "../Dao/DB/models/userModel.js";
-import { auth } from "../services/userServices.js";
+import { generateJWToken }  from "../utils.js"
+import { authToken } from "../utils.js"
 import passport from "passport";
 const router = Router();
 
@@ -28,21 +29,28 @@ router.post("/register", passport.authenticate('register', { failureRedirect: '/
     });
 
 
-
-
-router.post("/login", passport.authenticate('login', { failureRedirect: '/api/sessions/fail-login' }), async (req, res) => {
-  console.log("User found to login:");
-  const user = req.user;
-  console.log(user);
-  
-  if (!user) return res.status(401).send({ status: "error", error: "El usuario y la contraseña no coinciden!" });
-  req.session.user = {
-      name: `${user.first_name} ${user.last_name}`,
-      email: user.email,
-      age: user.age
-  }
-  res.send({ status: "success", payload: req.session.user, message: "¡Primer logueo realizado! :)" });
-});
+    router.post("/login", async (req, res, next) => {
+      const userCheck = await UserModel.findOne ({email: req.body.email})
+      if (!userCheck) return res.status(401).send({ status: "error", error: "El usuario y la contraseña no coinciden!" });
+      next();
+    }, passport.authenticate('login', { failureRedirect: '/api/sessions/fail-login' }), async (req, res) => {
+      console.log("User found to login:");
+      const user = req.user;
+      req.admin = (user.email === 'adminCoder@coder.com' )
+      req.session.user = {
+          name: `${user.first_name} ${user.last_name}`,
+          email: user.email,
+          age: user.age
+      }
+      const access_token = generateJWToken(user);
+      console.log(access_token)
+      const responseObj = {
+        access_token: access_token,
+        payload: req.session.user,
+        message: "¡Primer logueo realizado! :)"
+      };
+      res.status(201).send({ status: "success", ...responseObj });
+    });
 
 
 // router.post("/login", passport.authenticate('login', { failureRedirect: '/api/sessions/fail-login' }), async (req, res) => {
@@ -71,23 +79,35 @@ router.post("/login", passport.authenticate('login', { failureRedirect: '/api/se
 //   }
 // });
 
-
-
-router.get('/private', auth , async (req, res) => {
-
-    const users = await UserModel.find()
-
-    return res.render('users', {users}).send({status: 'ok', msg:'Lista de usuarios'});
+router.get('/private', authToken , async (req, res) => {
+  res.render('profile');
 
 });
-router.get("/fail-register", (req, res) => {
-  res.status(401).send({ error: "Failed to process register!" });
+
+
+router.get('/fail-register', (req, res) => {
+  // Mostrar una alerta de SweetAlert si se ingresaron datos incorrectos
+  Swal.fire({
+    icon: 'error',
+    title: 'Error de inicio de sesión',
+    text: 'Los datos ingresados son incorrectos. Por favor, inténtelo de nuevo.'
+  }).then(() => {
+    // Redirigir de vuelta a la página de inicio de sesión
+    res.redirect('/register');
+  });
 });
 
-router.get("/fail-login", (req, res) => {
-  res.status(401).send({ error: "Failed to process login!" });
+router.get('/fail-login', (req, res) => {
+  // Mostrar una alerta de SweetAlert si se ingresaron datos incorrectos
+  Swal.fire({
+    icon: 'error',
+    title: 'Error de inicio de sesión',
+    text: 'Los datos ingresados son incorrectos. Por favor, inténtelo de nuevo.'
+  }).then(() => {
+    // Redirigir de vuelta a la página de inicio de sesión
+    res.redirect('/login');
+  });
 });
-
 
 
 

@@ -9,28 +9,29 @@ form.addEventListener('submit',e=>{
     console.log("Objeto formado:");
     console.log(obj);
     fetch('/api/sessions/register',{
-        method:'POST',
-        body:JSON.stringify(obj),
-        headers:{
-            'Content-Type':'application/json'
-        }
-    }).then(result => {
-        if (result.status === 200) {
-          // Mostrar una alerta de SweetAlert si se creó el usuario exitosamente
+      method:'POST',
+      body:JSON.stringify(obj),
+      headers:{
+          'Content-Type':'application/json'
+      }
+  }).then(result => {
+      if (result.status === 201) {
+        // Mostrar una alerta de SweetAlert si se creó el usuario exitosamente
+        Swal.fire({
+          icon: 'success',
+          title: 'Usuario creado exitosamente',
+          text: '¡Gracias por registrarte!',
+        }).then(() => {
+          window.location.replace('/'); // redirecciona a la página principal
+        });
+      } else {
+          // Mostrar una alerta de SweetAlert si se ingresaron datos incorrectos
           Swal.fire({
-            icon: 'success',
-            title: 'Usuario creado exitosamente',
-            text: '¡Gracias por registrarte!',
-          }).then(() => {
-            window.location.replace('/');
+            icon: 'error',
+            title: 'Error registrar los datos',
+            text: 'Los datos ingresados son incorrectos. Por favor, inténtelo de nuevo.'
           });
-        } else {
-            // Mostrar una alerta de SweetAlert si se ingresaron datos incorrectos
-            Swal.fire({
-              icon: 'error',
-              title: 'Error de inicio de sesión',
-              text: 'Los datos ingresados son incorrectos. Por favor, inténtelo de nuevo.'
-            });
-    }
-})
+      }
+  })
+  
 })

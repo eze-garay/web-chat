@@ -27,15 +27,15 @@ export async function get(){
         return user
     } catch (error) {
         console.error("No se pudo obtener usuarios con moongose: " + error);
-        res.status(500).send({error: "No se pudo obtener usuarios con moongose", message: error});
+        res.status(401).send({error: "No se pudo obtener usuarios con moongose", message: error});
     }
 }
 
 export async function auth (req, res, next) {
-  if(req.session.user === 'adminCoder@coder.com' && req.session.admin){
+  if(req.session.admin) {
    return next();
  }else{
-  return res.status(403).send('Usuario no autorizado, para ingresar al recurso')
+  return res.status(401).send({error: "No se pudo ingresar", message: error});
  }
 };
 

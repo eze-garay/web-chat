@@ -1,4 +1,5 @@
 import { Router } from "express";
+import {authToken} from '../utils.js'
 
 const router = Router();
 
@@ -22,7 +23,7 @@ router.get('/logout', (req, res)=>{
     
 })
 
-router.get('/private', (req, res) =>{
+router.get('/private', authToken , (req, res) =>{
     res.render('profile')
 
 })
