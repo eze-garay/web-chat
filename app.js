@@ -10,6 +10,8 @@ import __dirname from './src/utils.js';
 import passport from 'passport';
 import initializePassaport from './src/config/passport.config.js';
 
+import cookieParser from 'cookie-parser';
+
 
 
 
@@ -19,12 +21,8 @@ import userViewRouters from './src/routes/user.views.routes.js'
 import sessionRouter from './src/routes/sessions.routes.js'
 import cartsRouters from './src/routes/cart.routes.js'
 import productsRoutes from './src/routes/products.routes.js'
-import userRoutes from './src/routes/user.routes.js'
 import githubLoginViewRouter from './src/routes/github-login.views.router.js'
-
-
-
-
+import jwt from './src/routes/jwt.routes.js'
 
 
 
@@ -35,6 +33,11 @@ const app = express ()
 const PORT = process.env.PORT || 8080;
 
 //const fileStore = FileStore(session)
+
+
+
+
+
 
 
 //server
@@ -53,6 +56,15 @@ app.use(session({
     saveUninitialized: true
 }))
 
+
+//coockie
+
+
+app.use(cookieParser('C0derSecr3t'))
+
+
+//midellwere
+
 initializePassaport();
 app.use(passport.initialize());
 app.use(passport.session());
@@ -65,14 +77,18 @@ app.engine('handlebars',handlebars.engine());
 app.set('views', __dirname + "/views");
 app.set('view engine','handlebars');
 
+
+
+
+
 app.use('/api/products', productsRoutes);
 app.use('/api/carts', cartsRouters);
 app.use('/', viewsRouters);
 app.use('/user', userViewRouters);
 app.use('/api/sessions', sessionRouter);
 app.use("/github", githubLoginViewRouter);
+app.use('/api/jwt', jwt);
 
-//app.use('/api/users', userRoutes);
 
 
 

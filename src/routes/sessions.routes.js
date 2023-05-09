@@ -1,7 +1,6 @@
 import { Router } from "express";
 import { UserModel } from "../Dao/DB/models/userModel.js";
 import { generateJWToken }  from "../utils.js"
-import { authToken } from "../utils.js"
 import passport from "passport";
 const router = Router();
 
@@ -20,8 +19,6 @@ router.get("/githubcallback", passport.authenticate('github', {failureRedirect: 
     res.redirect("/github");
 });
 
-
-
 router.post("/register", passport.authenticate('register', { failureRedirect: '/api/sessions/fail-register' }),
     async (req, res) => {
         console.log("Registrando nuevo usuario.");
@@ -29,7 +26,7 @@ router.post("/register", passport.authenticate('register', { failureRedirect: '/
     });
 
 
-    router.post("/login", async (req, res, next) => {
+router.post("/login", async (req, res, next) => {
       const userCheck = await UserModel.findOne ({email: req.body.email})
       if (!userCheck) return res.status(401).send({ status: "error", error: "El usuario y la contraseña no coinciden!" });
       next();
@@ -51,33 +48,6 @@ router.post("/register", passport.authenticate('register', { failureRedirect: '/
       };
       res.status(201).send({ status: "success", ...responseObj });
     });
-
-
-// router.post("/login", passport.authenticate('login', { failureRedirect: '/api/sessions/fail-login' }), async (req, res) => {
-//   console.log("User found to login:");
-//   const user = req.user;
-//   console.log(user);
-  
-//   if (!user) return res.status(401).send({ status: "error", error: "El usuario y la contraseña no coinciden!" });
-
-//   // Verificar si el usuario es un administrador
-//   let isAdmin = false;
-//   if (user.email === 'adminCoder@coder.com' && req.body.password === 'adminCod3r123') {
-//     isAdmin = true;
-//   }
-
-//   if (isAdmin) {
-//     req.session.admin = true;
-//     return res.send('Inicio sesión como administrador').status(200);
-//   } else {
-//     req.session.user = {
-//       name: `${user.name} ${user.last_name}`,
-//       email: user.email,
-//       age: user.age
-//     };
-//     res.send({ status: "success", payload: req.session.user, message: "¡Primer logueo realizado! :)" });
-//   }
-// });
 
 router.get('/private', async (req, res) => {
   res.render('profile');

@@ -2,9 +2,8 @@
 import { Router } from 'express';
 import { ProductModel } from '../Dao/DB/models/productsModel.js';
 import { CartsModel } from '../Dao/DB/models/cartsModel.js';
-import  cookieParser  from 'cookie-parser';
 const router = Router();
-router.use(cookieParser('Adm1234'))
+
 
 //Home
 
