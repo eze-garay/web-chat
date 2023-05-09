@@ -1,12 +1,15 @@
 import passport from "passport";
+import passportlocal from "passport-local";
+import GitHubStrategy from "passport-github2";
 import { UserModel } from "../Dao/DB/models/userModel.js";
-import { PRIVATE_KEY } from "../utils.js";
+import { PRIVATE_KEY, createHash } from "../utils.js";
 import jwtStrategy from 'passport-jwt';
 
 
 
 const JwtStrategy = jwtStrategy.Strategy;
 const ExtractJWT = jwtStrategy.ExtractJwt;
+const localStrategy = passportlocal.Strategy;
 
 
 //declarar
@@ -17,72 +20,74 @@ const ExtractJWT = jwtStrategy.ExtractJwt;
 
 const initializePassaport = () => {
 
-    // passport.use('github', new GitHubStrategy (
-    // {
+    passport.use('github', new GitHubStrategy (
+    {
 
-    //     clientID: 'Iv1.c3172e5a826a3428',
-    //     clientSecret: 'c38bb806d28ea13f25657a117876106085919319',
-    //     callbackUrl: 'http://localhost:8080/api/sessions/githubcallback'
+        clientID: 'Iv1.c3172e5a826a3428',
+        clientSecret: 'c38bb806d28ea13f25657a117876106085919319',
+        callbackUrl: 'http://localhost:8080/api/sessions/githubcallback'
 
-    // },
-    // async (accessToken, refreshToken, profile, done)=>{
-    //     console.log("Perfil de GitHub")
-    //     console.log(profile)
-    //     try {
-    //         const user = await UserModel.findOne({email: profile._json.email}) ;
-    //         console.log("Usuario encontrado")
-    //         console.log ("User")  
+    },
+    async (accessToken, refreshToken, profile, done)=>{
+        console.log("Perfil de GitHub")
+        console.log(profile)
+        try {
+            const user = await UserModel.findOne({email: profile._json.email}) ;
+            console.log("Usuario encontrado")
+            console.log ("User")  
             
-    //     if (!user) {
-    //         console.warn("Usuario no existe en la base de datos"+ profile._json.email);
-    //         let newUser = {
-    //             first_name: profile._json.name,
-    //             last_name: '',
-    //             age: 18,
-    //             email: profile._json.email,
-    //             password: '',
-    //             loggedBy: "GitHub"
-    //         };
-    //         result = await UserModel.create(newUser)
-    //         return done (null, result)
-            
-    //     } else {
-    //         return done(null, user)
-    //     }
-    //     } catch (error) {
-    //         return done(error);
-    //     }
-    // }),
-    // );
+        if (!user) {
+            console.warn("Usuario no existe en la base de datos"+ profile._json.email);
+            let newUser = {
+                first_name: profile._json.name,
+                last_name: '',
+                age: '',
+                email: profile._json.email,
+                password: '',
+                loggedBy: "GitHub",
+            };
 
-    // passport.use('register', new localStrategy(
+            result = await UserModel.create(newUser);
+            return done (null, result)
+            
+        } else {
+            return done(null, user)
+        }
+        } catch (error) {
+            return done(error);
+        }
+    }),
+    );
+
+    passport.use('register', new localStrategy(
     
-    //     { passReqToCallback: true, usernameField: 'email' },
-    //     async(req, username, password, done) =>{
-    //         const { first_name, last_name, email, age } = req.body;
-    //         try {
+        { passReqToCallback: true, usernameField: 'email' },
+        async(req, username, password, done) =>{
+            const { first_name, last_name, email, age, rol } = req.body;
+            try {
 
-    //             const exists = await UserModel.findOne({ email });
-    //             if (exists) {
-    //                 console.log("El usuario ya existe.");
-    //                 return done(null, false);
-    //             }
-    //             const user = {
-    //                 first_name,
-    //                 last_name,
-    //                 age,
-    //                 email,
-    //                 password: createHash (password)
+                const exists = await UserModel.findOne({ email });
+                if (exists) {
+                    console.log("El usuario ya existe.");
+                    return done(null, false);
+                }
+                const user = {
+                    first_name,
+                    last_name,
+                    age,
+                    email,
+                    password: createHash (password),
+                    rol,
                     
-    //             };
-    //             const result = await UserModel.create(user);
-    //             return done(null, result);
-    //         } catch (error) {
-    //             return done("Error registrando el usuario: " + error);
-    //         }
-    //     }
+                };
+                const result = await UserModel.create(user);
+                return done(null, result);
+            } catch (error) {
+                return done("Error registrando el usuario: " + error);
+            }
+        }
 
-    // ))
+    ))
  // estrategia login
 
     passport.use('jwt', new JwtStrategy (

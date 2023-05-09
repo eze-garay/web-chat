@@ -67,15 +67,31 @@ export const passportCall = (strategy) => {
 
 
 // para manejo de Auth
-export const authorization = (role) => {
+export const authorization = (rol) => {
     return async (req, res, next) => {
         if (!req.user) return res.status(401).send("Unauthorized: User not found in JWT"); 
-        if (req.user.role !== role) {
+        if (req.user.rol !== rol) {
             return res.status(403).send("Forbidden: El usuario no tiene permisos con este rol."); 
         }
         next();
     }
 };
+
+export const adminValidation = (req, res, next) => {
+    const {email, password} = req.body
+    if(email === "adminCoder@coder.com" && password === "adminCod3r123"){
+
+        req.session.user ={
+            name: "admin",
+            email: email,
+            rol: "admin"
+        }
+        req.admin = true
+        res.send({status: "Succes", payload: req.session.user, msg: "Se ha logueado con exito!"})
+    }else{
+        next()
+    }
+}
 
 
 

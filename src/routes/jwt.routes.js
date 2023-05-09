@@ -1,13 +1,13 @@
 import { Router } from "express";
 import { UserModel } from "../Dao/DB/models/userModel.js";
-import { isValidPassword } from "../utils.js";
+import { isValidPassword, adminValidation } from "../utils.js";
 import { generateJWToken } from "../utils.js";
 
 
 const router = Router();
 
 
-router.post('/login', async (req,res)=>{
+router.post('/login',adminValidation, async (req,res)=>{
     const  {email , password} = req.body;
     try {
         const user = await UserModel.findOne({email: email})
@@ -27,7 +27,7 @@ router.post('/login', async (req,res)=>{
             name: `${user.first_name} ${user.last_name}`,
             email: user.email,
             age: user.age,
-            role: user.role
+            rol: user.rol
         }
 
         const access_token = generateJWToken(tokenUser)

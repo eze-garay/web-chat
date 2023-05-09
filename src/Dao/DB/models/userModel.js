@@ -13,7 +13,7 @@ const Schema = new mongoose.Schema(
         age:Number,
         password: String,
         loggedBy: String,
-        role: {
+        rol: {
             type: String,
             default: 'user',
             enum: ['user', 'admin'],
