@@ -58,7 +58,7 @@ router.get('/products', async(req, res,) => {
             { $sort: {price: 1} }
           ]).exec();
         }      
-        res.render("products",{...result, docs: products, user: req.session.user })
+        res.render("products",{...result, docs: products, user: req.user })
       } catch (error) {
         console.log(error)
         res.render("products", "NO SE PUDIERON OBTENER LOS PRODUCTOS")

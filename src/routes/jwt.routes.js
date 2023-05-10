@@ -29,6 +29,7 @@ router.post('/login',adminValidation, async (req,res)=>{
             age: user.age,
             rol: user.rol
         }
+       
 
         const access_token = generateJWToken(tokenUser)
         console.log(access_token)
@@ -39,7 +40,7 @@ router.post('/login',adminValidation, async (req,res)=>{
             httpOnly: true,
         })
 
-        res.send( { user });
+        res.send({ user: tokenUser});
         
     } catch (error) {
         console.error(error);
