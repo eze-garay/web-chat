@@ -81,7 +81,7 @@ export const adminValidation = (req, res, next) => {
     const {email, password} = req.body
     if(email === "adminCoder@coder.com" && password === "adminCod3r123"){
 
-        req.session.user ={
+        req.user ={
             name: "admin",
             email: email,
             rol: "admin"

@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { adminValidation }  from "../utils.js"
+import { authorization }  from "../utils.js"
 import passport from "passport";
 const router = Router();
 
@@ -26,31 +26,8 @@ router.post("/register", passport.authenticate('register', { failureRedirect: '/
         res.status(201).send({ status: "success", message: "Usuario creado con extito." });
     });
 
-// router.post("/login",adminValidation, async (req, res, next) => {
-//       const userCheck = await UserModel.findOne ({email: req.body.email})
-//       if (!userCheck) return res.status(401).send({ status: "error", error: "El usuario y la contraseña no coinciden!" });
-//       next();
-//     }, passport.authenticate('login', { failureRedirect: '/api/sessions/fail-login' }), async (req, res) => {
-//       console.log("User found to login:");
-//       const user = req.user;
-//       req.session.user = {
-//           name: `${user.first_name} ${user.last_name}`,
-//           email: user.email,
-//           age: user.age,
-//           user: user.rol,
-//       }
-//       req.admin = true;
-//       const access_token = generateJWToken(user);
-//       console.log(access_token)
-//       const responseObj = {
-//         access_token: access_token,
-//         payload: req.session.user,
-//         message: "¡Primer logueo realizado! :)"
-//       };
-//       res.status(201).send({ status: "success", ...responseObj });
-//     });
 
-router.get('/private', adminValidation, async (req, res) => {
+router.get('/private',authorization('admin'), async (req, res) => {
   res.render('profile');
 
 });

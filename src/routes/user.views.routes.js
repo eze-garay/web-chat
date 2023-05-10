@@ -27,7 +27,7 @@ router.get('/logout', (req, res)=>{
 router.get('/private',
     
     passportCall('jwt'),
-    authorization('admin'),    
+    authorization(''),    
     (req, res) =>{
     res.render('profile', {user: req.user})
 

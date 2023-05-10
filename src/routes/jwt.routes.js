@@ -39,9 +39,7 @@ router.post('/login',adminValidation, async (req,res)=>{
             httpOnly: true,
         })
 
-        // res.send({msg: "Login correcto", jwt: access_token})
-        res.send({msg: "Login correcto"})
-
+        res.send( { user });
         
     } catch (error) {
         console.error(error);
