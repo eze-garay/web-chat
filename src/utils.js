@@ -87,7 +87,7 @@ export const adminValidation = (req, res, next) => {
             rol: "admin"
         }
         req.admin = true
-        res.send({status: "Succes", payload: req.session.user, msg: "Se ha logueado con exito!"})
+        res.send({status: "Succes", payload: req.user, msg: "Se ha logueado con exito!"})
     }else{
         next()
     }

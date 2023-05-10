@@ -2,6 +2,8 @@ import { Router } from "express";
 const router = Router();
 import * as productsControllers from "../controller/productsControllers.js"
 
+
+
 router.get("/", productsControllers.getAll)
 
 router.get('/:pid', productsControllers.getProduct)
@@ -12,4 +14,11 @@ router.delete('/:id', productsControllers.deleteProduct)
 
 router.put('/:pid', productsControllers.modify)
 
-export default router
+router.get("*", (req, res) => {
+    res.status(404).send("Cannot get that URL!!")
+});
+
+
+  
+
+export default router 

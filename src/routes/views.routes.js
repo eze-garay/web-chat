@@ -4,6 +4,7 @@ import { ProductModel } from '../Dao/DB/models/productsModel.js';
 import { CartsModel } from '../Dao/DB/models/cartsModel.js';
 const router = Router();
 
+const Regex = /^[0-9a-fA-F]{24}$/;
 
 //Home
 
@@ -57,8 +58,9 @@ router.get('/products', async(req, res,) => {
           products = await ProductModel.aggregate([
             { $sort: {price: 1} }
           ]).exec();
-        }      
-        res.render("products",{...result, docs: products, user: req.user })
+        }
+        const user = req.jwt_playload      
+        res.render("products",{...result, docs: products, user: user })
       } catch (error) {
         console.log(error)
         res.render("products", "NO SE PUDIERON OBTENER LOS PRODUCTOS")
@@ -122,7 +124,9 @@ router.post('/cart/eliminar', async (req, res) => {
 });
 //Carrito
 
-router.get('/cart/:_id', async (req, res) => {
+
+
+router.get(`/carts/:_id${Regex}`, async (req, res) => {
     try {
         let cart = await CartsModel.findOne({_id: req.params._id}).populate("products.product").lean()
         console.log(cart)
@@ -151,6 +155,24 @@ router.get('/session', (req, res)=>{
       res.send("Bienvenide")
   }
 })
+
+
+// En caso de pasar datos filtrar antes
+// router.param("_id", async (req, res, next, ) => {
+//   console.log("Buscando nombre de mascota con valor");
+//   try {
+//       let result = await CartsModel.findById({_id: req.params._id});
+//       if (!result) {
+//           req.cart = null;
+//       } else {
+//           req.cart = result;
+//       }
+//       next();
+//   } catch (error) {
+//       console.error("Error consultando las mascotas");
+//       res.status(500).send({ error: "Error consultando las mascotas", message: error });
+//   }
+// });
 
   
 export default router;

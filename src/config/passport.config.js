@@ -101,7 +101,7 @@ const initializePassaport = () => {
             try {
                 console.log("JWT obtenido del payload")
                 console.log(jwt_playload);
-                return done (null, jwt_playload.user)
+                return done (null, jwt_playload)
             } catch (error) {
                 console.log(error);
                 return done (error);

@@ -33,6 +33,10 @@ router.get('/private',
 
 })
 
+router.get("*", (req, res) => {
+    res.status(404).send("Cannot get that URL!!")
+});
+
 
 
 

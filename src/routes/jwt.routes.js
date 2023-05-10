@@ -40,12 +40,17 @@ router.post('/login',adminValidation, async (req,res)=>{
             httpOnly: true,
         })
 
-        res.send({ user: tokenUser});
+       res.send({status: "success", msg:"login correcto"})
         
     } catch (error) {
         console.error(error);
         return res.status(500).send({status:"error",error:"Error interno de la applicacion."});
     }
 })
+
+router.get("*", (req, res) => {
+    res.status(404).send("Cannot get that URL!!")
+  });
+  
 
 export default router

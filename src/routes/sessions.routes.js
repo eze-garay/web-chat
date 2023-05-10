@@ -57,6 +57,10 @@ router.get('/fail-login', (req, res) => {
   });
 });
 
+router.get("*", (req, res) => {
+  res.status(404).send("Cannot get that URL!!")
+});
+
 
 
 
