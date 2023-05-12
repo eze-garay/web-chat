@@ -47,7 +47,7 @@ const initializePassaport = () => {
                 loggedBy: "GitHub",
             };
 
-            result = await UserModel.create(newUser);
+            let result = await UserModel.create(newUser);
             return done (null, result)
             
         } else {
