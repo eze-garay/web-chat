@@ -52,7 +52,7 @@ export const passportCall = (strategy) => {
     return async (req, res, next) => {
         console.log("Entrando a llamar strategy: ");
         console.log(strategy);
-        passport.authenticate(strategy, function (err, user, info) {
+        passport.authenticate(strategy,{ session: false }, function (err, user, info) {
             if (err) return next(err);
             if (!user) {
                 return res.status(401).send({error: info.messages?info.messages:info.toString()});

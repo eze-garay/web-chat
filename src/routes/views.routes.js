@@ -2,6 +2,7 @@
 import { Router } from 'express';
 import { ProductModel } from '../Dao/DB/models/productsModel.js';
 import { CartsModel } from '../Dao/DB/models/cartsModel.js';
+import { passportCall } from '../utils.js';
 const router = Router();
 
 const Regex = /^[0-9a-fA-F]{24}$/;
@@ -27,7 +28,7 @@ router.get('/home', async (req, res)=> {
 
 
 //Product
-router.get('/products', async(req, res,) => {
+router.get('/products',passportCall('jwt', { session: false }), async(req, res,) => {
   let limit = req.query.limit
   if (!limit) {
     limit = "10"
@@ -59,8 +60,8 @@ router.get('/products', async(req, res,) => {
             { $sort: {price: 1} }
           ]).exec();
         }
-        const user = req.jwt_playload      
-        res.render("products",{...result, docs: products, user: user })
+       
+        res.render("products",{...result, docs: products, user: req.user })
       } catch (error) {
         console.log(error)
         res.render("products", "NO SE PUDIERON OBTENER LOS PRODUCTOS")

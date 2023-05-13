@@ -60,7 +60,7 @@ app.use(session({
 //coockie
 
 
-app.use(cookieParser('C0derSecr3t'))
+app.use(cookieParser('jwtCookieToken'))
 
 
 //midellwere

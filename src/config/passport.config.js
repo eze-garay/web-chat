@@ -7,13 +7,13 @@ import jwtStrategy from 'passport-jwt';
 
 
 
+
 const JwtStrategy = jwtStrategy.Strategy;
 const ExtractJWT = jwtStrategy.ExtractJwt;
 const localStrategy = passportlocal.Strategy;
 
 
 //declarar
-
 
 
 //register
@@ -51,7 +51,7 @@ const initializePassaport = () => {
             return done (null, result)
             
         } else {
-            return done(null, user)
+            return done(null, user);
         }
         } catch (error) {
             return done(error);
@@ -94,14 +94,13 @@ const initializePassaport = () => {
      
         {
             jwtFromRequest: ExtractJWT.fromExtractors([cookieExtractor]),
-            secretOrKey: PRIVATE_KEY
-        },
-        async (jwt_playload, done)=>{
+            secretOrKey: PRIVATE_KEY,
+        },async (jwt_playload, done)=>{
             console.log("Entrando a passport con JWT")
             try {
                 console.log("JWT obtenido del payload")
                 console.log(jwt_playload);
-                return done (null, jwt_playload)
+                return done (null, jwt_playload.user)
             } catch (error) {
                 console.log(error);
                 return done (error);

@@ -7,7 +7,7 @@ import { generateJWToken } from "../utils.js";
 const router = Router();
 
 
-router.post('/login',adminValidation, async (req,res)=>{
+router.post('/login', async (req,res)=>{
     const  {email , password} = req.body;
     try {
         const user = await UserModel.findOne({email: email})
@@ -40,7 +40,7 @@ router.post('/login',adminValidation, async (req,res)=>{
             httpOnly: true,
         })
 
-       res.send({status: "success", msg:"login correcto"})
+       res.send({status: "success", msg:"login correcto" })
         
     } catch (error) {
         console.error(error);
