@@ -1,6 +1,6 @@
 import { Router } from "express";
-
-import { authorization }  from "../utils.js"
+import jwt from "jsonwebtoken";
+import { authorization, generateJWToken }  from "../utils.js"
 import passport from "passport";
 const router = Router();
 
@@ -9,14 +9,22 @@ const router = Router();
 router.get("/github", passport.authenticate('github', {scope: ['user:email']}), async (req, res) => {});
 
 router.get("/githubcallback", passport.authenticate('github', {failureRedirect: '/github/error'}), async (req, res) => {
-    const user = req.user;
-    req.session.user= {
-        name : `${user.first_name} ${user.last_name}`,
-        email: user.email,
-        age: user.age,
-        rol: user.rol
-    };
-    req.session.admin = true;
+  const tokenUser = {
+    name: `${req.user.first_name} ${req.user.last_name}`,
+    email: req.user.email,
+    age: req.user.age,
+    rol: req.user.rol
+  };
+         const access_token = generateJWToken(tokenUser)
+        console.log(access_token)
+
+
+  // Configurar la cookie con el token JWT
+  res.cookie('jwtCookieToken', access_token, {
+    maxAge: 6000,
+    httpOnly: true,
+  });
+
     res.redirect("/github");
 });
 
