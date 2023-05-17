@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { UserModel } from "../Dao/DB/models/userModel.js";
-import { isValidPassword, adminValidation } from "../utils.js";
-import { generateJWToken } from "../utils.js";
+import { isValidPassword, generateJWToken } from "../utils.js";
+
 
 
 const router = Router();

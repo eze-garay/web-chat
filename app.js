@@ -9,7 +9,6 @@ import MongoStore from 'connect-mongo';
 import __dirname from './src/utils.js';
 import passport from 'passport';
 import initializePassaport from './src/config/passport.config.js';
-
 import cookieParser from 'cookie-parser';
 
 
@@ -22,6 +21,7 @@ import sessionRouter from './src/routes/sessions.routes.js'
 import cartsRouters from './src/routes/cart.routes.js'
 import productsRoutes from './src/routes/products.routes.js'
 import githubLoginViewRouter from './src/routes/github-login.views.router.js'
+import UserExtendRouter from './src/custom/users.extend.router.js';
 import jwt from './src/routes/jwt.routes.js'
 
 
@@ -88,6 +88,9 @@ app.use('/user', userViewRouters);
 app.use('/api/sessions', sessionRouter);
 app.use("/github", githubLoginViewRouter);
 app.use('/api/jwt', jwt);
+
+const userExtendRouter = new UserExtendRouter();
+app.use("/api/extend/users", userExtendRouter.getRouter());
 
 
 

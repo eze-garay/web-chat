@@ -1,5 +1,5 @@
 import { Router } from "express";
-import  Jwt  from "jsonwebtoken";
+import  jwt  from "jsonwebtoken";
 import { PRIVATE_KEY } from "../utils.js";
 
 
@@ -44,8 +44,6 @@ export default class CustomRouter {
             this.generateCustomResponses,
             this.applyCallbacks(callbacks));
     };
-
-
 
 
     // función que procese todas las funciones internas del router (middlewares y el callback principal)
