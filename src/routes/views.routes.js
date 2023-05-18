@@ -68,7 +68,6 @@ router.get('/products',passportCall('jwt', { session: false }), async(req, res,)
       }
 });
 
-
 router.post('/add-to-cart', async (req, res) => {
   try {
     const { cartId, productId } = req.body;

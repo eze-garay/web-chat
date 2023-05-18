@@ -10,6 +10,7 @@ import __dirname from './src/utils.js';
 import passport from 'passport';
 import initializePassaport from './src/config/passport.config.js';
 import cookieParser from 'cookie-parser';
+import config from './src/config/config.js';
 
 
 
@@ -22,6 +23,8 @@ import cartsRouters from './src/routes/cart.routes.js'
 import productsRoutes from './src/routes/products.routes.js'
 import githubLoginViewRouter from './src/routes/github-login.views.router.js'
 import UserExtendRouter from './src/custom/users.extend.router.js';
+import ProductsExtendRouter from './src/custom/products.extend.router.js';
+import CartsExtendRouter from './src/custom/carts.extend.router.js'
 import jwt from './src/routes/jwt.routes.js'
 
 
@@ -30,7 +33,7 @@ import jwt from './src/routes/jwt.routes.js'
 
 
 const app = express ()
-const PORT = process.env.PORT || 8080;
+const PORT = config.port;
 
 //const fileStore = FileStore(session)
 
@@ -91,6 +94,12 @@ app.use('/api/jwt', jwt);
 
 const userExtendRouter = new UserExtendRouter();
 app.use("/api/extend/users", userExtendRouter.getRouter());
+
+const productsExtendRouter = new ProductsExtendRouter();
+app.use("/api/extend/products", productsExtendRouter.getRouter());
+
+const cartExtendRouter = new CartsExtendRouter();
+app.use("/api/extend/carts", cartExtendRouter.getRouter());
 
 
 

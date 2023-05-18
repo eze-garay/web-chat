@@ -1,6 +1,7 @@
 import CustomRouter from "./custom.routes.js";
 import { UserModel } from "../Dao/DB/models/userModel.js";
-import { isValidPassword, generateJWToken, createHash } from "../utils.js";
+import { isValidPassword, generateJWToken, createHash, PRIVATE_KEY } from "../utils.js";
+import jwt from "jsonwebtoken";
 
 
 export default class UserExtendRouter extends CustomRouter {
@@ -14,6 +15,10 @@ export default class UserExtendRouter extends CustomRouter {
         this.post('/login', ["PUBLIC"], async (req,res)=>{
             const  {email , password} = req.body;
             try {
+                if (email === 'adminCoder@coder.com' && password === 'adminCod3r123') {
+                    const adminToken = jwt.sign({ role: 'admin' }, PRIVATE_KEY);
+                    return res.sendSuccess({ token: adminToken, message: 'Inicio de sesión como administrador' });
+                }
                 const user = await UserModel.findOne({email: email})
                 console.log("Usuario encontrado para Login")
                 console.log(user)
@@ -78,14 +83,18 @@ export default class UserExtendRouter extends CustomRouter {
     
         })
 
-
-
-
-
-
-
-
-
+        this.get ('/private', ["admin"],(req, res) =>{
+            res.render('profile', {user: req.user}) })
+        
+        this.get("/logout",["PUBLIC"], (req, res) => {
+                req.session.destroy(error => {
+                  if (error) {
+                    res.json({ error: "Error de logout", msg: "Error al cerrar sesión" });
+                  }
+                  res.clearCookie("jwtCookieToken").redirect("login");
+                });
+        });
+        
 
 
 
