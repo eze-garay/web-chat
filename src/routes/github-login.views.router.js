@@ -9,7 +9,7 @@ router.get('/login', (req, res )=>{
 })
 
 router.get('/', (req, res )=>{
-    res.redirect('/products')
+    res.redirect('/api/products/')
 })
 
 router.get('/error', (req, res )=>{

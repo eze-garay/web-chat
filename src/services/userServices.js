@@ -1,7 +1,14 @@
+import { UserModel } from "../Dao/DB/models/userModel.js";
 
-import {UserModel} from "../Dao/DB/models/userModel.js"
-
-
+export async function findUserByEmail (email) {
+    try {
+      const user = await UserModel.findOne({ email: email });
+      return user;
+    } catch (error) {
+      throw error;
+    }
+};
+  
 export async function createUser (data){
     try {
         const response = await UserModel.create(data);
@@ -10,6 +17,7 @@ export async function createUser (data){
         throw new Error (error)
     }
 }
+
 
 export async function getUser (){
     try {
@@ -31,11 +39,10 @@ export async function get(){
     }
 }
 
-export async function auth (req, res, next) {
-  if(req.session.admin) {
-   return next();
- }else{
-  return res.status(401).send({error: "No se pudo ingresar", message: error});
- }
-};
-
+// export async function auth (req, res, next) {
+//   if(req.session.admin) {
+//    return next();
+//  }else{
+//   return res.status(401).send({error: "No se pudo ingresar", message: error});
+//  }
+// };

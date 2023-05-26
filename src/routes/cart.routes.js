@@ -14,5 +14,9 @@ router.post('/eliminar', cartControllers.removeProductFromCart);
 
 router.get('/carts/:_id', cartControllers.getCartById);
 
+router.get("*", (req, res) => {
+    res.status(404).send("Cannot get that URL!!")
+});
+
 
 export default router

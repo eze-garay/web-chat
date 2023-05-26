@@ -1,6 +1,5 @@
 import { Router } from "express";
-import jwt from "jsonwebtoken";
-import { authorization, generateJWToken }  from "../utils.js"
+import { generateJWToken }  from "../utils.js"
 import passport from "passport";
 const router = Router();
 
@@ -32,14 +31,7 @@ router.post("/register", passport.authenticate('register', { failureRedirect: '/
     async (req, res) => {
         console.log("Registrando nuevo usuario.");
         res.status(201).send({ status: "success", message: "Usuario creado con extito." });
-    });
-
-
-router.get('/private',authorization('admin'), async (req, res) => {
-  res.render('profile');
-
 });
-
 
 router.get('/fail-register', (req, res) => {
   // Mostrar una alerta de SweetAlert si se ingresaron datos incorrectos
