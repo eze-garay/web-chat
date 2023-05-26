@@ -19,8 +19,6 @@ export async function getAll (req,res) {
 
 }
 
-
-
 export async function getProduct (req,res) {
     try {
         let id = req.params.id
@@ -45,8 +43,6 @@ export async function create (req,res){
         return res.status(500).send(error.message)
     }
 }
-
-
 
 export async function deleteProduct (req,res) {
 let id = req.params.id

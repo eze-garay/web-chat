@@ -1,7 +1,6 @@
 
 import { Router } from 'express';
 import { ProductModel } from '../Dao/DB/models/productsModel.js';
-import { CartsModel } from '../Dao/DB/models/cartsModel.js';
 import { passportCall } from '../utils.js';
 const router = Router();
 
@@ -24,7 +23,6 @@ router.get('/home', async (req, res)=> {
     throw Error (error);
   }
 });
-
 
 
 //Product
@@ -67,77 +65,6 @@ router.get('/products',passportCall('jwt', { session: false }), async(req, res,)
         res.render("products", "NO SE PUDIERON OBTENER LOS PRODUCTOS")
       }
 });
-
-router.post('/add-to-cart', async (req, res) => {
-  try {
-    const { cartId, productId } = req.body;
-    const cart = await CartsModel.findById(cartId);
-    const product = await ProductModel.findById(productId);
-    const productIndex = cart.products.findIndex(
-      (p) => p.product.equals(product._id)
-    );
-
-    if (productIndex !== -1) {
-     
-      cart.products[productIndex].quantity++;
-    } else {
-     
-      const newProduct = {
-        product: product._id,
-        quantity: 1 
-      };
-      cart.products.push(newProduct);
-    }
-
-    await cart.save();
-    res.redirect('/products');
-  } catch (error) {
-    console.error(error);
-    return false;
-  }
-});
-
-router.post('/cart/eliminar', async (req, res) => {
-  try {
-    const {cartId, productId} = req.body;
-    const cart = await CartsModel.findOne({cartId}).populate("products")
-    if (!cart) {
-      return res.send("El carrito no existe")
-    }
-    let prod = cart.products.find(p => p.product.equals(productId))
-    console.log(prod)
-    if (!prod) {
-      return res.send("El producto no existe")
-    } else {
-      if (prod.quantity == 1) {
-        cart.products = cart.products.filter(p => !p.product.equals(productId))
-      } else {
-        prod.quantity -= 1
-      }
-      await cart.save()
-    }
-    res.redirect('/cart/' + cart._id)
-  } catch (error) {
-    console.error(error);
-    return res.send(false);
-  }
-});
-//Carrito
-
-
-
-router.get(`/carts/:_id${Regex}`, async (req, res) => {
-    try {
-        let cart = await CartsModel.findOne({_id: req.params._id}).populate("products.product").lean()
-        console.log(cart)
-        res.render('cart',{cart} );
-      } catch (error) {
-        console.log(error)
-        res.render("cart", "NO SE PUDIERON OBTENER LOS PRODUCTOS")
-      }
-
-});
-
 
 
 //Chat

@@ -4,18 +4,15 @@ import * as cartControllers from "../controller/cartControllers.js"
 
 
 
-router.post('/', cartControllers.create)
+router.post('/', cartControllers.createCart);
 
-router.get('/:cid', cartControllers.getCart)
+router.get('/:cid', cartControllers.getCart); 
 
-router.post('/:cid/add/:pid', cartControllers.addProduct)
+router.post('/:cid/add/:pid', cartControllers.addProductToCart);
 
-router.get("*", (req, res) => {
-    res.status(404).send("Cannot get that URL!!")
-});
+router.post('/eliminar', cartControllers.removeProductFromCart);
 
-
-  
+router.get('/carts/:_id', cartControllers.getCartById);
 
 
 export default router

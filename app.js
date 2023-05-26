@@ -24,7 +24,6 @@ import productsRoutes from './src/routes/products.routes.js'
 import githubLoginViewRouter from './src/routes/github-login.views.router.js'
 import UserExtendRouter from './src/custom/users.extend.router.js';
 import ProductsExtendRouter from './src/custom/products.extend.router.js';
-import CartsExtendRouter from './src/custom/carts.extend.router.js'
 import jwt from './src/routes/jwt.routes.js'
 
 
@@ -98,8 +97,7 @@ app.use("/api/extend/users", userExtendRouter.getRouter());
 const productsExtendRouter = new ProductsExtendRouter();
 app.use("/api/extend/products", productsExtendRouter.getRouter());
 
-const cartExtendRouter = new CartsExtendRouter();
-app.use("/api/extend/carts", cartExtendRouter.getRouter());
+
 
 
 
