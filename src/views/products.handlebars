@@ -15,7 +15,7 @@
         <a class="nav-link" href="/api/products">Productos</a>
         </li>
            <li class="nav-item">
-            <a class="nav-link" href="api/carts/carts/644afbd4483344a1d2570cbc">Carrito</a>
+            <a class="nav-link" href='/api/carts/carts/644afbd4483344a1d2570cbc'>Carrito</a>
         </li>
     </ul>
        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
@@ -24,7 +24,7 @@
         </div>
 </div>
 </nav>
-<form  method='get' action="/logout">
+<form  >
 <figure class="text-center">
   <blockquote class="blockquote">
     <h2><ins>Bienvenido {{ user.name }}, tenemos los siguientes productos para vos</ins></h2>
@@ -35,29 +35,31 @@
   </div>
 </form>
 
+
+
 <div class="container"> 
   <div class="d-raw text-center">
     <h2 class="h3">Lista de productos</h2>
   </div>
   <div class="col-md-6 offset-md-3">
-    <form action="/" method="get">
+    <form form method="get" action="/api/products" >
       <div class="input-group mb-3">
         <input type="text" class="form-control" placeholder="Límite de resultados" name="limit">
         <div class="input-group-append">
-          <button class="btn btn-primary" type="submit">Actualizar</button>
+          <button class="btn btn-primary" type="submit" value="Actualizar">Actualizar</button>
         </div>
       </div>
       <div class="input-group mb-3">
         <input type="text" class="form-control" placeholder="Nombre del producto" name="title">
         <div class="input-group-append">
-          <button class="btn btn-primary" type="submit">Buscar</button>
-          <button class="btn btn-primary" type="submit">Volver al inicio</button>
+          <button class="btn btn-primary" type="submit" value="Buscar">Buscar</button>
+          <button class="btn btn-primary" type="submit" value="Volver al inicio">Volver al inicio</button>
         </div>
       </div>
       <div class="input-group p-3">
         <button class="btn btn-secondary col" type="submit" name="ordenarPor" value="mayorPrecio">Mayor Precio</button>
         <button class="btn btn-secondary col" type="submit" name="ordenarPor" value="menorPrecio">Menor Precio</button>
-        <button class="btn btn-secondary col" type="submit">No ordenar</button>
+        <button class="btn btn-secondary col">No ordenar</button>
       </div>
     </form>
   </div>
@@ -99,6 +101,8 @@
     {{/if}} 
   </div> 
 </div>
+
+
 
 
 

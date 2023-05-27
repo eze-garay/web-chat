@@ -25,9 +25,9 @@ import * as productServices from "../services/productsServices.js"
               }
           
               if (ordenarPor === 'mayorPrecio') {
-                products = productServices.sortProductsByPriceDescending(products);
+                products = await productServices.sortProductsByPriceDescending(products);
               } else if (ordenarPor === 'menorPrecio') {
-                products = productServices.sortProductsByPriceAscending(products);
+                products = await productServices.sortProductsByPriceAscending(products);
               }
           
               res.render("products", {...result, docs: products, user: req.user });

@@ -18,10 +18,16 @@ export async function getAllProducts (limit) {
     return products;
 };  
 export async function sortProductsByPriceDescending (products) {
-    return products.sort((a, b) => b.price - a.price);
+      products = await ProductModel.aggregate([
+        { $sort: {price: -1} },
+    ]).exec();
+    return products;
 };  
 export async function sortProductsByPriceAscending (products) {
-    return products.sort((a, b) => a.price - b.price);
+     products = await ProductModel.aggregate([
+        { $sort: {price: 1} },
+      ]).exec();
+      return products;
 };
 
 

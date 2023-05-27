@@ -9,9 +9,13 @@ export async function create () {
   return prod;
 };
 
-export async function getCartById(cid) {
-  const one = await CartsModel.findById({ _id: cid });
-  return one;
+export async function getCartById(cartId) {
+  try {
+    const cart = await CartsModel.findOne({ _id: cartId }).populate("products.product").lean();
+    return cart;
+  } catch (error) {
+    throw new Error("No se pudo obtener el carrito");
+  }
 }
 
 export async function addProductToCart(cid, pid) {

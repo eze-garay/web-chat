@@ -23,7 +23,6 @@ form.addEventListener('submit',e=>{
                 window.location.replace('/api/products');
             });
         } else if(result.status === 401) {
-            // Mostrar una alerta de SweetAlert si se ingresaron datos incorrectos
             Swal.fire({
               icon: 'error',
               title: 'Error de inicio de sesión',
