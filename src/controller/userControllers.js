@@ -34,7 +34,7 @@ export async function login  (req, res) {
       console.log(access_token);
   
       res.cookie('jwtCookieToken', access_token, {
-        maxAge: 60000,
+        maxAge: 6000,
         httpOnly: true,
       });
   

@@ -1,22 +1,45 @@
-import { Router } from "express";
-const router = Router();
+
+import CustomRouter from "../custom/custom.routes.js";
 import * as cartControllers from "../controller/cartControllers.js"
 
 
 
-router.post('/', cartControllers.createCart);
+export default class cartExtendRouter extends CustomRouter {
 
-router.get('/:cid', cartControllers.getCart); 
+    init() {
 
-router.post('/:cid/add/:pid', cartControllers.addProductToCart);
+        
+        this.post('/',["PUBLIC"], cartControllers.createCart)
+        
+        this.get('/:cid',["PUBLIC"], cartControllers.getCart);
 
-router.post('/eliminar', cartControllers.removeProductFromCart);
+        this.post('/:cid/add/:pid',["PUBLIC"], cartControllers.addProductToCart);
 
-router.get('/carts/:_id', cartControllers.getCartById);
+        this.post('/eliminar',["PUBLIC"], cartControllers.removeProductFromCart);
 
-router.get("*", (req, res) => {
-    res.status(404).send("Cannot get that URL!!")
-});
+        this.get('/carts/:_id', ["PUBLIC"], cartControllers.getCartById);
+
+        this.get("*",["PUBLIC"], (req, res) => {
+            res.status(404).send("Cannot get that URL!!")
+        });
+    
+    }
+}
 
 
-export default router
+// router.post('/', cartControllers.createCart);
+
+// router.get('/:cid', cartControllers.getCart); 
+
+// router.post('/:cid/add/:pid', cartControllers.addProductToCart);
+
+// router.post('/eliminar', cartControllers.removeProductFromCart);
+
+// router.get('/carts/:_id', cartControllers.getCartById);
+
+// router.get("*", (req, res) => {
+//     res.status(404).send("Cannot get that URL!!")
+// });
+
+
+// export default router

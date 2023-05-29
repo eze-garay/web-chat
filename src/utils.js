@@ -25,7 +25,7 @@ export const PRIVATE_KEY = "CoderhouseBackendCourseSecretKeyJWT";
 
 
 export const generateJWToken = (user)=>{
-    return jwt.sign({user}, PRIVATE_KEY, {expiresIn: '24h'});
+    return jwt.sign({user}, PRIVATE_KEY, {expiresIn: '1h'});
 }
 export const authToken = (req, res, next) => {
     //  El JWT se guarda en los headers de auth

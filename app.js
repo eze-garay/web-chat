@@ -17,11 +17,16 @@ import config from './src/config/config.js';
 import viewsRouters from './src/routes/views.routes.js'
 import userViewRouters from './src/routes/user.views.routes.js'
 import sessionRouter from './src/routes/sessions.routes.js'
-import cartsRouters from './src/routes/cart.routes.js'
-import productRoutes from './src/routes/product.routes.js'
+// import cartsRouters from './src/routes/cart.routes.js'
+// import productRoutes from './src/routes/product.routes.js'
 import githubLoginViewRouter from './src/routes/github-login.views.router.js'
-import UserExtendRouter from './src/custom/users.extend.router.js';
-import userRoutes from './src/routes/user.routes.js'
+// import userRoutes from './src/routes/user.routes.js'
+
+
+import cartExtendRouter from './src/routes/cart.routes.js';
+import productExtendRouter from './src/routes/product.routes.js'
+import userExtendRouter from './src/routes/user.routes.js'
+
 
 
 const app = express ()
@@ -69,16 +74,24 @@ app.set('view engine','handlebars');
 
 
 
-app.use('/api/products', productRoutes);
-app.use('/api/carts', cartsRouters);
+// app.use('/api/products', productRoutes);
+// app.use('/api/carts', cartsRouters);
 app.use('/', viewsRouters);
 app.use('/user', userViewRouters);
 app.use('/api/sessions', sessionRouter);
 app.use("/github", githubLoginViewRouter);
-app.use('/api/user', userRoutes);
+// app.use('/api/user', userRoutes);
 
-const userExtendRouter = new UserExtendRouter();
-app.use("/api/extend/users", userExtendRouter.getRouter());
+const CartExtendRouter = new cartExtendRouter();
+app.use("/api/extend/carts", CartExtendRouter.getRouter());
+
+const ProductExtendRouter = new productExtendRouter();
+app.use("/api/extend/products",ProductExtendRouter.getRouter());
+
+const UserExtendRouter = new userExtendRouter();
+app.use("/api/extend/user", UserExtendRouter.getRouter());
+
+
 
 
 //chat

@@ -9,7 +9,7 @@ export async function getPaginatedProducts(page, limit) {
 export async function getProductsByTitle (title) {
     const products = await ProductModel.aggregate([
       { $match: { title: title } },
-    ]).exec();
+    ])
   
     return products;
 };  
@@ -20,13 +20,13 @@ export async function getAllProducts (limit) {
 export async function sortProductsByPriceDescending (products) {
       products = await ProductModel.aggregate([
         { $sort: {price: -1} },
-    ]).exec();
+    ])
     return products;
 };  
 export async function sortProductsByPriceAscending (products) {
      products = await ProductModel.aggregate([
         { $sort: {price: 1} },
-      ]).exec();
+      ])
       return products;
 };
 

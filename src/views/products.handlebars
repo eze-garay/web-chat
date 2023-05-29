@@ -1,4 +1,5 @@
 <div class="Container">
+<div class="Container">
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <a class="navbar-brand" href="/">Inicio</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" 
@@ -12,18 +13,19 @@
         <a class="nav-link" href="/Home">Home <span class="sr-only"></span></a>
       </li>
         <li class="nav-item">
-        <a class="nav-link" href="/api/products">Productos</a>
+        <a class="nav-link" href='/extend/products'>Productos</a>
         </li>
-           <li class="nav-item">
-            <a class="nav-link" href='/api/carts/carts/644afbd4483344a1d2570cbc'>Carrito</a>
+        <li class="nav-item">
+        <a class="nav-link" href='api/extend/carts/carts/644afbd4483344a1d2570cbc'>Carrito</a>
         </li>
     </ul>
-       <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-        <a class="btn btn-outline-light" href="/user/register" role="button">Registrar</a>
-        <a class="btn btn-outline-light" href="/user/login" role="button">Login</a>
-        </div>
+      <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <a class="btn btn-outline-light" href='/user/register' role="button">Registrar</a>
+        <a class="btn btn-outline-light" href='/user/login' role="button">Login</a>
+      </div>
 </div>
 </nav>
+</div>
 <form  >
 <figure class="text-center">
   <blockquote class="blockquote">
@@ -42,7 +44,7 @@
     <h2 class="h3">Lista de productos</h2>
   </div>
   <div class="col-md-6 offset-md-3">
-    <form form method="get" action="/api/products" >
+    <form form method="get" action="products/" >
       <div class="input-group mb-3">
         <input type="text" class="form-control" placeholder="Límite de resultados" name="limit">
         <div class="input-group-append">

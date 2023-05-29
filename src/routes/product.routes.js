@@ -1,21 +1,42 @@
-import { Router } from "express";
+import CustomRouter from "../custom/custom.routes.js";
 import { passportCall } from "../utils.js";
 import * as productControllers from "../controller/productsControllers.js"
 
-const router = Router();
 
-router.get('/', passportCall('jwt'), productControllers.getAllProducts);
 
-router.get('/:pid', productControllers.getProduct)
+export default class productExtendRouter extends CustomRouter {
+    init() {
+        
+       
+        this.get('/',["PUBLIC"], passportCall('jwt'), productControllers.getAllProducts);
+        
+        this.get('/:pid',["PUBLIC"], productControllers.getProduct);
 
-router.post('/product', productControllers.create)
+        this.post('/product',["PUBLIC"], productControllers.create);
 
-router.delete('/:id', productControllers.deleteProduct)
+        this.delete('/:id',["PUBLIC"], productControllers.deleteProduct)
 
-router.put('/:pid', productControllers.updateProduct);
+        this.put('/:pid',["PUBLIC"], productControllers.updateProduct);
 
-router.get("*", (req, res) => {
-    res.status(404).send("Cannot get that URL!!")
-});
+        this.get("*",["PUBLIC"], (req, res) => {
+            res.status(404).send("Cannot get that URL!!")
+        });
+    
+    }
+}
 
-export default router;
+// router.get('/', passportCall('jwt'), productControllers.getAllProducts);
+
+// router.get('/:pid', productControllers.getProduct)
+
+// router.post('/product', productControllers.create)
+
+// router.delete('/:id', productControllers.deleteProduct)
+
+// router.put('/:pid', productControllers.updateProduct);
+
+// router.get("*", (req, res) => {
+//     res.status(404).send("Cannot get that URL!!")
+// });
+
+// export default router;

@@ -5,7 +5,7 @@ form.addEventListener('submit',e=>{
     const data = new FormData(form);
     const obj = {};
     data.forEach((value,key)=>obj[key]=value);
-    fetch('/api/user/login',{
+    fetch('/api/extend/user/login',{
         method:'POST',
         body:JSON.stringify(obj),
         headers:{
@@ -20,7 +20,7 @@ form.addEventListener('submit',e=>{
                 console.log("Cookies generadas:");
                 console.log(document.cookie);
                 alert("Login realizado con exito!");
-                window.location.replace('/api/products');
+                window.location.replace('/api/extend/products');
             });
         } else if(result.status === 401) {
             Swal.fire({
