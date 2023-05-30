@@ -13,10 +13,10 @@
         <a class="nav-link" href="/Home">Home <span class="sr-only"></span></a>
       </li>
         <li class="nav-item">
-        <a class="nav-link" href='/extend/products'>Productos</a>
+        <a class="nav-link" href='/api/extend/products'>Productos</a>
         </li>
         <li class="nav-item">
-        <a class="nav-link" href='api/extend/carts/carts/644afbd4483344a1d2570cbc'>Carrito</a>
+        <a class="nav-link" href='/api/extend/carts/carts/644afbd4483344a1d2570cbc'>Carrito</a>
         </li>
     </ul>
       <div class="d-grid gap-2 d-md-flex justify-content-md-end">
@@ -79,7 +79,7 @@
             <p class="card-text">Precio: ${{this.price}}</p>
             <p class="card-text">Cantidades disponibles: {{this.stock}}</p>
             <p class="card-text">Disponibilidad: {{this.status}}</p>
-            <form method="post" action="/api/carts/:cid/add/:pid">
+            <form method="POST" action='cid/add/pid'>
               <input type="hidden" name="cid" value="644afbd4483344a1d2570cbc">
               <input type="hidden" name="pid" value="{{this._id}}">
               <button type="submit" class="btn btn-primary">Agregar al carrito</button>
