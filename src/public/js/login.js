@@ -19,10 +19,15 @@ form.addEventListener('submit',e=>{
                 //localStorage.setItem('authToken', json.jwt);
                 console.log("Cookies generadas:");
                 console.log(document.cookie);
-                alert("Login realizado con exito!");
+                Swal.fire({
+                    icon: 'success',
+                    title: 'inicio de sesión exitoso',
+                    text: 'Bienvenido.'
+                  });
                 window.location.replace('/api/extend/products');
+
             });
-        } else if(result.status === 401) {
+        } else if(result.status === 500) {
             Swal.fire({
               icon: 'error',
               title: 'Error de inicio de sesión',

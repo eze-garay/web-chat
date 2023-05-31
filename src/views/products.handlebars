@@ -44,7 +44,7 @@
     <h2 class="h3">Lista de productos</h2>
   </div>
   <div class="col-md-6 offset-md-3">
-    <form form method="get" action="products/" >
+    <form form method="GET" action="/api/extend/products" >
       <div class="input-group mb-3">
         <input type="text" class="form-control" placeholder="Límite de resultados" name="limit">
         <div class="input-group-append">
@@ -79,7 +79,7 @@
             <p class="card-text">Precio: ${{this.price}}</p>
             <p class="card-text">Cantidades disponibles: {{this.stock}}</p>
             <p class="card-text">Disponibilidad: {{this.status}}</p>
-            <form method="POST" action='cid/add/pid'>
+            <form method="POST" action='/api/extend/carts/cid/add/pdi'>
               <input type="hidden" name="cid" value="644afbd4483344a1d2570cbc">
               <input type="hidden" name="pid" value="{{this._id}}">
               <button type="submit" class="btn btn-primary">Agregar al carrito</button>

@@ -53,15 +53,15 @@
             {{this.product.title}}
           </div>
           <div class="card-body">
-            <h5 class="card-title"> Precio por producto: ${{this.product.price}}</h5>
-            <p class="card-text">Descripcion: {{this.product.description}}</p>
-            <p class="card-text">Cantidades de producto seleccionado {{this.quantity}}</p>
-            {{!-- <form action="/cart/eliminar" method="POST"> --}}
-          <form action="cart/eliminar" method="POST"></form>
-          <input type="hidden" name="cartId" value="{{this.cart._id}}">
-          <input type="hidden" name="productId" value="{{this.product._id}}">
-          <button type="submit" class="btn btn-primary">Eliminar</button>
-          </form>
+            <form method="POST" action='/api/extend/carts/eliminar'>
+              <h5 class="card-title"> Precio por producto: ${{this.product.price}}</h5>
+              <p class="card-text">Descripcion: {{this.product.description}}</p>
+              <p class="card-text">Cantidades de producto seleccionado {{this.quantity}}</p>
+              {{!-- <form action="/cart/eliminar" method="POST"> --}}
+              <input type="hidden" name="cartId" value="644afbd4483344a1d2570cbc">
+              <input type="hidden" name="productId" value="{{this.product._id}}">
+              <button type="submit" class="btn btn-primary">Eliminar</button>
+           </form>
           </div>
         </div>
         </div>

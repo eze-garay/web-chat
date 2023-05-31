@@ -36,7 +36,7 @@ export async function createCart (req, res) {
       const { cid, pid } = req.body;
       const result = await cartServices.addProductToCart(cid, pid);
       if (result) {
-        return res.redirect('/api/products');
+        return res.redirect('/api/extend/products');
       } else {
         return res.status(result.statusCode).json({ error: result.message });
       }
@@ -48,11 +48,11 @@ export async function createCart (req, res) {
 
   export async function removeProductFromCart(req, res) {
     try {
-      const { cartId, productId } = req.params;
+      const { cartId, productId } = req.body;
   
       const cart = await cartServices.removeProductFromCart(cartId, productId);
   
-      return res.redirect("api/carts/");
+      return res.redirect("/api/extend/carts/carts/644afbd4483344a1d2570cbc");
     } catch (error) {
       console.error(error);
       return res.send(false);

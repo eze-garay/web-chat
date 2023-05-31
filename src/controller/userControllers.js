@@ -16,11 +16,11 @@ export async function login  (req, res) {
   
       if (!user) {
         console.warn("No hay usuario registrado con el email " + email);
-        return res.status(201).send({ error: "no se encontro el mail ", msg: "Usuario no encontrado " + email });
+        return res.status(500).send({ error: "no se encontro el mail ", msg: "Usuario no encontrado " + email });
       }
-      if (!isValidPassword) {
+      if (!isValidPassword(user, password)) {
         console.warn("Las credenciales no coinciden " + email);
-        return res.status(201).send({ error: "Las credenciales no coinciden  ", msg: "Usuario o contraseña incorrecto" });
+        return res.status(500).send({ error: "Las credenciales no coinciden ", msg: "Usuario o contraseña incorrecto" });
       }
   
       const tokenUser = {
@@ -34,14 +34,14 @@ export async function login  (req, res) {
       console.log(access_token);
   
       res.cookie('jwtCookieToken', access_token, {
-        maxAge: 6000,
+        maxAge: 60000,
         httpOnly: true,
       });
   
-      res.send({ status: "success", msg: "login correcto" });
+      res.send({ status: "success" });
     } catch (error) {
       console.error(error);
-      return res.status(500).send({ status: "error", error: "Error interno de la aplicación." });
+      return res.send({ status: "error"});
     }
 })
 };

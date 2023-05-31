@@ -8,9 +8,17 @@ import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import __dirname from './src/utils.js';
 import passport from 'passport';
+import cors from 'cors'
+
+
+
+
+
+
 import initializePassaport from './src/config/passport.config.js';
 import cookieParser from 'cookie-parser';
 import config from './src/config/config.js';
+import MongoSigleton from './src/config/mongo-db-singleton.js';
 
 
 
@@ -38,6 +46,7 @@ const PORT = config.port;
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(express.static(__dirname + '/public'));
+app.use(cors());
 app.use(session({
     //store: new fileStore({path:"./sessions", ttl:40, retries: 0}),
         store:MongoStore.create({
@@ -94,11 +103,22 @@ app.use("/api/extend/user", UserExtendRouter.getRouter());
 
 
 
-//chat
+
 
 const httpServer = app.listen(PORT, () => {
     console.log(`server run on port: ${PORT}`);
 })
+const mongoInstance = async () => {
+    try {
+        await MongoSigleton.getIntance();
+    } catch (error) {
+        console.error(error);
+    }
+};
+mongoInstance();
+
+
+//chat
 
 const socketServer = new Server(httpServer);
 let messages = []
