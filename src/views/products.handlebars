@@ -79,9 +79,9 @@
             <p class="card-text">Precio: ${{this.price}}</p>
             <p class="card-text">Cantidades disponibles: {{this.stock}}</p>
             <p class="card-text">Disponibilidad: {{this.status}}</p>
-            <form method="POST" action='/api/extend/carts/{{userId}}/add/{{this._id}}'>
-              <input type="hidden" name="userId" value="{{this.cart}}">
-              <input type="hidden" name="productId" value="{{this._id}}">
+            <form method="POST" action='/api/extend/carts/{{user._id}}/add/{{this._id}}'>
+              {{!-- <input type="hidden" name="userId" value="{{this.cart}}">
+              <input type="hidden" name="productId" value="{{this._id}}"> --}}
               <button type="submit" class="btn btn-primary">Agregar al carrito</button>
             </form>
           </div>

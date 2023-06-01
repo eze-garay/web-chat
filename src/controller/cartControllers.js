@@ -31,9 +31,9 @@ export async function createCart (req, res) {
   };
 
   export async function addProductToCart(req, res) {
+    const { userId, productId} = req.params;
     try {
-      const { productId , userId } = req.params;
-      
+    
       const result = await cartServices.addProductToCart(userId, productId);
       if (result) {
         return res.redirect('/api/extend/products');
