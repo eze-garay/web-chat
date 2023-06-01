@@ -8,6 +8,7 @@ export async function findUserByEmail (email) {
       throw error;
     }
 };
+
   
 export async function createUser (data){
     try {

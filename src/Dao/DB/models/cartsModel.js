@@ -34,4 +34,4 @@ const Schema = new mongoose.Schema(
         this.populate("products.product")
     });
 
-export const CartsModel = mongoose.model("carts", Schema);
+export const CartsModel = mongoose.model("cart", Schema);

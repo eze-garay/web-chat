@@ -58,7 +58,8 @@
               <p class="card-text">Descripcion: {{this.product.description}}</p>
               <p class="card-text">Cantidades de producto seleccionado {{this.quantity}}</p>
               {{!-- <form action="/cart/eliminar" method="POST"> --}}
-              <input type="hidden" name="cartId" value="644afbd4483344a1d2570cbc">
+              {{!-- <input type="hidden" name="cartId" value="644afbd4483344a1d2570cbc"> --}}
+              <input type="hidden" name="cartId" value="{{userId}}">
               <input type="hidden" name="productId" value="{{this.product._id}}">
               <button type="submit" class="btn btn-primary">Eliminar</button>
            </form>

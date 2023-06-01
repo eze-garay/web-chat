@@ -1,7 +1,6 @@
 import * as cartServices from "../services/cartsServices.js"
 
 
-
 export async function createCart (req, res) {
     try {
       const prod = await cartServices.create();
@@ -33,8 +32,9 @@ export async function createCart (req, res) {
 
   export async function addProductToCart(req, res) {
     try {
-      const { cid, pid } = req.body;
-      const result = await cartServices.addProductToCart(cid, pid);
+      const { productId , userId } = req.params;
+      
+      const result = await cartServices.addProductToCart(userId, productId);
       if (result) {
         return res.redirect('/api/extend/products');
       } else {

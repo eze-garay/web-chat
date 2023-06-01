@@ -1,4 +1,5 @@
 import * as UserServices from "../services/userServices.js"
+import * as cartServices from "../services/cartsServices.js"
 import { generateJWToken, isValidPassword, createHash, PRIVATE_KEY, adminValidation } from "../utils.js";
 
 
@@ -46,7 +47,35 @@ export async function login  (req, res) {
 })
 };
 
-export async function register (req, res) {
+// export async function register (req, res) {
+//   const { first_name, last_name, email, age, password, rol } = req.body;
+//   try {
+//     const exists = await UserServices.findUserByEmail(email);
+//     if (exists) {
+//       console.log("El usuario ya existe.");
+//       return res.sendClientError("El usuario ya existe.");
+//     }
+
+  
+//     const user = {
+//       first_name,
+//       last_name,
+//       age,
+//       email,
+//       password: createHash (password),
+//       rol,
+//     };
+
+//     const result = await UserServices.createUser(user);
+    
+//     res.status(200).send({status: "success", msg: "Usuario creado con exito"+ result.id})
+//   } catch (error) {
+//     return res.status(401).send({ status: 'error', msg: 'No se puede registrar el usuario' });
+//   }
+// };
+
+
+export async function register(req, res) {
   const { first_name, last_name, email, age, password, rol } = req.body;
   try {
     const exists = await UserServices.findUserByEmail(email);
@@ -55,22 +84,23 @@ export async function register (req, res) {
       return res.sendClientError("El usuario ya existe.");
     }
 
-  
     const user = {
       first_name,
       last_name,
       age,
       email,
-      password: createHash (password),
+      password: createHash(password),
       rol,
     };
 
     const result = await UserServices.createUser(user);
-    res.status(200).send({status: "success", msg: "Usuario creado con exito"+ result.id})
+    const cart = await cartServices.createCartForUser(result._id); // Obtener el ID del usuario creado (result._id)
+
+    res.status(200).send({ status: "success", msg: "Usuario creado con éxito" });
   } catch (error) {
-    return res.status(401).send({ status: 'error', msg: 'No se puede registrar el usuario' });
+    return res.status(401).send({ status: "error", msg: "No se puede registrar el usuario" });
   }
-};
+}
 
 export async function creatUser (req,res){
   try {
