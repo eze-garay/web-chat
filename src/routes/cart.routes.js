@@ -14,7 +14,8 @@ export default class cartExtendRouter extends CustomRouter {
         
         this.get('/:cid',["PUBLIC"], cartControllers.getCart);
 
-        this.post('/:userId/add/:productId',["PUBLIC"], passportCall('jwt'), cartControllers.addProductToCart);
+        // this.post('/:_userId/add/:_productId',["PUBLIC"], passportCall('jwt'), cartControllers.addProductToCart);
+        this.post('/:cid/add/:pid',["PUBLIC"], passportCall('jwt'), cartControllers.addProductToCart);
 
         this.post('/eliminar',["PUBLIC"], cartControllers.removeProductFromCart);
 

@@ -49,7 +49,7 @@ class productManager {
 
 
 
-    getProduct = async () =>{
+    getAllProducts = async () =>{
       try {
       let productFile = await fs.promises.readFile(this.path, "utf-8");
       console.info("Archivo JSON obtenido desde archivo: ");
@@ -79,7 +79,7 @@ class productManager {
     }
 
 
-    updateProductById = async (id, updatedData) => {
+    updateProduct = async (id, updatedData) => {
       try {
         let result = await fs.promises.readFile(this.path)
         let parsedRes = await JSON.parse(result)
@@ -101,7 +101,7 @@ class productManager {
      
   
  
-    deleteProduct = async (id) => {
+      deleteProductById = async (id) => {
       try {
         const productFile = await fs.promises.readFile(this.path, "utf-8")
         const productsParsed = JSON.parse(productFile);

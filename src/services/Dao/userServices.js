@@ -1,4 +1,5 @@
 import { UserModel } from "../Dao/DB/models/userModel.js";
+import userDto from "../dto/user.dto.js"
 
 export async function findUserByEmail (email) {
     try {
@@ -12,7 +13,8 @@ export async function findUserByEmail (email) {
   
 export async function createUser (data){
     try {
-        const response = await UserModel.create(data);
+       let user = new userDto(data)
+        const response = await UserModel.create(user);
         return response
     } catch (error) {
         throw new Error (error)

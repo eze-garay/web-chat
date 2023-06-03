@@ -21,7 +21,7 @@ class cartManager {
       this.carts = JSON.parse(cartsFile)
     }
     
-    addCart = async (id) => {   
+     create = async (id) => {   
 
       let Cart = {
         id,

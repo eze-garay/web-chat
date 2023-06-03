@@ -2,7 +2,7 @@ import express from 'express'
 import handlebars from 'express-handlebars';
 import "./src/db.js"
 import {Server} from 'socket.io';
-import { messageModel } from './src/Dao/DB/models/messagesModel.js';
+import { messageModel } from './src/services/Dao/DB/models/messagesModel.js';
 import session from 'express-session';
 //import FileStore  from 'session-file-store';
 import MongoStore from 'connect-mongo';
@@ -108,14 +108,14 @@ app.use("/api/extend/user", UserExtendRouter.getRouter());
 const httpServer = app.listen(PORT, () => {
     console.log(`server run on port: ${PORT}`);
 })
-const mongoInstance = async () => {
-    try {
-        await MongoSigleton.getIntance();
-    } catch (error) {
-        console.error(error);
-    }
-};
-mongoInstance();
+// const mongoInstance = async () => {
+//     try {
+//         await MongoSigleton.getIntance();
+//     } catch (error) {
+//         console.error(error);
+//     }
+// };
+// mongoInstance();
 
 
 //chat

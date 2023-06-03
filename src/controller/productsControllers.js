@@ -1,4 +1,9 @@
-import * as productServices from "../services/productsServices.js"
+// import * as productServices from "../services/Dao/productsServices.js"
+
+import { productService } from "../services/factory.js";
+
+const persistenceFactory = productService;
+
 
   export async function getAllProducts(req, res) {
             let limit = req.query.limit;
@@ -12,22 +17,22 @@ import * as productServices from "../services/productsServices.js"
               let page = parseInt(req.query.page);
               if (!page) page = 1;
           
-              let result = await productServices.getPaginatedProducts();
+              let result = await persistenceFactory.getPaginatedProducts();
               result.prevLink = result.hasPrevPage ? `http://localhost:8080/products?page=${result.prevPage}` : '';
               result.nextLink = result.hasNextPage ? `http://localhost:8080/products?page=${result.nextPage}` : '';
               result.isValid = !(page <= 0 || page > result.totalPages);
           
               let ordenarPor = req.query.ordenarPor;
               if (title) {
-                products = await productServices.getProductsByTitle(title);
+                products = await persistenceFactory.getProductsByTitle(title);
               } else {
-                products = await productServices.getAllProducts(limit);
+                products = await persistenceFactory.getAllProducts(limit);
               }
           
               if (ordenarPor === 'mayorPrecio') {
-                products = await productServices.sortProductsByPriceDescending(products);
+                products = await persistenceFactory.sortProductsByPriceDescending(products);
               } else if (ordenarPor === 'menorPrecio') {
-                products = await productServices.sortProductsByPriceAscending(products);
+                products = await persistenceFactory.sortProductsByPriceAscending(products);
               }
           
               res.render("products", {...result, docs: products, user: req.user });
@@ -39,7 +44,7 @@ import * as productServices from "../services/productsServices.js"
 export async function getProduct (req,res) {
     try {
         let id = req.params.id
-        let one = await productServices.getProductById(Number(id))
+        let one = await persistenceFactory.getProductById(Number(id))
         if (one) {
         return res.status(200).send(one)} 
     } catch (error) {
@@ -50,7 +55,7 @@ export async function getProduct (req,res) {
 export async function create (req,res){
     let product = req.body
     try {
-       let prod = await productServices.addProduct((product))
+       let prod = await persistenceFactory.addProduct((product))
         if (prod) {
             return res.status(200).send(prod)
         }
@@ -64,7 +69,7 @@ export async function create (req,res){
 export async function deleteProduct (req,res) {
     let id = req.params.id
         try {
-           let one = await productServices.deleteProductById(id)
+           let one = await persistenceFactory.deleteProductById(id)
             return res.send("producto eliminado")
         } catch (error) {
             return res.status(500).send(error.message)
@@ -76,7 +81,7 @@ export  async function updateProduct(req, res) {
         let pid = req.params.pid;
       
         try {
-          const updatedProduct = await productServices.updateProduct(pid, req.body);
+          const updatedProduct = await persistenceFactory.updateProduct(pid, req.body);
           if (updatedProduct) {
             return res.status(200).send({ message: "Producto modificado" });
           } else {

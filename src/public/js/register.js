@@ -26,7 +26,7 @@ form.addEventListener('submit', e => {
         title: 'Usuario creado exitosamente',
         text: '¡Gracias por registrarte!',
       }).then(() => {
-        window.location.replace('/');
+        window.location.replace('/api/extend/products');
       });
     })
     .catch(error => {

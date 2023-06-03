@@ -1,5 +1,6 @@
-import * as UserServices from "../services/userServices.js"
-import * as cartServices from "../services/cartsServices.js"
+import * as UserServices from "../services/Dao/userServices.js"
+import * as cartServices from "../services/Dao/cartsServices.js"
+// import userDto from "../dto/user.dto.js";
 import { generateJWToken, isValidPassword, createHash, PRIVATE_KEY, adminValidation } from "../utils.js";
 
 
@@ -92,6 +93,7 @@ export async function register(req, res) {
       password: createHash(password),
       rol,
     };
+    // let newUser =  new userDto (user)
 
     const result = await UserServices.createUser(user);
     const cart = await cartServices.createCartForUser(result._id); // Obtener el ID del usuario creado (result._id)
