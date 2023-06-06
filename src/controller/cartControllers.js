@@ -19,20 +19,7 @@ export async function createCart (req, res) {
     }
   };
   
-  export async function getCart(req, res) {
-    const { cid } = req.params;
-  
-    try {
-      const one = await persistenceFactory.getCartById(cid);
-      if (one) {
-        return res.status(200).send(one);
-      } else {
-        return res.status(404).send({ error: 'Carrito no encontrado' });
-      }
-    } catch (error) {
-      return res.status(500).send(error.message);
-    }
-  };
+
 
   // export async function addProductToCart(req, res) {
   //   const { userId , productId} = req.params;
@@ -50,6 +37,9 @@ export async function createCart (req, res) {
   //     return res.status(500).json({ error: "Error interno del servidor" });
   //   }
   // }
+
+
+  
   export async function addProductToCart(req, res) {
     try {
       const { cid, pid } = req.body;
@@ -83,6 +73,8 @@ export async function createCart (req, res) {
     try {
       const cartId = req.params._id;
       const cart = await persistenceFactory.getCart(cartId);
+      console.log("entrando a la funcion cart")
+      console.log(cart)
   
       res.render('cart', { cart });
     } catch (error) {

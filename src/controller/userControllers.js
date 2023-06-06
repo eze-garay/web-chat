@@ -2,6 +2,7 @@ import * as UserServices from "../services/Dao/userServices.js"
 import * as cartServices from "../services/Dao/cartsServices.js"
 // import userDto from "../dto/user.dto.js";
 import { generateJWToken, isValidPassword, createHash, PRIVATE_KEY, adminValidation } from "../utils.js";
+import { UserModel } from "../services/Dao/DB/models/userModel.js";
 
 
 export async function login  (req, res) {
@@ -24,12 +25,18 @@ export async function login  (req, res) {
         console.warn("Las credenciales no coinciden " + email);
         return res.status(500).send({ error: "Las credenciales no coinciden ", msg: "Usuario o contraseña incorrecto" });
       }
+
+      const card = await UserModel.findOne({email: email})
+      console.log(card)
   
+
+
       const tokenUser = {
         name: `${user.first_name} ${user.last_name}`,
         email: user.email,
         age: user.age,
-        rol: user.rol
+        rol: user.rol,
+        cartId : card.cart
       };
   
       const access_token = generateJWToken(tokenUser);
@@ -40,7 +47,7 @@ export async function login  (req, res) {
         httpOnly: true,
       });
   
-      res.send({ status: "success" });
+      res.json({ status: "success", tokenUser });
     } catch (error) {
       console.error(error);
       return res.send({ status: "error"});

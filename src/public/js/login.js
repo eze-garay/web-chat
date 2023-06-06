@@ -16,6 +16,7 @@ form.addEventListener('submit',e=>{
             result.json()
             .then(json=>{
                 console.log(json);
+                debugger
                 //localStorage.setItem('authToken', json.jwt);
                 console.log("Cookies generadas:");
                 console.log(document.cookie);
