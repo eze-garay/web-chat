@@ -3,7 +3,8 @@ import * as cartServices from "../services/Dao/cartsServices.js"
 // import userDto from "../dto/user.dto.js";
 import { generateJWToken, isValidPassword, createHash, PRIVATE_KEY, adminValidation } from "../utils.js";
 import { UserModel } from "../services/Dao/DB/models/userModel.js";
-
+import { CartsModel } from "../services/Dao/DB/models/cartsModel.js";
+ // let newUser =  new userDto (user)
 
 export async function login  (req, res) {
   adminValidation(req, res, async () => {
@@ -100,16 +101,25 @@ export async function register(req, res) {
       password: createHash(password),
       rol,
     };
-    // let newUser =  new userDto (user)
 
     const result = await UserServices.createUser(user);
-    const cart = await cartServices.createCartForUser(result._id); // Obtener el ID del usuario creado (result._id)
 
-    res.status(200).send({ status: "success", msg: "Usuario creado con éxito" });
+    // Crear un nuevo carrito
+    const cart = new CartsModel({
+      products: [],
+    });
+    await cart.save();
+
+    // Asignar el carrito al usuario
+    result.cart = cart._id;
+    await result.save();
+
+    return res.status(200).send({ status: "success", msg: "Usuario creado con éxito" });
   } catch (error) {
     return res.status(401).send({ status: "error", msg: "No se puede registrar el usuario" });
   }
 }
+
 
 export async function creatUser (req,res){
   try {

@@ -12,29 +12,21 @@ form.addEventListener('submit', e => {
     headers: {
       'Content-Type': 'application/json'
     }
-  })
-    .then(response => {
-      if (response.ok) {
-        return response.json();
-      } else {
-        throw new Error('Error al registrar el usuario');
-      }
-    })
-    .then(result => {
-      Swal.fire({
-        icon: 'success',
-        title: 'Usuario creado exitosamente',
-        text: '¡Gracias por registrarte!',
-      }).then(() => {
-        window.location.replace('/api/extend/products');
-      });
-    })
-    .catch(error => {
+  }).then(result=>{
+  if(result.status === 200) {
+      result.json()
+          Swal.fire({
+              icon: 'success',
+              title: 'Registro exitoso',
+              text: 'Bienvenido.'
+            });
+          window.location.replace('/');
+  } else if(result.status === 500) {
       Swal.fire({
         icon: 'error',
-        title: 'Error al registrar los datos',
+        title: 'Error de inicio de sesión',
         text: 'Los datos ingresados son incorrectos. Por favor, inténtelo de nuevo.'
       });
-      console.error(error);
-    });
+  }
+})
 });

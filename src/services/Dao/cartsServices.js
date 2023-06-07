@@ -1,16 +1,14 @@
 
 
 import { CartsModel } from "../Dao/DB/models/cartsModel.js";
-// import { UserModel } from "../Dao/DB/models/userModel.js";
+import { UserModel } from "../Dao/DB/models/userModel.js";
 import { ProductModel } from "../Dao/DB/models/productsModel.js";
 
 
 
 
-
-
 export default class CartServicesMongo {
-  constructor() { 
+  constructor() {
     console.log("Working cart with Database persistence in mongodb");
   }
 
@@ -21,11 +19,7 @@ export default class CartServicesMongo {
   };
   
   
-  // export async function createCartForUser(userId) {
-  //   const cart = await CartsModel.create({ user: userId, products: [] });
-  //   await UserModel.findByIdAndUpdate(userId, { cart: cart._id });
-  //   return cart;
-  // }
+
   
    getCartById = async (cartId) =>{
     try {
@@ -52,42 +46,55 @@ export default class CartServicesMongo {
   //   }
   // }
   
+
+
+  addProductToCart = async (cid, pid) => {
+    try {
+     
+      const user = await UserModel.findById(cid).populate('cart');
+
+      if (!user) {
+        return { success: false, statusCode: 500, message: "U no encontrado" };
+      }
   
-  // export async function addProductToCart(userId, productId) {
+      if (!user.cart) {
+        // Si el usuario no tiene un carrito, crea uno nuevo y asígnalo al usuario
+        const cart = new CartsModel();
+        await cart.save();
   
-  //   try {
-  //     const user = await UserModel.findById(userId).populate('cart');
+        user.cart = cart._id;
+        await user.save();
+      }
   
-  //     if (!user || !user.cart) {
-  //       throw new Error("El carrito no existe");
-  //     }
+      const cart = await CartsModel.findById(user.cart._id);
   
-  //     const cart = await CartsModel.findOne({ _id: user.cart._id });
+      const product = await ProductModel.findById(pid);
+      if (!product) {
+        return { success: false, statusCode: 500, message: "Producto no encontrado" };
+      }
   
-  //     const product = await ProductModel.findOne({ _id: productId });
-  //     const productIndex = cart.products.findIndex((p) => p.product && p.product.equals && p.product.equals(productId));
+      const productIndex = cart.products.findIndex((p) => p.product && p.product.equals(pid));
   
-  //     if (productIndex !== -1) {
-  //       if (typeof cart.products[productIndex].quantity === 'number') {
-  //         cart.products[productIndex].quantity++;
-  //       } else {
-  //         cart.products[productIndex].quantity = 1;
-  //       }
-  //     } else {
-  //       const newProduct = {
-  //         product: productId,
-  //         quantity: 1
-  //       };
-  //       cart.products.push(newProduct);
-  //     }
-  
-  //     await cart.save();
-  //     return { success: true };
-  //   } catch (error) {
-  //     console.error(error);
-  //     return { success: false, statusCode: 500, message: "Error interno del servidor" };
-  //   }
-  // }
+      if (productIndex !== -1) {
+        if (typeof cart.products[productIndex].quantity === 'number') {
+          cart.products[productIndex].quantity++;
+        } else {
+          cart.products[productIndex].quantity = 1;
+        }
+      } else {
+        const newProduct = {
+          product: pid,
+          quantity: 1
+        };
+        cart.products.push(newProduct);
+      }
+      await cart.save();
+      return { success: true };
+    } catch (error) {
+      console.error(error);
+      return { success: false, statusCode: 500, message: "Error interno del servidor" };
+    }
+  }
   // export async function removeProductFromCart(userId, productId) {
     
   
@@ -118,39 +125,39 @@ export default class CartServicesMongo {
   //   }
   // }
   
-   addProductToCart = async (cid, pid) => {
-    try {
-      const cart = await CartsModel.findOne({ _id: cid });
+  //  addProductToCart = async (cid, pid) => {
+  //   try {
+  //     const cart = await CartsModel.findOne({ _id: cid });
   
-      if (!cart) {
-        console.error("El carrito no existe");
-        return { success: false, statusCode: 404, message: "El carrito no existe" };
-      }
+  //     if (!cart) {
+  //       console.error("El carrito no existe");
+  //       return { success: false, statusCode: 404, message: "El carrito no existe" };
+  //     }
   
-      const product = await ProductModel.findOne({ _id: pid });
-      const productIndex = cart.products.findIndex((p) => p.product && p.product.equals && p.product.equals(product._id));
+  //     const product = await ProductModel.findOne({ _id: pid });
+  //     const productIndex = cart.products.findIndex((p) => p.product && p.product.equals && p.product.equals(product._id));
   
-      if (productIndex !== -1) {
-        if (typeof cart.products[productIndex].quantity === 'number') {
-          cart.products[productIndex].quantity++;
-        } else {
-          cart.products[productIndex].quantity = 1;
-        }
-      } else {
-        const newProduct = {
-          product: product._id,
-          quantity: 1
-        };
-        cart.products.push(newProduct);
-      }
+  //     if (productIndex !== -1) {
+  //       if (typeof cart.products[productIndex].quantity === 'number') {
+  //         cart.products[productIndex].quantity++;
+  //       } else {
+  //         cart.products[productIndex].quantity = 1;
+  //       }
+  //     } else {
+  //       const newProduct = {
+  //         product: product._id,
+  //         quantity: 1
+  //       };
+  //       cart.products.push(newProduct);
+  //     }
   
-      await cart.save();
-      return { success: true };
-    } catch (error) {
-      console.error(error);
-      return { success: false, statusCode: 500, message: "Error interno del servidor" };
-    }
-  }
+  //     await cart.save();
+  //     return { success: true };
+  //   } catch (error) {
+  //     console.error(error);
+  //     return { success: false, statusCode: 500, message: "Error interno del servidor" };
+  //   }
+  // }
   
    removeProductFromCart = async (cartId, productId) => {
     try {
