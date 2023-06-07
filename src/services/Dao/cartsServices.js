@@ -52,6 +52,7 @@ export default class CartServicesMongo {
     try {
      
       const user = await UserModel.findById(cid).populate('cart');
+      console.log(user)
 
       if (!user) {
         return { success: false, statusCode: 500, message: "U no encontrado" };
@@ -67,6 +68,8 @@ export default class CartServicesMongo {
       }
   
       const cart = await CartsModel.findById(user.cart._id);
+
+      console.log(cart)
   
       const product = await ProductModel.findById(pid);
       if (!product) {

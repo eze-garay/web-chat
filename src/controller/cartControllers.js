@@ -42,7 +42,7 @@ export async function createCart (req, res) {
   
   export async function addProductToCart(req, res) {
     try {
-      const { cid, pid } = req.params;
+      const { cid , pid } = req.params;
       const result = await persistenceFactory.addProductToCart(cid, pid);
       if (result) {
         return res.redirect('/api/extend/products/');
