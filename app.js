@@ -35,6 +35,7 @@ import cartExtendRouter from './src/routes/cart.routes.js';
 import productExtendRouter from './src/routes/product.routes.js'
 import userExtendRouter from './src/routes/user.routes.js'
 import emailRouter from './src/routes/email.routes.js'
+import smsRouter from  './src/routes/sms.Router.js'
 
 
 
@@ -102,6 +103,7 @@ const UserExtendRouter = new userExtendRouter();
 app.use("/api/extend/user", UserExtendRouter.getRouter());
 
 app.use("/api/email", emailRouter);
+app.use("/api/sms", smsRouter);
 
 
 

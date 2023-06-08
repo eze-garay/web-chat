@@ -27,17 +27,18 @@ export async function login  (req, res) {
         return res.status(500).send({ error: "Las credenciales no coinciden ", msg: "Usuario o contraseña incorrecto" });
       }
 
-      const card = await UserModel.findOne({email: email})
-      console.log(card)
+      const cart = await UserModel.findOne({email: email})
+      console.log(cart)
   
 
 
       const tokenUser = {
+        id: user._id,
         name: `${user.first_name} ${user.last_name}`,
         email: user.email,
         age: user.age,
         rol: user.rol,
-        cartId : card.cart
+        cart : cart.cart
       };
   
       const access_token = generateJWToken(tokenUser);

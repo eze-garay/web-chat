@@ -3,6 +3,7 @@
 import { CartsModel } from "../Dao/DB/models/cartsModel.js";
 import { UserModel } from "../Dao/DB/models/userModel.js";
 import { ProductModel } from "../Dao/DB/models/productsModel.js";
+import mongoose from "mongoose";
 
 
 
@@ -51,32 +52,24 @@ export default class CartServicesMongo {
   addProductToCart = async (cid, pid) => {
     try {
      
-      const user = await UserModel.findById(cid).populate('cart');
+      const user = await UserModel.findOne({cid}).populate('cart');
       console.log(user)
 
       if (!user) {
         return { success: false, statusCode: 500, message: "U no encontrado" };
       }
+
   
-      if (!user.cart) {
-        // Si el usuario no tiene un carrito, crea uno nuevo y asígnalo al usuario
-        const cart = new CartsModel();
-        await cart.save();
-  
-        user.cart = cart._id;
-        await user.save();
-      }
-  
-      const cart = await CartsModel.findById(user.cart._id);
+      const cart = await CartsModel.findOne({ _id: user.cart._id });
+      
 
       console.log(cart)
   
-      const product = await ProductModel.findById(pid);
-      if (!product) {
-        return { success: false, statusCode: 500, message: "Producto no encontrado" };
-      }
-  
-      const productIndex = cart.products.findIndex((p) => p.product && p.product.equals(pid));
+    
+      const productIndex = cart.products.findIndex(
+        (p) => p.product.equals(mongoose.Types.ObjectId(pid))
+      );
+    
   
       if (productIndex !== -1) {
         if (typeof cart.products[productIndex].quantity === 'number') {

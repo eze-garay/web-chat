@@ -32,7 +32,7 @@ const Schema = new mongoose.Schema(
     }
     
 )
-Schema.pre('findById', function() {
+Schema.pre('findOne', function() {
     this.populate( "cart.cart")
 });
 
