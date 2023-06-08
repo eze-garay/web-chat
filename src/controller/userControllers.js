@@ -1,19 +1,14 @@
-import * as UserServices from "../services/Dao/userServices.js"
-import * as cartServices from "../services/Dao/cartsServices.js"
-// import userDto from "../dto/user.dto.js";
+import * as UserServices from "../services/Dao/userServices.js";
+import userDto from "../services/dto/user.dto.js"
 import { generateJWToken, isValidPassword, createHash, PRIVATE_KEY, adminValidation } from "../utils.js";
 import { UserModel } from "../services/Dao/DB/models/userModel.js";
 import { CartsModel } from "../services/Dao/DB/models/cartsModel.js";
  // let newUser =  new userDto (user)
 
 export async function login  (req, res) {
-  adminValidation(req, res, async () => {
+ 
     const { email, password } = req.body;
     try {
-      if (email === 'adminCoder@coder.com' && password === 'adminCod3r123') {
-        const adminToken = jwt.sign ({ role: 'admin' }, PRIVATE_KEY);
-        return res.send({ token: adminToken, message: 'Inicio de sesión como administrador' });
-    }
       const user = await UserServices.findUserByEmail(email);
       console.log("Usuario encontrado para Login");
       console.log(user);
@@ -40,6 +35,8 @@ export async function login  (req, res) {
         rol: user.rol,
         cart : cart.cart
       };
+
+       // let newUser =  new userDto (user)
   
       const access_token = generateJWToken(tokenUser);
       console.log(access_token);
@@ -54,7 +51,6 @@ export async function login  (req, res) {
       console.error(error);
       return res.send({ status: "error"});
     }
-})
 };
 
 // export async function register (req, res) {
@@ -103,15 +99,17 @@ export async function register(req, res) {
       rol,
     };
 
-    const result = await UserServices.createUser(user);
+    let newUser =  new userDto (user)
 
-    // Crear un nuevo carrito
+    const result = await UserServices.createUser(newUser);
+
+    
     const cart = new CartsModel({
       products: [],
     });
     await cart.save();
 
-    // Asignar el carrito al usuario
+   
     result.cart = cart._id;
     await result.save();
 

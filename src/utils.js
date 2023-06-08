@@ -80,13 +80,8 @@ export const authorization = (rol) => {
 export const adminValidation = (req, res, next) => {
     const { email, password } = req.body;
     if (email === "adminCoder@coder.com" && password === "adminCod3r123") {
-        req.user = {
-            name: "admin",
-            email: email,
-            rol: "admin"
-        };
-        req.admin = true;
-        res.send({ status: "Success", payload: req.user, msg: "Se ha logueado con éxito!" });
+        const adminToken = jwt.sign ({ rol: 'admin' }, PRIVATE_KEY);
+        return res.send({ token: adminToken, message: 'Inicio de sesión como administrador' })
     } else {
         next();
     }

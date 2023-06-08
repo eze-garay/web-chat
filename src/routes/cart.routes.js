@@ -23,11 +23,11 @@ export default class cartExtendRouter extends CustomRouter {
         
         // this.post('/:_userId/add/:_productId',["PUBLIC"], passportCall('jwt'), cartControllers.addProductToCart);
         
-        this.post('/:cid/add/:pid',["PUBLIC"], passportCall('jwt'), cartControllers.addProductToCart);
+        this.post('/:cid/add/:pid',["user"], passportCall('jwt'), cartControllers.addProductToCart);
 
-        this.post('/eliminar',["PUBLIC"], cartControllers.removeProductFromCart);
+        this.post('/eliminar',["user"], cartControllers.removeProductFromCart);
 
-        this.get('/carts/:_id', ["PUBLIC"], cartControllers.getCartById);
+        this.get('/carts/:_id', ["user"], cartControllers.getCartById);
 
         this.get("*",["PUBLIC"], (req, res) => {
             res.status(404).send("Cannot get that URL!!")

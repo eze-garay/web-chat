@@ -91,35 +91,32 @@ export default class CartServicesMongo {
       return { success: false, statusCode: 500, message: "Error interno del servidor" };
     }
   }
-  // export async function removeProductFromCart(userId, productId) {
-    
+  removeProductFromCart = async (cid, pdi) => {
+    try {
+      const user = await UserModel.findOne({cid}).populate('cart');
+      console.log(user)
+   
+      const cart = await CartsModel.findOne({ _id: user.cart._id });
+      console.log(cart)
   
-  //     try {
-  //       const user = await UserModel.findById(userId).populate('cart');
-  //       if (!user || !user.cart) {
-  //         throw new Error("El carrito no existe");
-  //       }
-    
-  //      const cart = await CartsModel.findOne({ _id: user.cart._id }).populate("products");
-    
-  //     const product = cart.products.find(p => p.product.equals(productId));
+      const product = cart.products.find(p => p.product.equals(mongoose.Types.ObjectId(pdi)));
   
-  //     if (!product) {
-  //       throw new Error("El producto no existe");
-  //     } else {
-  //       if (product.quantity === 1) {
-  //         cart.products = cart.products.filter(p => !p.product.equals(productId));
-  //       } else {
-  //         product.quantity -= 1;
-  //       }
-  //       await cart.save();
-  //     }
+      if (!product) {
+        throw new Error("El producto no existe");
+      } else {
+        if (product.quantity === 1) {
+          cart.products = cart.products.filter(p => !p.product.equals(mongoose.Types.ObjectId(pdi)));
+        } else {
+          product.quantity -= 1;
+        }
+        await cart.save();
+      }
   
-  //     return cart;
-  //   } catch (error) {
-  //     throw new Error(error.message);
-  //   }
-  // }
+      return cart;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  };
   
   //  addProductToCart = async (cid, pid) => {
   //   try {
@@ -155,32 +152,40 @@ export default class CartServicesMongo {
   //   }
   // }
   
-   removeProductFromCart = async (cartId, productId) => {
-    try {
-      const cart = await CartsModel.findOne({ _id: cartId }).populate("products");
+  //  removeProductFromCart = async (cid, pid) => {
+  //   try {
+  //     const user = await UserModel.findOne({cid }).populate("cart");
+     
+
+
+  //     const cart = await CartsModel.findOne({ _id: user.cart._id });
+      
+
+  //     console.log(cart)
   
-      if (!cart) {
-        throw new Error("El carrito no existe");
-      }
+    
+  //     const productIndex = cart.products.findIndex(
+  //       (p) => p.product.equals(mongoose.Types.ObjectId(pid))
+  //     );
+    
+  //     console.log(productIndex)
   
-      const product = cart.products.find(p => p.product.equals(productId));
+  //     if (!productIndex) {
+  //       throw new Error("El producto no existe");
+  //     } else {
+  //       if (product.quantity === 1) {
+  //         cart.products = cart.products.filter(p => !p.product.equals(pid));
+  //       } else {
+  //         product.quantity -= 1;
+  //       }
+  //       await cart.save();
+  //     }
   
-      if (!product) {
-        throw new Error("El producto no existe");
-      } else {
-        if (product.quantity === 1) {
-          cart.products = cart.products.filter(p => !p.product.equals(productId));
-        } else {
-          product.quantity -= 1;
-        }
-        await cart.save();
-      }
-  
-      return cart;
-    } catch (error) {
-      throw new Error(error.message);
-    }
-  }
+  //     return cart;
+  //   } catch (error) {
+  //     throw new Error(error.message);
+  //   }
+  // }
   
    getCart = async (cartId) => {
     try {

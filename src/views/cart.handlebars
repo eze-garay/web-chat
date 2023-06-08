@@ -16,7 +16,7 @@
         <a class="nav-link" href='/api/extend/products'>Productos</a>
         </li>
         <li class="nav-item">
-        <a class="nav-link" href="/api/extend/carts/carts/{{user.cartId}}">Carrito</a>
+        <a class="nav-link" href="/api/extend/carts/carts/{{user.cart}}">Carrito</a>
         </li>
     </ul>
       <div class="d-grid gap-2 d-md-flex justify-content-md-end">
@@ -58,9 +58,9 @@
               <p class="card-text">Descripcion: {{this.product.description}}</p>
               <p class="card-text">Cantidades de producto seleccionado {{this.quantity}}</p>
               <form action="/api/extend/carts/eliminar" method="POST">
-              <input type="hidden" name="cartId" value="644afbd4483344a1d2570cbc">
+              <input type="hidden" name="cid" value="{{user.cart}}">
               {{!-- <input type="hidden" name="cartId" value="{{userId}}"> --}}
-              <input type="hidden" name="productId" value="{{this.product._id}}">
+              <input type="hidden" name="pid" value={{this.product._id}}>
               <button type="submit" class="btn btn-primary">Eliminar</button>
            </form>
           </div>

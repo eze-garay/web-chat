@@ -57,11 +57,12 @@ export async function createCart (req, res) {
 
   export async function removeProductFromCart(req, res) {
     try {
-      const { cartId, productId } = req.body;
+      const { cid, pid } = req.body;
   
-      const cart = await persistenceFactory.removeProductFromCart(cartId, productId);
+      const cart = await persistenceFactory.removeProductFromCart( cid, pid );
+
   
-      return res.redirect("/api/extend/carts/carts/644afbd4483344a1d2570cbc");
+      return res.redirect(`/api/extend/carts/carts/${cart._id}`);
     } catch (error) {
       console.error(error);
       return res.send(false);
