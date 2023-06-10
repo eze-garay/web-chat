@@ -5,53 +5,57 @@ import { UserModel } from "../services/Dao/DB/models/userModel.js";
 import { CartsModel } from "../services/Dao/DB/models/cartsModel.js";
  // let newUser =  new userDto (user)
 
-export async function login  (req, res) {
- 
-    const { email, password } = req.body;
-    try {
-      const user = await UserServices.findUserByEmail(email);
-      console.log("Usuario encontrado para Login");
-      console.log(user);
-  
-      if (!user) {
-        console.warn("No hay usuario registrado con el email " + email);
-        return res.status(500).send({ error: "no se encontro el mail ", msg: "Usuario no encontrado " + email });
-      }
-      if (!isValidPassword(user, password)) {
-        console.warn("Las credenciales no coinciden " + email);
-        return res.status(500).send({ error: "Las credenciales no coinciden ", msg: "Usuario o contraseña incorrecto" });
-      }
-
-      const cart = await UserModel.findOne({email: email})
-      console.log(cart)
-  
 
 
-      const tokenUser = {
-        id: user._id,
-        name: `${user.first_name} ${user.last_name}`,
-        email: user.email,
-        age: user.age,
-        rol: user.rol,
-        cart : cart.cart
-      };
 
-       // let newUser =  new userDto (user)
-  
-      const access_token = generateJWToken(tokenUser);
-      console.log(access_token);
-  
-      res.cookie('jwtCookieToken', access_token, {
-        maxAge: 60000,
-        httpOnly: true,
-      });
-  
-      res.json({ status: "success", tokenUser });
-    } catch (error) {
-      console.error(error);
-      return res.send({ status: "error"});
+ export async function login(req, res) {
+  const { email, password } = req.body;
+  try {
+    if (adminValidation(req, res)){
+      return res.status(200)
     }
-};
+
+
+    const user = await UserServices.findUserByEmail(email);
+    console.log("Usuario encontrado para Login");
+    console.log(user);
+
+    if (!user) {
+      console.warn("No hay usuario registrado con el email " + email);
+      return res.status(500).send({ error: "no se encontro el mail ", msg: "Usuario no encontrado " + email });
+    }
+    if (!isValidPassword(user, password)) {
+      console.warn("Las credenciales no coinciden " + email);
+      return res.status(500).send({ error: "Las credenciales no coinciden ", msg: "Usuario o contraseña incorrecto" });
+    }
+
+    const cart = await UserModel.findOne({ email: email });
+    console.log(cart);
+
+    const tokenUser = {
+      id: user._id,
+      name: `${user.first_name} ${user.last_name}`,
+      email: user.email,
+      age: user.age,
+      rol: user.rol,
+      cart: cart.cart
+    };
+
+    const access_token = generateJWToken(tokenUser, adminToken);
+    console.log(access_token);
+
+    res.cookie('jwtCookieToken', access_token, {
+      maxAge: 60000,
+      httpOnly: true,
+    });
+
+    res.json({ status: "success", tokenUser });
+  } catch (error) {
+    console.error(error);
+    return res.send({ status: "error" });
+  }
+}
+
 
 // export async function register (req, res) {
 //   const { first_name, last_name, email, age, password, rol } = req.body;
@@ -99,9 +103,9 @@ export async function register(req, res) {
       rol,
     };
 
-    let newUser =  new userDto (user)
+   
 
-    const result = await UserServices.createUser(newUser);
+    const result = await UserServices.createUser(user);
 
     
     const cart = new CartsModel({
