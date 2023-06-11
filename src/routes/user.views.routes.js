@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { passportCall, authorization,adminValidation } from "../utils.js";
+import { passportCall, authorization} from "../utils.js";
 
 
 const router = Router();
 
-router.get('/login',adminValidation, (req,res)=> {
+router.get('/login', (req,res)=> {
     res.render("login");
 })
 

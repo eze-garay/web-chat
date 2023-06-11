@@ -1,7 +1,7 @@
 
 import CustomRouter from "../custom/custom.routes.js";
 import * as cartControllers from "../controller/cartControllers.js"
-import { passportCall, adminValidation } from "../utils.js";
+import { passportCall} from "../utils.js";
 
 // const urlAddCart = 'user.cartId'
 // const codifUrl = encodeURIComponent (urlAddCart)
@@ -26,7 +26,7 @@ export default class cartExtendRouter extends CustomRouter {
         
         // this.post('/:_userId/add/:_productId',["PUBLIC"], passportCall('jwt'), cartControllers.addProductToCart);
         
-        this.post('/:cid/add/:pid',["PUBLIC"],adminValidation, passportCall('jwt'), cartControllers.addProductToCart);
+        this.post('/:cid/add/:pid',["PUBLIC"], passportCall('jwt'), cartControllers.addProductToCart);
 
         this.post('/eliminar',["PUBLIC"], cartControllers.removeProductFromCart);
 

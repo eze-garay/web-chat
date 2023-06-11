@@ -1,6 +1,6 @@
 import * as UserServices from "../services/Dao/userServices.js";
 import userDto from "../services/dto/user.dto.js"
-import { generateJWToken, isValidPassword, createHash, PRIVATE_KEY, adminValidation } from "../utils.js";
+import { generateJWToken, isValidPassword, createHash, PRIVATE_KEY} from "../utils.js";
 import { UserModel } from "../services/Dao/DB/models/userModel.js";
 import { CartsModel } from "../services/Dao/DB/models/cartsModel.js";
  // let newUser =  new userDto (user)
@@ -11,9 +11,7 @@ import { CartsModel } from "../services/Dao/DB/models/cartsModel.js";
  export async function login(req, res) {
   const { email, password } = req.body;
   try {
-    if (adminValidation(req, res)){
-      return res.status(200)
-    }
+
 
 
     const user = await UserServices.findUserByEmail(email);
@@ -41,7 +39,7 @@ import { CartsModel } from "../services/Dao/DB/models/cartsModel.js";
       cart: cart.cart
     };
 
-    const access_token = generateJWToken(tokenUser, adminToken);
+    const access_token = generateJWToken(tokenUser);
     console.log(access_token);
 
     res.cookie('jwtCookieToken', access_token, {
