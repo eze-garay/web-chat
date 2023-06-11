@@ -25,8 +25,9 @@ form.addEventListener('submit',e=>{
                     title: 'inicio de sesión exitoso',
                     text: 'Bienvenido.'
                   });
-                window.location.replace('/api/extend/products');
-
+                  setTimeout(() => {
+                    window.location.href = '/api/extend/products';
+                  }, 3000)
             });
         } else if(result.status === 500) {
             Swal.fire({

@@ -2,6 +2,8 @@
 
 import { cartService }   from "../services/factory.js";
 
+
+
 const persistenceFactory = cartService;
 
 
@@ -19,27 +21,6 @@ export async function createCart (req, res) {
     }
   };
   
-
-
-  // export async function addProductToCart(req, res) {
-  //   const { userId , productId} = req.params;
-  //   userId = req.user.cart
-  //   try {
-    
-  //     const result = await cartServices.addProductToCart(userId, productId);
-  //     if (result) {
-  //       return res.redirect('/api/extend/products');
-  //     } else {
-  //       return res.status(result.statusCode).json({ error: result.message });
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //     return res.status(500).json({ error: "Error interno del servidor" });
-  //   }
-  // }
-
-
-  
   export async function addProductToCart(req, res) {
     try {
       const { cid , pid } = req.params;
@@ -53,7 +34,7 @@ export async function createCart (req, res) {
       console.error(error);
       return res.status(500).json({ error: "Error interno del servidor" });
     }
-  }
+  };
 
   export async function removeProductFromCart(req, res) {
     try {
@@ -67,7 +48,7 @@ export async function createCart (req, res) {
       console.error(error);
       return res.send(false);
     }
-  }
+  };
 
 
   export async function getCartById(req, res) {
@@ -82,4 +63,16 @@ export async function createCart (req, res) {
       console.error(error);
       res.render("cart", "NO SE PUDIERON OBTENER LOS PRODUCTOS");
     }
-  }
+  };
+
+  export async function purchaseCart(req, res) {
+    try {
+      const { cid } = req.params;
+      const result = await persistenceFactory.purchaseticket(cid);
+      res.json({ status: "success", result });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ error: "No se pudo finalizar la compra" });
+    }
+  };
+

@@ -26,50 +26,51 @@
 </div>
 </nav>
 </div>
+
 <div class="container">
-<div class="row col-sm-6">
-<div class="container col-sm-6 ">
-        <div class="d-raw text-center">
-            <hi class="h3">{{title}} </hi>
+        <div>
+          <form id="TicketForm">
+            <input type="hidden" name="cid" value="{{user.cart}}">  
+            <button type="submit" class="btn btn-primary">Finalizar compra</button>
+          </form>
         </div>
-            {{#if message}}
-                <div class="alert alert-danger" role="alert">
-                    {{message}}
-                </div>
-            {{/if}}
-        <div class="row">
-    <div class="row">
-    
-            {{#if message}}
-                <div class="alert alert-danger" role="alert">
-                    {{message}}
-                </div>
-            {{/if}}
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="d-raw text-center">
+        <h1 class="h3">{{title}}</h1>
+      </div>
+      {{#if message}}
+        <div class="alert alert-danger" role="alert">
+          {{message}}
+        </div>
+      {{/if}}
+      <div class="row">
         {{#each cart.products}}
-        <div class="row">
-        <div class="col-xl p-2">    
-        <div class="card">
-          <div class="card-header">
-            {{this.product.title}}
+          <div class="col-xl-4 p-1">
+            <div class="card">
+              <div class="card-header">
+                {{this.product.title}}
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">Precio por producto: ${{this.product.price}}</h5>
+                <p class="card-text">Descripción: {{this.product.description}}</p>
+                <p class="card-text">Cantidad de producto seleccionado: {{this.quantity}}</p>
+                <form action="/api/extend/carts/eliminar" method="POST">
+                  <input type="hidden" name="cid" value="{{user.cart}}">
+                  <input type="hidden" name="pid" value={{this.product._id}}>
+                  <button type="submit" class="btn btn-primary">Eliminar</button>
+                </form>
+              </div>
+            </div>
           </div>
-          <div class="card-body">
-            {{!-- <form method="POST" action='/api/extend/carts/eliminar'> --}}
-              <h5 class="card-title"> Precio por producto: ${{this.product.price}}</h5>
-              <p class="card-text">Descripcion: {{this.product.description}}</p>
-              <p class="card-text">Cantidades de producto seleccionado {{this.quantity}}</p>
-              <form action="/api/extend/carts/eliminar" method="POST">
-              <input type="hidden" name="cid" value="{{user.cart}}">
-              {{!-- <input type="hidden" name="cartId" value="{{userId}}"> --}}
-              <input type="hidden" name="pid" value={{this.product._id}}>
-              <button type="submit" class="btn btn-primary">Eliminar</button>
-           </form>
-          </div>
-        </div>
-        </div>
-        </div>
-          {{/each}} 
+        {{/each}}
+      </div>
     </div>
+  </div>
+</div>
+
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/socket.io/socket.io.js" ></script>
+<script src="/js/ticket.js"></script>
 <script src="/js/index.js" ></script>

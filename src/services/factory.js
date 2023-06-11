@@ -68,3 +68,33 @@ switch (config.persistence) {
 
 export { productService }
 
+
+// let TicketService
+
+// switch (config.persistence) {
+//     case 'mongodb':
+//         const mongoInstance = async () => {
+//             console.log("Entrando a iniciar Service para MongoDb");
+//             try {
+//                 await MongoSingleton.getIntance();
+//             } catch (error) {
+//                 console.error(error);
+//                 process.exit(0);
+//             }
+//         };
+//         mongoInstance();
+//         const { default: TicketServiceMongo } = await import('../services/Dao/ticketServices.js')
+//         TicketService = new TicketServiceMongo();
+//         console.log("Product service loaded:");
+//         console.log(TicketService);
+//         break;
+//     case 'files':
+//         const { default:  } = await import('../services/Dao/FileSystem/productManager.js')
+//         productService = new ();
+//         console.log("Product files service loaded:");
+//         console.log(productService);
+//         break;
+
+//     default:
+//         break;
+// }

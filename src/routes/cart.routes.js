@@ -1,7 +1,7 @@
 
 import CustomRouter from "../custom/custom.routes.js";
 import * as cartControllers from "../controller/cartControllers.js"
-import { passportCall } from "../utils.js";
+import { passportCall, adminValidation } from "../utils.js";
 
 // const urlAddCart = 'user.cartId'
 // const codifUrl = encodeURIComponent (urlAddCart)
@@ -13,6 +13,9 @@ export default class cartExtendRouter extends CustomRouter {
 
     init() {
 
+
+        this.post('/:cid/purchase', ["PUBLIC"], cartControllers.purchaseCart)
+
        
 
         
@@ -23,11 +26,11 @@ export default class cartExtendRouter extends CustomRouter {
         
         // this.post('/:_userId/add/:_productId',["PUBLIC"], passportCall('jwt'), cartControllers.addProductToCart);
         
-        this.post('/:cid/add/:pid',["user"], passportCall('jwt'), cartControllers.addProductToCart);
+        this.post('/:cid/add/:pid',["PUBLIC"],adminValidation, passportCall('jwt'), cartControllers.addProductToCart);
 
-        this.post('/eliminar',["user"], cartControllers.removeProductFromCart);
+        this.post('/eliminar',["PUBLIC"], cartControllers.removeProductFromCart);
 
-        this.get('/carts/:_id', ["user"], cartControllers.getCartById);
+        this.get('/carts/:_id', ["PUBLIC"], cartControllers.getCartById);
 
         this.get("*",["PUBLIC"], (req, res) => {
             res.status(404).send("Cannot get that URL!!")
