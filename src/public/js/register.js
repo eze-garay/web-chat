@@ -18,9 +18,11 @@ form.addEventListener('submit', e => {
           Swal.fire({
               icon: 'success',
               title: 'Registro exitoso',
-              text: 'Bienvenido.'
+              text: 'Bienvenido.',
             });
-          window.location.replace('/');
+            setTimeout(() => {
+              window.location.href = '/';
+            }, 1000)
   } else if(result.status === 500) {
       Swal.fire({
         icon: 'error',

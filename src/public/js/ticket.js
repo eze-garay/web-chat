@@ -13,13 +13,12 @@ form.addEventListener('submit', e => {
       'Content-Type': 'application/json'
     }
   }).then(result => {
-    console.log(result)
     if (result.status === 200) {
       result.json().then(json => {
         Swal.fire({
           icon: 'success',
           title: 'Compra exitosa',
-          text: `Precio total del ticket: $${result.ticket}`,
+          text: 'En la brevedad, recivira un email a su direccion de correo que le confirmara, recuerde que la misma esta sujeta a la disponibildiad de stock, por lo cual le sugerimos que verifique los detalles de la compra',
           onClose: () => {
             // ...
           }

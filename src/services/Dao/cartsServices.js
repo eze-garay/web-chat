@@ -4,6 +4,17 @@ import { CartsModel } from "../Dao/DB/models/cartsModel.js";
 import { UserModel } from "../Dao/DB/models/userModel.js";
 import * as TicketService from "../Dao/ticketServices.js"
 import mongoose from "mongoose";
+import nodemailer from 'nodemailer'
+import config from "../../config/config.js";
+
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  port: 587,
+  auth: {
+    user: config.gmailAccount,
+    pass: config.gmailAppPassword
+  }
+});
 
 
 
@@ -37,7 +48,7 @@ export default class CartServicesMongo {
       }
 
   
-      const cart = await CartsModel.findOne({ _id: user.cart._id });
+      const cart = await CartsModel.findOne({ _id: user.cart });
       
 
       console.log(cart)
@@ -147,9 +158,8 @@ export default class CartServicesMongo {
   };
 
 
-  purchaseticket = async (cid) =>{
+  purchaseticket = async (cid) => {
     try {
-
       const cart = await CartsModel.findOne({ cid }).populate('products.product');
       const user = await UserModel.findOne({ cart: cart._id }).populate('cart');
   
@@ -168,7 +178,7 @@ export default class CartServicesMongo {
           product.stock -= quantityInCart;
           await product.save();
         } else {
-          productsNotPurchased.push(product._id);
+          productsNotPurchased.push(product);
         }
       }
   
@@ -187,12 +197,50 @@ export default class CartServicesMongo {
   
       await ticket.save();
   
-      const productsNotPurchasedIds = productsNotPurchased.map(id => id.toString());
-      cart.products = cart.products.filter(item => productsNotPurchasedIds.includes(item.product.toString()));
+      const productsToPurchaseDetails = productsToPurchase.map(item => {
+        const product = item.product;
+        const quantity = item.quantity;
+        const totalPrice = product.price * quantity;
+        return `<p>Producto: ${product.title} - Precio: ${product.price} - Cantidad: ${quantity} - Total: ${totalPrice}</p>`;
+      });
+  
+      const productsNotPurchasedDetails = productsNotPurchased.map(product => {
+        return `<p>Producto: ${product.title}</p>`;
+      });
+  
+      const mailOptions = {
+        from: "Coder Test " + config.gmailAccount,
+        to: user.email,
+        subject: "Ticket de compra",
+        html: `<div>
+          <h1>Ticket de compra</h1>
+          <p>Detalles del ticket:</p>
+          ${productsToPurchaseDetails.join("")}
+          <p>Productos sin stock:</p>
+          ${productsNotPurchasedDetails.join("")}
+          <p>Total: ${totalPrice}</p>
+        </div>`
+      };
+  
+  
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log('Ticket enviado: ', info.messageId);
+        }
+      });
+  
+      cart.products = productsToPurchase.map(item => {
+        return {
+          product: item.product._id,
+          quantity: item.quantity
+        };
+      });
       await cart.save();
   
-      if (productsToPurchase.length > 0) {
-        return  {ticket, cart} ;
+      if (productsNotPurchased.length === 0) {
+        return { ticket, cart };
       } else {
         return { productsNotPurchased };
       }
@@ -201,6 +249,7 @@ export default class CartServicesMongo {
       return { success: false, statusCode: 500, message: "Error interno del servidor" };
     }
   }
+  
   
 
 

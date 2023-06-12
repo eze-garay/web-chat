@@ -27,7 +27,7 @@ form.addEventListener('submit',e=>{
                   });
                   setTimeout(() => {
                     window.location.href = '/api/extend/products';
-                  }, 3000)
+                  }, 1000)
             });
         } else if(result.status === 500) {
             Swal.fire({
