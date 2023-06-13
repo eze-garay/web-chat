@@ -9,62 +9,10 @@ import { CartsModel } from "../services/Dao/DB/models/cartsModel.js";
 
 
 
-//  export async function login(req, res) {
-//   const { email, password } = req.body;
-//   try {
-
-//     const user = await UserServices.findUserByEmail(email);
-//     console.log("Usuario encontrado para Login");
-//     console.log(user);
-
-//     if (!user) {
-//       console.warn("No hay usuario registrado con el email " + email);
-//       return res.status(500).send({ error: "no se encontro el mail ", msg: "Usuario no encontrado " + email });
-//     }
-//     if (!isValidPassword(user, password)) {
-//       console.warn("Las credenciales no coinciden " + email);
-//       return res.status(500).send({ error: "Las credenciales no coinciden ", msg: "Usuario o contraseña incorrecto" });
-//     }
-
-//     const cart = await UserModel.findOne({ email: email });
-//     console.log(cart);
-
-//     const tokenUser = {
-//       id: user._id,
-//       name: `${user.first_name} ${user.last_name}`,
-//       email: user.email,
-//       age: user.age,
-//       rol: user.rol,
-//       cart: cart.cart
-//     };
-
-//     const access_token = generateJWToken(tokenUser);
-//     console.log(access_token);
-
-//     res.cookie('jwtCookieToken', access_token, {
-//       maxAge: 60000,
-//       httpOnly: true,
-//     });
-
-//     res.json({ status: "success", tokenUser });
-//   } catch (error) {
-//     console.error(error);
-//     return res.send({ status: "error" });
-//   }
-// }
-
-
-export async function login(req, res) {
+ export async function login(req, res) {
   const { email, password } = req.body;
-
-
-  if (email === "adminCoder@coder.com" && password === "adminCod3r123") { 
-    const adminToken = jwt.sign({ rol: 'admin' }, PRIVATE_KEY);
-    req.adminToken = adminToken;
-    return res.status(200).send({adminToken, msg: "logeado como admin"})
-  }
-
   try {
+
     const user = await UserServices.findUserByEmail(email);
     console.log("Usuario encontrado para Login");
     console.log(user);
@@ -98,13 +46,19 @@ export async function login(req, res) {
       httpOnly: true,
     });
 
-    req.body.rol = user.rol; 
-    next(); 
+    res.json({ status: "success", tokenUser });
   } catch (error) {
     console.error(error);
     return res.send({ status: "error" });
   }
 }
+
+ // if (email === "adminCoder@coder.com" && password === "adminCod3r123") { 
+  //   const adminToken = jwt.sign({ rol: 'admin' }, PRIVATE_KEY);
+  //   req.adminToken = adminToken;
+  //   return next();
+  // }
+
 
 
 

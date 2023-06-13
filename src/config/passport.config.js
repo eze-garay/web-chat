@@ -90,26 +90,78 @@ const initializePassaport = () => {
     ))
  // estrategia login
 
-    passport.use('jwt', new JwtStrategy (
+ passport.use('jwt', new JwtStrategy (
      
-        {
-            jwtFromRequest: ExtractJWT.fromExtractors([cookieExtractor]),
-            secretOrKey: PRIVATE_KEY,
-        },async (jwt_playload, done)=>{
-            console.log("Entrando a passport con JWT")
-            try {
-                console.log("JWT obtenido del payload")
-                console.log(jwt_playload);
-                return done (null, jwt_playload.user)
-            } catch (error) {
-                console.log(error);
-                return done (error);
-            }
-
+    {
+        jwtFromRequest: ExtractJWT.fromExtractors([cookieExtractor]),
+        secretOrKey: PRIVATE_KEY,
+    },async (jwt_playload, done)=>{
+        console.log("Entrando a passport con JWT")
+        try {
+            console.log("JWT obtenido del payload")
+            console.log(jwt_playload);
+            return done (null, jwt_playload.user)
+        } catch (error) {
+            console.log(error);
+            return done (error);
         }
-    
-    ));
 
+    }
+
+));
+passport.use('admin-jwt', new JwtStrategy(
+    {
+      jwtFromRequest: ExtractJWT.fromExtractors([cookieExtractor]),
+      secretOrKey: PRIVATE_KEY,
+    },
+    async (jwt_payload, done) => {
+      console.log("Entrando a passport con JWT (admin-jwt)");
+      try {
+        const user = await UserModel.findById(jwt_payload._id);
+        if (!user) {
+          return done(null, false);
+        }
+        if (user.rol !== "admin") {
+          return done(null, false);
+        }
+        console.log("JWT obtenido del payload");
+        console.log(jwt_payload);
+        return done(null, user);
+      } catch (error) {
+        console.log(error);
+        return done(error);
+      }
+    }
+  ));
+
+
+    // passport.use('admin-jwt', new JwtStrategy (
+     
+    //     {
+    //         jwtFromRequest: ExtractJWT.fromExtractors([cookieExtractor]),
+    //         secretOrKey: PRIVATE_KEY,
+
+    //     },async (jwt_playload, done)=>{
+    //         console.log("Entrando a passport con JWT")
+    //         try {
+    //             const user = await UserModel.findById(jwt_playload.id)
+    //             if (!user){
+    //                 return done(null, false)
+    //             }
+    //             if (user.rol !== "admin") {
+    //                 return done(null,false)
+    //             }
+    //             console.log("JWT obtenido del payload")
+    //             console.log(jwt_playload);
+    //             return done (null, user)
+    //         } catch (error) {
+    //             console.log(error);
+    //             return done (error);
+    //         }
+
+    //     }
+    
+    // ));
         
     //"cifrar" usuario
 
