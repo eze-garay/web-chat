@@ -48,7 +48,7 @@ export default class CartServicesMongo {
       }
 
   
-      const cart = await CartsModel.findOne({ _id: user.cart });
+      const cart = await CartsModel.findOne({ _id: user.cart._id });
       
 
       console.log(cart)
@@ -79,6 +79,8 @@ export default class CartServicesMongo {
       return { success: false, statusCode: 500, message: "Error interno del servidor" };
     }
   };
+
+
   removeProductFromCart = async (cid, pdi) => {
     try {
       const user = await UserModel.findOne({cid}).populate('cart');
@@ -114,41 +116,7 @@ export default class CartServicesMongo {
     }
   };
 
-  purchaseCart = async (cartId) => {
 
-    const cart = await CartsModel.findById(cartId).populate('products.product');
-    console.log(cart)
-  
-    const productsToPurchase = [];
-    const productsNotPurchased = [];
-  
-    for (const item of cart.products) {
-      const product = item.product;
-      const quantityInCart = item.quantity;
-  
-      if (product.stock >= quantityInCart) {
-        productsToPurchase.push({
-          product: product._id,
-          quantity: quantityInCart
-        });
-        product.stock -= quantityInCart;
-        await product.save();
-      } else {
-        productsNotPurchased.push(product._id);
-      }
-    }
-  
-    if (productsToPurchase.length > 0) {
-      const totalPrice = productsToPurchase.reduce(
-        (total, item) => total + (item.product.price * item.quantity),
-        0
-      );
-  
-      return { productsToPurchase, productsNotPurchased, totalPrice };
-    } else {
-      return { productsToPurchase: [], productsNotPurchased, totalPrice: 0 };
-    }
-  };
   
   updateCart = async (cartId, productsNotPurchased) => {
     const productsNotPurchasedIds = productsNotPurchased.map(id => id.toString());

@@ -48,22 +48,61 @@ export const authToken = (req, res, next) => {
     })
 }
 
+// export const passportCall = (strategy) => {
+//     return async (req, res, next) => {
+//         console.log("Entrando a llamar strategy: ");
+//         console.log(strategy);
+//         passport.authenticate(strategy,{ session: false }, function (err, user, info) {
+//             if (err) return next(err);
+//             if (!user) {
+//                 return res.status(401).send({error: info.messages?info.messages:info.toString()});
+//             }
+//             console.log("Usuario obtenido del strategy: ");
+//             console.log(user);
+//             req.user = user;
+//             next();
+//         })(req, res, next);
+//     }
+// };
+
 export const passportCall = (strategy) => {
     return async (req, res, next) => {
-        console.log("Entrando a llamar strategy: ");
-        console.log(strategy);
-        passport.authenticate(strategy,{ session: false }, function (err, user, info) {
-            if (err) return next(err);
-            if (!user) {
-                return res.status(401).send({error: info.messages?info.messages:info.toString()});
-            }
-            console.log("Usuario obtenido del strategy: ");
-            console.log(user);
-            req.user = user;
-            next();
+      console.log("Entrando a llamar strategy: ");
+      console.log(strategy);
+  
+      if (strategy === 'jwt') {
+       
+        passport.authenticate(strategy, { session: false }, function (err, user, info) {
+          if (err) return next(err);
+          if (!user) {
+            return res.status(401).send({ error: info.messages ? info.messages : info.toString() });
+          }
+          console.log("Usuario obtenido del strategy: ");
+          console.log(user);
+          req.user = user;
+          next();
         })(req, res, next);
-    }
-};
+      } else if (strategy === 'admin') {
+     
+        if (!req.adminToken) {
+          return res.status(401).send("Unauthorized: Admin token not found");
+        }
+        try {
+          const decodedToken = jwt.verify(req.adminToken, PRIVATE_KEY);
+          if (decodedToken.rol !== 'admin') {
+            return res.status(403).send("Forbidden: El usuario no tiene permisos de administrador");
+          }
+          req.user = { rol: 'admin' };
+          next();
+        } catch (error) {
+          return res.status(401).send("Unauthorized: Invalid admin token");
+        }
+      } else {
+   
+        return res.status(500).send("Internal Server Error: Invalid authentication strategy");
+      }
+    };
+  };
 
 
 // para manejo de Auth

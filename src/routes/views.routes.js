@@ -23,46 +23,6 @@ router.get('/home', async (req, res)=> {
 });
 
 
-//Product
-// router.get('/products',passportCall('jwt', { session: false }), async(req, res,) => {
-//   let limit = req.query.limit
-//   if (!limit) {
-//     limit = "10"
-//   }
-//     try {
-//         let products = []
-//         let title = req.query.title
-//         let page = parseInt(req.query.page);
-//         if(!page) page=1;
-//         let result = await ProductModel.paginate({},{page,limit:10,lean:true})
-//         result.prevLink = result.hasPrevPage?`http://localhost:8080/products?page=${result.prevPage}`:'';
-//         result.nextLink = result.hasNextPage?`http://localhost:8080/products?page=${result.nextPage}`:'';
-//         result.isValid= !(page<=0||page>result.totalPages) 
-
-//         let ordenarPor = req.query.ordenarPor 
-//         if (title) {
-//           products = await ProductModel.aggregate([
-//             { $match: { title: title } }
-//           ]).exec();
-//         } else {
-//           products = await ProductModel.find().limit(parseInt(limit)).lean()
-//         }
-//         if (ordenarPor === 'mayorPrecio') { 
-//           products = await ProductModel.aggregate([
-//             { $sort: {price: -1} }
-//           ]).exec();
-//         } else if (ordenarPor === 'menorPrecio') { 
-//           products = await ProductModel.aggregate([
-//             { $sort: {price: 1} }
-//           ]).exec();
-//         }
-       
-//         res.render("products",{...result, docs: products, user: req.user })
-//       } catch (error) {
-//         console.log(error)
-//         res.render("products", "NO SE PUDIERON OBTENER LOS PRODUCTOS")
-//       }
-// });
 
 
 //Chat

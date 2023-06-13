@@ -8,7 +8,7 @@ export default class productExtendRouter extends CustomRouter {
     init() {
         
        
-        this.get('/',["PUBLIC"], passportCall('jwt'), productControllers.getAllProducts);
+        this.get('/', ["PUBLIC"], passportCall('jwt', 'admin'), productControllers.getAllProducts);
         
         this.get('/:pid',["PUBLIC"], productControllers.getProduct);
 

@@ -69,32 +69,45 @@ export default class CustomRouter {
         next();
     };
 
-
     handlePolicies = policies => (req, res, next) => {
         console.log("Politicas a evaluar:");
         console.log(policies);
-        //Validar si tiene acceso publico:
-        if (policies[0] === "PUBLIC") return next(); //Puede entrar cualquiera 
-
-        //El JWT token se guarda en los headers de autorización.
+      
+        // Validar si tiene acceso público:
+        if (policies[0] === "PUBLIC") return next(); // Puede entrar cualquiera 
+      
+        // El JWT token se guarda en los headers de autorización.
         const authHeader = req.headers.authorization;
         console.log("Token present in header auth:");
         console.log(authHeader);
         if (!authHeader) {
-            return res.status(401).send({ error: "User not authenticated or missing token." });
+          return res.status(401).send({ error: "User not authenticated or missing token." });
         }
-        const token = authHeader.split(' ')[1]; //Se hace el split para retirar la palabra Bearer.
-
-        //Validar token
+      
+        const token = authHeader.split(' ')[1]; // Se hace el split para retirar la palabra Bearer.
+      
+        // Validar token
         jwt.verify(token, PRIVATE_KEY, (error, credentials) => {
-            if (error) return res.status(403).send({ error: "Token invalid, Unauthorized!" });
-            //Token OK
-            const user = credentials.user;
-            if (!policies.includes(user.role.toUpperCase())) return res.status(403).send({ error: "El usuario no tiene privilegios, revisa tus roles!" });
-            req.user = user;
-            console.log(req.user);
-            next();
+          if (error) return res.status(403).send({ error: "Token invalid, Unauthorized!" });
+      
+          // Token OK
+          const user = credentials.user;
+          if (!user) return res.status(403).send({ error: "El usuario no tiene privilegios, revisa tus roles!" });
+      
+          if (policies.length === 0 || !policies.includes(user.role.toUpperCase())) {
+            return res.status(403).send({ error: "El usuario no tiene privilegios, revisa tus roles!" });
+          }
+      
+          req.user = user;
+          console.log(req.user);
+          next();
         });
-    };
+      };
+      
 
-};
+      
+    
+      
+      
+      
+    }
