@@ -72,25 +72,25 @@
 
   <div class="row row-cols-1 row-cols-md-3 g-4">
 {{#each docs}}
-    <div class="col">
-      <div class="card text-center" style="max-width: 400px;">
-        <div class="col-md-4">
-          <img src="..." class="img-fluid rounded-start" alt="...">
-        </div>
-        <div class="col-md-8">
-          <div class="card-body">
-            <h5 class="card-title">Nombre del producto: {{this.title}}</h5>
-            <p class="card-text">Precio: ${{this.price}}</p>
-            <p class="card-text">Cantidades disponibles: {{this.stock}}</p>
-            <p class="card-text">Disponibilidad: {{this.status}}</p>
-          <form method="post" action="/api/extend/carts/:cid/add/{{this._id}}">
-              <input type="hidden" name=":cid" value="{{user.cart}}">
-            <button type="submit" class="btn btn-primary">Agregar al carrito</button>
-          </form>
-          </div>
-        </div>
+<div class="col">
+  <div class="card text-center" style="max-width: 400px;">
+    <div class="col-md-12">
+      <img src="{{this.thumbnail}}" class="img-fluid mx-auto d-block" alt="" style="height: 100%; object-fit: cover;">
+    </div>
+    <div class="col-md-12">
+      <div class="card-body">
+        <h5 class="card-title">Nombre del producto: {{this.title}}</h5>
+        <p class="card-text">Precio: ${{this.price}}</p>
+        <p class="card-text">Cantidades disponibles: {{this.stock}}</p>
+        <p class="card-text">Disponibilidad: {{this.status}}</p>
+        <form method="post" action="/api/extend/carts/:cid/add/{{this._id}}">
+          <input type="hidden" name=":cid" value="{{user.cart}}">
+          <button type="submit" class="btn btn-primary">Agregar al carrito</button>
+        </form>
       </div>
     </div>
+  </div>
+</div>
 {{/each}}
   </div>
 

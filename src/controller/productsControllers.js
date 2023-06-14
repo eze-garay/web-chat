@@ -1,46 +1,49 @@
 // import * as productServices from "../services/Dao/productsServices.js"
 
 import { productService } from "../services/factory.js";
+import { generateProduct } from "../utils.js";
 
 const persistenceFactory = productService;
 
 
-  export async function getAllProducts(req, res) {
-            let limit = req.query.limit;
-            if (!limit) {
-              limit = "10";
-            }
-            
-            try {
-              let products = [];
-              let title = req.query.title;
-              let page = parseInt(req.query.page);
-              if (!page) page = 1;
-          
-              let result = await persistenceFactory.getPaginatedProducts();
-              result.prevLink = result.hasPrevPage ? `http://localhost:8080/products?page=${result.prevPage}` : '';
-              result.nextLink = result.hasNextPage ? `http://localhost:8080/products?page=${result.nextPage}` : '';
-              result.isValid = !(page <= 0 || page > result.totalPages);
-          
-              let ordenarPor = req.query.ordenarPor;
-              if (title) {
-                products = await persistenceFactory.getProductsByTitle(title);
-              } else {
-                products = await persistenceFactory.getAllProducts(limit);
-              }
-          
-              if (ordenarPor === 'mayorPrecio') {
-                products = await persistenceFactory.sortProductsByPriceDescending(products);
-              } else if (ordenarPor === 'menorPrecio') {
-                products = await persistenceFactory.sortProductsByPriceAscending(products);
-              }
-          
-              res.render("products", {...result, docs: products, user: req.user });
-            } catch (error) {
-              console.log(error);
-              res.render("products", { error: "NO SE PUDIERON OBTENER LOS PRODUCTOS" });
-            }
+export async function getAllProducts(req, res) {
+  let limit = req.query.limit;
+  if (!limit) {
+    limit = "10";
+  }
+  
+  try {
+    let products = [];
+    let title = req.query.title;
+    let page = parseInt(req.query.page);
+    if (!page) page = 1;
+    const perPage = 9; // Número de productos por página
+
+    let result = await persistenceFactory.getPaginatedProducts(page, perPage);
+    result.prevLink = result.hasPrevPage ? `http://localhost:8080/api/extend/products?page=${result.prevPage}` : '';
+    result.nextLink = result.hasNextPage ? `http://localhost:8080/api/extend/products?page=${result.nextPage}` : '';
+    result.isValid = !(page <= 0 || page > result.totalPages);
+
+    let ordenarPor = req.query.ordenarPor;
+    if (title) {
+      products = await persistenceFactory.getProductsByTitle(title, limit);
+    } else {
+      products = await persistenceFactory.getAllProducts(limit);
+    }
+
+    if (ordenarPor === 'mayorPrecio') {
+      products = await persistenceFactory.sortProductsByPriceDescending(products);
+    } else if (ordenarPor === 'menorPrecio') {
+      products = await persistenceFactory.sortProductsByPriceAscending(products);
+    }
+
+    res.render("products", {...result, docs: products, user: req.user });
+  } catch (error) {
+    console.log(error);
+    res.render("products", { error: "NO SE PUDIERON OBTENER LOS PRODUCTOS" });
+  }
 };
+
 export async function getProduct (req,res) {
     try {
         let id = req.params.id
@@ -53,7 +56,10 @@ export async function getProduct (req,res) {
 }
 
 export async function create (req,res){
-    let product = req.body
+    let product = []
+    for (let i = 0; i < 5; i++) {
+      product.push(generateProduct());
+  }
     try {
        let prod = await persistenceFactory.addProduct((product))
         if (prod) {

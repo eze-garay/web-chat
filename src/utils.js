@@ -3,12 +3,23 @@ import { dirname } from 'path';
 import bcrypt from "bcrypt"
 import jwt from 'jsonwebtoken'
 import passport from 'passport';
+import { faker } from '@faker-js/faker';
 
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
+ 
 
+export const generateProduct = () => {
+  return {
+      title: faker.commerce.productName(),
+      description: faker.lorem.text(),
+      price: faker.commerce.price(),
+      stock: "20",
+      thumbnail: faker.image.urlPicsumPhotos()
+  }
+};
 
 // hASh
 

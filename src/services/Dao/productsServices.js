@@ -12,8 +12,8 @@ export default class productServiceMongo {
     
 
     getPaginatedProducts = async (page, limit) => {
-        return await ProductModel.paginate({}, { page, limit: parseInt(limit), lean: true });
-    }
+        return await ProductModel.paginate({}, { page, limit: (limit), lean: true });
+      }
     getProductsByTitle = async (title) => {
         const products = await ProductModel.aggregate([
           { $match: { title: title } },

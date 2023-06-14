@@ -6,14 +6,14 @@ const Schema = new mongoose.Schema({
             type: String,
             default: true,
             minlength: 3,
-            maxlength: [20, "El nombre es muy largo"],
+            // maxlength: [20, "El nombre es muy largo"],
 
         },
         description:{
             type: String,
             default: true,
             minlength: 3,
-            maxlength: [50, "El nombre es muy largo"],
+            // maxlength: [50, "El nombre es muy largo"],
         },
         price:{
             type: Number,
