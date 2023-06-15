@@ -1,9 +1,10 @@
 import * as UserServices from "../services/Dao/userServices.js";
-import userDto from "../services/dto/user.dto.js"
-import jwt from "jsonwebtoken"
 import { generateJWToken, isValidPassword, createHash, PRIVATE_KEY} from "../utils.js";
 import { UserModel } from "../services/Dao/DB/models/userModel.js";
 import { CartsModel } from "../services/Dao/DB/models/cartsModel.js";
+import { generateUserErrorInfo } from "../services/Dao/Error/messages/user-creation-error.message.js";
+import CustomError from "../services/Dao/Error/CustomError.js";
+import EErrors from "../services/Dao/Error/errors-enum.js";
  // let newUser =  new userDto (user)
 
 
@@ -93,11 +94,23 @@ import { CartsModel } from "../services/Dao/DB/models/cartsModel.js";
 export async function register(req, res) {
   const { first_name, last_name, email, age, password, rol } = req.body;
   try {
+
+    if (!first_name || !email) {
+      //Create Custom Error
+      CustomError.createError({
+          name: "User Creation Error",
+          cause: generateUserErrorInfo({ first_name, last_name, age, email }),
+          message: "Error tratando de crear el usuario",
+          code: EErrors.INVALID_TYPES_ERROR
+      });
+  }
+
     const exists = await UserServices.findUserByEmail(email);
     if (exists) {
       console.log("El usuario ya existe.");
       return res.sendClientError("El usuario ya existe.");
     }
+
 
     const user = {
       first_name,
@@ -107,6 +120,7 @@ export async function register(req, res) {
       password: createHash(password),
       rol,
     };
+
 
    
 

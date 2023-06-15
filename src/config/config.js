@@ -5,14 +5,15 @@ import { Command } from 'commander';
 const program = new Command(); //Crea la instancia de comandos de commander.
 
 program
-    .option('-d', 'Variable para debug', false)
+    .option('--test', 'Variable para correr los test', false)
     .option('--persist <mode>', 'Modo de persistencia', "mongodb")
     .option('--mode <mode>', 'Modo de trabajo', 'dev')
 program.parse();
 
 //console.log("Options: ", program.opts());
-console.log("Environment Mode Option: ", program.opts().mode);
 console.log("Persistence Mode Option: ", program.opts().persist);
+console.log("Mode Option: ", program.opts().mode);
+console.log("Test Mode on?: ", program.opts().test);
 
 const environment = program.opts().mode;
 
@@ -35,6 +36,7 @@ export default {
     adminName: process.env.ADMIN_NAME,
     persistence: program.opts().persist,
     adminPassword: process.env.ADMIN_PASSWORD,
+    runTests: program.opts().test,
 
 
     gmailAccount: process.env.GMAIL_ACCOUNT,
