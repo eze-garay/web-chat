@@ -6,7 +6,7 @@ export async function findUserByEmail (email) {
       const user = await UserModel.findOne({ email: email });
       return user;
     } catch (error) {
-      throw error;
+        res.status(500).send({error: "No se pudo encontrar usuario", message: error});
     }
 };
 
@@ -17,9 +17,9 @@ export async function createUser (data){
         const response = await UserModel.create(user);
         return response
     } catch (error) {
-        throw new Error (error)
+        res.status(500).send({error: "No se pudo crear usuario", message: error});
     }
-}
+    }
 
 
 export async function getUser (){
@@ -27,7 +27,6 @@ export async function getUser (){
         let response = await UserModel.find()
         return response
     } catch (error) {
-        console.error("No se pudo obtener usuarios con moongose: " + error);
         res.status(500).send({error: "No se pudo obtener usuarios con moongose", message: error});
     }
 }
@@ -37,8 +36,7 @@ export async function get(){
         let user = await UserModel.findOne();
         return user
     } catch (error) {
-        console.error("No se pudo obtener usuarios con moongose: " + error);
-        res.status(401).send({error: "No se pudo obtener usuarios con moongose", message: error});
+        res.status(500).send({error: "No se pudo obtener usuarios con moongose", message: error});
     }
 }
 

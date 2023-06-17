@@ -6,3 +6,9 @@ export const generateUserErrorInfo = (user) => {
         * email: type String, recibido: ${user.email}
     `
 };
+
+export const userError = (user) => {
+
+    return `No existe usuario registrado con este mail:
+        * email: type String, recibido: ${user.email}, `
+}

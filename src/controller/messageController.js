@@ -5,7 +5,7 @@ export async function handleGetRecentMessages(req, res) {
     res.json(messages);
   }).catch(err => {
     console.log(err);
-    res.status(500).json({ error: 'Error al obtener los mensajes recientes.' });
+    return res.status(500).json({ error: 'Error al obtener los mensajes recientes.' });
   });
 }
 
@@ -15,7 +15,8 @@ export async function handleSaveMessage(req, res) {
     res.json(message);
   }).catch(err => {
     console.log(err);
-    res.status(500).json({ error: 'Error al guardar el mensaje.' });
+    return res.status(500).json({ success: false, error: "Error al guardar el mensaje"+ err });
+    //res.status(500).json({ error: 'Error al guardar el mensaje.' });
   });
 }
 

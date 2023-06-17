@@ -51,7 +51,7 @@ export default class productServiceMongo {
             const response = await ProductModel.create(data);
             return response
         } catch (error) {
-            throw new Error (error)
+            res.status(500).send({error: "No se pudo agregar el producto", message: error});
         }
     };
     
@@ -60,7 +60,7 @@ export default class productServiceMongo {
             const response = await ProductModel.deleteOne({ _id: id });
             return response
         } catch (error) {
-            throw new Error (error)
+            res.status(500).send({error: "No se pudo eliminar el prodcuto", message: error});
         }
     };
     
@@ -69,7 +69,7 @@ export default class productServiceMongo {
           const updatedProduct = await ProductModel.findOneAndUpdate({ _id: pid }, updatedData);
           return updatedProduct;
         } catch (error) {
-          throw new Error(error.message);
+            res.status(500).send({error: "No se pudo modificar el producto", message: error});
         }
     };
     
