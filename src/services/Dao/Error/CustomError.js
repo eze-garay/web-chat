@@ -1,9 +1,11 @@
-export default class CustomError {
-    //Logica
-    static createError({ name = "Error", cause, message, code = 2 }) {
-        const error = new Error(message, { cause: new Error(cause) });
-        error.name = name;
-        error.code = code;
-        throw error;
-    };
-}
+import EErrors from "./errors-enum.js";
+
+    export default class CustomError extends Error {
+        constructor(name = "Error", cause, message, code = EErrors.INVALID_TYPES_ERROR) {
+          super(message);
+          this.name = name;
+          this.cause = cause;
+          this.code = code;
+        }
+      }
+    

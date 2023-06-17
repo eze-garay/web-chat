@@ -16,9 +16,8 @@ import EErrors from "../services/Dao/Error/errors-enum.js";
     const user = await UserServices.findUserByEmail(email);
 
     if (!user) {
-    console.warn("No hay usuario registrado con el email " + email);
-   return res.status(500).send({ success: false, payload: { error: "no se encontro el mail ", msg: "Usuario no encontrado " + email } });
-
+      const errorInfo = userError({ email });
+      throw new CustomError("Error de inicio de sesión", "No se encontró el correo electrónico", errorInfo, EErrors.DATABASE_ERROR);
     }
     if (!isValidPassword(user, password)) {
       console.warn("Las credenciales no coinciden " + email);
@@ -45,7 +44,8 @@ import EErrors from "../services/Dao/Error/errors-enum.js";
 
     res.json({ success: true,   status: "success", tokenUser } );
   } catch (error) {
-    return res.send({ success: false, payload: { status: "error" } });
+    return res.status(500).send({ success: false, msg: error.message  });
+
   }
 }
 
@@ -53,24 +53,25 @@ export async function register(req, res) {
   const { first_name, last_name, email, age, password, rol } = req.body;
   try {
     if (!first_name || !last_name || !email || !age || !password) {
-  //CustomError.createError({
-   //     name: "User Creation Error",
-   //     cause: generateUserErrorInfo({ first_name, last_name, age, email, password }),
-   //     message: "Error trying to create the user",
-   //     code: EErrors.INVALID_TYPES_ERROR,
-   //   });
+      const user = {
+        first_name,
+        last_name,
+        age,
+        email,
+        password: createHash(password),
+        rol,
+      };
 
-
-   return res.status(500).send({ success: false, status: 'error', msg: 'Faltan campos obligatorios' });
+      const errorInfo = generateUserErrorInfo(user);
+      throw new CustomError("Error de registro", null, errorInfo, EErrors.INVALID_TYPES_ERROR);
   }
 
 
     const exists = await UserServices.findUserByEmail(email);
     if (exists) {
-      console.log("El usuario ya existe.");
       return res.sendClientError("El usuario ya existe.");
-    }
-
+    }       
+    
     const user = {
       first_name,
       last_name,
@@ -79,6 +80,8 @@ export async function register(req, res) {
       password: createHash(password),
       rol,
     };
+
+  
 
     const result = await UserServices.createUser(user);
 
@@ -92,7 +95,7 @@ export async function register(req, res) {
 
     return res.status(200).send({ success: true, status: "success", msg: "Usuario creado con éxito" } );
   } catch (error) {
-    return res.status(401).send({ success: false, status: 'error', msg: 'No se puede registrar el usuario' } );
+    return res.status(500).send({ success: false, status: 'error', msg: error.message });
   }
 }
 
