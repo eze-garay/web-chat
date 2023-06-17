@@ -12,23 +12,32 @@ form.addEventListener('submit', e => {
     headers: {
       'Content-Type': 'application/json'
     }
-  }).then(result=>{
-  if(result.status === 200) {
-      result.json()
-          Swal.fire({
-              icon: 'success',
-              title: 'Registro exitoso',
-              text: 'Bienvenido.',
-            });
-            setTimeout(() => {
-              window.location.href = '/';
-            }, 1000)
-  } else if(result.status === 500) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error de inicio de sesión',
-        text: 'Los datos ingresados son incorrectos. Por favor, inténtelo de nuevo.'
+  }).then(result => {
+    if (result.ok) {
+      result.json().then(data => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Registro exitoso',
+          text: 'Bienvenido.',
+        });
+        setTimeout(() => {
+          window.location.href = '/';
+        }, 1000);
       });
-  }
-})
+    } else {
+      result.json().then(error => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error de registro',
+          text: error.msg || 'Ocurrió un error durante el registro.',
+        });
+      });
+    }
+  }).catch(error => {
+    Swal.fire({
+      icon: 'error',
+      title: 'Error de registro',
+      text: error.message || 'Faltan campos obligatorios',
+    });
+  });
 });

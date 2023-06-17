@@ -52,15 +52,18 @@ import EErrors from "../services/Dao/Error/errors-enum.js";
 export async function register(req, res) {
   const { first_name, last_name, email, age, password, rol } = req.body;
   try {
-    if (!first_name || !email) {
-      //Create Custom Error
-      CustomError.createError({
-          name: "User Creation Error",
-          cause: generateUserErrorInfo({ first_name, last_name, age, email }),
-          message: "Error tratando de crear el usuario",
-          code: EErrors.INVALID_TYPES_ERROR
-      });
-    }
+    if (!first_name || !last_name || !email || !age || !password) {
+  //CustomError.createError({
+   //     name: "User Creation Error",
+   //     cause: generateUserErrorInfo({ first_name, last_name, age, email, password }),
+   //     message: "Error trying to create the user",
+   //     code: EErrors.INVALID_TYPES_ERROR,
+   //   });
+
+
+   return res.status(500).send({ success: false, status: 'error', msg: 'Faltan campos obligatorios' });
+  }
+
 
     const exists = await UserServices.findUserByEmail(email);
     if (exists) {
@@ -87,9 +90,9 @@ export async function register(req, res) {
     result.cart = cart._id;
     await result.save();
 
-    return res.status(200).send({ success: true, payload: { status: "success", msg: "Usuario creado con éxito" } });
+    return res.status(200).send({ success: true, status: "success", msg: "Usuario creado con éxito" } );
   } catch (error) {
-    return res.status(401).send({ success: false, payload: { status: 'error', msg: 'No se puede registrar el usuario' } });
+    return res.status(401).send({ success: false, status: 'error', msg: 'No se puede registrar el usuario' } );
   }
 }
 
