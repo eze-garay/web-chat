@@ -33,7 +33,7 @@ export default class CartServicesMongo {
       const cart = await CartsModel.findOne({ _id: cartId }).populate("products.product").lean();
       return cart;
     } catch (error) {
-      throw new Error("No se pudo obtener el carrito");
+      return { success: false, statusCode: 500, message: "No se ha podido crear el carrito" };
     }
   };
 
@@ -41,7 +41,7 @@ export default class CartServicesMongo {
     try {
      
       const user = await UserModel.findOne({cid}).populate('cart');
-      console.log(user)
+      //console.log(user)
 
       if (!user) {
         return { success: false, statusCode: 500, message: "U no encontrado" };
@@ -51,7 +51,7 @@ export default class CartServicesMongo {
       const cart = await CartsModel.findOne({ _id: user.cart._id });
       
 
-      console.log(cart)
+      //console.log(cart)
   
     
       const productIndex = cart.products.findIndex(
@@ -84,15 +84,15 @@ export default class CartServicesMongo {
   removeProductFromCart = async (cid, pdi) => {
     try {
       const user = await UserModel.findOne({cid}).populate('cart');
-      console.log(user)
+      //console.log(user)
    
       const cart = await CartsModel.findOne({ _id: user.cart._id });
-      console.log(cart)
+      //console.log(cart)
   
       const product = cart.products.find(p => p.product.equals(mongoose.Types.ObjectId(pdi)));
   
       if (!product) {
-        throw new Error("El producto no existe");
+        return { success: false, statusCode: 500, message: "El producto no existe" };
       } else {
         if (product.quantity === 1) {
           cart.products = cart.products.filter(p => !p.product.equals(mongoose.Types.ObjectId(pdi)));
@@ -104,7 +104,7 @@ export default class CartServicesMongo {
   
       return cart;
     } catch (error) {
-      throw new Error(error.message);
+      return { success: false, statusCode: 500, message: "No se ha podido eliminar el producto" };
     }
   };
    getCart = async (cartId) => {
@@ -112,7 +112,7 @@ export default class CartServicesMongo {
       const cart = await CartsModel.findOne({ _id: cartId }).populate("products.product").lean();
       return cart;
     } catch (error) {
-      throw new Error("No se pudo obtener el carrito");
+      return { success: false, statusCode: 500, message: "No se pudo obtener el carrito" };
     }
   };
 
@@ -161,7 +161,7 @@ export default class CartServicesMongo {
   
       const purchaser = user.email;
       const ticket = await TicketService.createTicket(totalPrice, purchaser);
-      console.log(ticket);
+      //console.log(ticket);
   
       await ticket.save();
   
@@ -193,22 +193,26 @@ export default class CartServicesMongo {
   
       transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
-          console.log(error);
+          return { success: false, statusCode: 500, message: "No se pudo enviar el ticket" };
         } else {
-          console.log('Ticket enviado: ', info.messageId);
+          return { success: true, statusCode: 200, message: "Ticket enviado" + info.messageId };
         }
       });
+    
   
-      cart.products = productsToPurchase.map(item => {
-        return {
-          product: item.product._id,
-          quantity: item.quantity
-        };
-      });
-      await cart.save();
+      const productIdsToPurchase = productsToPurchase.map(item => item.product._id);
+      await CartsModel.findByIdAndUpdate(cart._id, { $pull: { products: { product: { $in: productIdsToPurchase } } } });
+      //cart.products = productsToPurchase.map(item => {
+     //   return {
+      //    product: item.product._id,
+       //   quantity: item.quantity
+       // };
+      //});
+      //await cart.save();
   
       if (productsNotPurchased.length === 0) {
-        return { ticket, cart };
+        res.status(200).send({ success: true , payload: ticket , cart });
+        //return { ticket, cart };
       } else {
         return { productsNotPurchased };
       }

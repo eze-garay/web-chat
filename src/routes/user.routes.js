@@ -14,7 +14,7 @@ export default class userExtendRouter extends CustomRouter {
         res.status(404).send("Cannot get that URL!!")
       });
 
-      this.router.use(errorHandle);
+      //this.router.use(errorHandle);
 
   }
 }

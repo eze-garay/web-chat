@@ -11,9 +11,7 @@ export async function createTicket(totalPrice, purchaser) {
 
     return ticket;
   } catch (error) {
-    // Manejar el error adecuadamente
-    console.error('Error al crear el ticket:', error);
-    throw error; // O manejarlo de otra manera según tus necesidades
+    res.status(500).send({error: "No se pudo enviar el ticket usuario", message: error});
   }
 }
 

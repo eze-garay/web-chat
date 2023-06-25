@@ -29,13 +29,15 @@ form.addEventListener('submit',e=>{
                     window.location.href = '/api/extend/products';
                   }, 1000)
             });
-        } else if(result.status === 500) {
-            Swal.fire({
-              icon: 'error',
-              title: 'Error de inicio de sesión',
-              text: 'Los datos ingresados son incorrectos. Por favor, inténtelo de nuevo.'
+        } else if (result.status === 500) {
+            result.json().then(error => {
+              Swal.fire({
+                icon: 'error',
+                title: 'Error de inicio de sesión',
+                text: error.msg || 'Los datos ingresados son incorrectos. Por favor, inténtelo de nuevo.'
+              });
             });
-        }
+          }
     })
 });
 
