@@ -9,7 +9,7 @@ export default class userExtendRouter extends CustomRouter {
       this.post('/login', ["PUBLIC"], user.login);
       
       this.post('/register', ["PUBLIC"], user.register);
-
+      
       this.get("*", ["PUBLIC"], (req, res) => {
         res.status(404).send("Cannot get that URL!!")
       });

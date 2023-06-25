@@ -5,6 +5,7 @@ import { CartsModel } from "../services/Dao/DB/models/cartsModel.js";
 import { generateUserErrorInfo, userError } from "../services/Dao/Error/messages/user-creation-error.message.js";
 import CustomError from "../services/Dao/Error/CustomError.js";
 import EErrors from "../services/Dao/Error/errors-enum.js";
+import { faker } from "@faker-js/faker";
  // let newUser =  new userDto (user)
 
 
@@ -130,3 +131,12 @@ export async function infoUser(req, res) {
     res.status(500).send({ success: false, payload: { error: "No se pudo obtener el usuario con mongoose", message: error } });
   }
 }
+
+export const fakeUser = (req, res) => {
+  let first_name = faker.name.firstName();
+  let last_name = faker.name.lastName();
+  let email = faker.internet.email();
+  let age = faker.random.numeric(2);
+  let password = faker.internet.password();
+  res.send({first_name, last_name, email, age, password});
+};

@@ -30,6 +30,7 @@ import sessionRouter from './src/routes/sessions.routes.js'
 // import cartsRouters from './src/routes/cart.routes.js'
 // import productRoutes from './src/routes/product.routes.js'
 import githubLoginViewRouter from './src/routes/github-login.views.router.js'
+import testRouter from './src/routes/test.js'
 // import userRoutes from './src/routes/user.routes.js'
 
 
@@ -99,6 +100,7 @@ app.use('/', viewsRouters);
 app.use('/user', userViewRouters);
 app.use('/api/sessions', sessionRouter);
 app.use("/github", githubLoginViewRouter);
+app.use('/test',testRouter);
 // app.use('/api/user', userRoutes);
 
 const CartExtendRouter = new cartExtendRouter();
