@@ -11,7 +11,7 @@ program
 program.parse();
 
 //console.log("Options: ", program.opts());
-console.log("Persistence Mode Option: ", program.opts().persist);
+//console.log("Persistence Mode Option: ", program.opts().persist);
 console.log("Mode Option: ", program.opts().mode);
 console.log("Test Mode on?: ", program.opts().test);
 
@@ -25,7 +25,7 @@ const environment = program.opts().mode;
 //  const environment = "development";
 
 dotenv.config({
-        path: environment === "production" ? "./src/config/.env.production" : "./src/config/.env.development"
+        path: environment === 'production' ? "./src/config/.env.production" : "./src/config/.env.development"
 });
 
 
@@ -33,6 +33,7 @@ dotenv.config({
 export default {
     port: process.env.PORT,
     mongoUrl: process.env.MONGO_URL,
+    environment: environment,
     adminName: process.env.ADMIN_NAME,
     persistence: program.opts().persist,
     adminPassword: process.env.ADMIN_PASSWORD,

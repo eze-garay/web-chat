@@ -19,6 +19,8 @@ import compression from 'express-compression';
 import initializePassaport from './src/config/passport.config.js';
 import cookieParser from 'cookie-parser';
 import config from './src/config/config.js';
+// import { addLoggerA } from './src/config/loggers.js';
+import {addLoggerB} from './src/config/loggersCustom.js'
 
 
 
@@ -78,6 +80,7 @@ app.use(cookieParser('jwtCookieToken'))
 initializePassaport();
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(addLoggerB);
 
 
 
@@ -110,6 +113,12 @@ app.use("/api/extend/user", UserExtendRouter.getRouter());
 app.use("/api/email", emailRouter);
 app.use("/api/sms", smsRouter);
 
+// Endpoint de prueba
+app.get("/logger", (req, res) => {
+    // req.logger.warn("Prueba de log level warning!");
+    // req.logger.warning("Prueba de log level warning!");
+    res.send("Prueba de logger!");
+});
 
 
 

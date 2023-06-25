@@ -8,11 +8,14 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon app.js"
   },
-  "keywords": [],
+  "keywords": [
+    "environment"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@faker-js/faker": "^8.0.2",
+    "@faker-js/faker": "^7.6.0",
+    "artillery-plugin-metrics-by-endpoint": "^1.2.0",
     "bcrypt": "^5.1.0",
     "commander": "^10.0.1",
     "connect-mongo": "^5.0.0",
@@ -35,6 +38,7 @@
     "session-file-store": "^1.5.0",
     "socket.io": "^4.6.1",
     "sweetalert2": "^11.7.5",
-    "twilio": "^4.11.2"
+    "twilio": "^4.11.2",
+    "winston": "^3.9.0"
   }
 }
