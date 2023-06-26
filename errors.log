@@ -1,1 +1,11 @@
 warning: Prueba de log level warning!
+debug: Debug message
+http: HTTP message
+info: Info message
+warning: Warning message
+error: Error message
+debug: Debug message
+http: HTTP message
+info: Info message
+warning: Warning message
+error: Error message

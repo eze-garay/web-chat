@@ -116,10 +116,15 @@ app.use("/api/email", emailRouter);
 app.use("/api/sms", smsRouter);
 
 // Endpoint de prueba
-app.get("/logger", (req, res) => {
-    // req.logger.warn("Prueba de log level warning!");
-    // req.logger.warning("Prueba de log level warning!");
-    res.send("Prueba de logger!");
+app.get("/loggerTest", (req, res) => {
+    req.logger.debug("Debug message"); // Log de nivel debug
+    req.logger.http("HTTP message"); // Log de nivel http
+    req.logger.info("Info message"); // Log de nivel info
+    req.logger.warning("Warning message"); // Log de nivel warning
+    req.logger.error("Error message"); // Log de nivel error
+    req.logger.fatal("Fatal message"); // Log de nivel fatal
+  
+    res.send("Logger test");
 });
 
 
