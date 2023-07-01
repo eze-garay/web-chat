@@ -9,3 +9,13 @@ http: HTTP message
 info: Info message
 warning: Warning message
 error: Error message
+debug: Debug message
+http: HTTP message
+warning: Warning message
+error: Error message
+info: GET en /loggerTest - at 26/6/2023 - 14:41:55
+debug: Debug message
+http: HTTP message
+info: Info message
+warning: Warning message
+error: Error message

@@ -10,6 +10,8 @@ import __dirname from './src/utils.js';
 import passport from 'passport';
 import cors from 'cors';
 import compression from 'express-compression';
+import cluster from 'cluster'
+import { cpus } from 'os';
 
 
 
@@ -42,139 +44,7 @@ import smsRouter from  './src/routes/sms.Router.js'
 
 
 
-const app = express ()
-const PORT = config.port;
 
-//const fileStore = FileStore(session)
-
-//server
-app.use(express.json());
-app.use(express.urlencoded({extended:true}));
-app.use(express.static(__dirname + '/public'));
-app.use(cors());
-app.use(session({
-    //store: new fileStore({path:"./sessions", ttl:40, retries: 0}),
-        store:MongoStore.create({
-        mongoUrl: "mongodb+srv://ezequielgaray37:eze251@cluster0.jwum4cn.mongodb.net/ecommerce",
-        mongoOptions: {useNewUrlParser: true, useUnifiedTopology: true},
-        ttl: 40
-    }),
-    secret:"CoderS3cret",
-    resave: false,
-    saveUninitialized: true
-}))
-
-// brotli
-app.use(compression({
-    brotli: { enabled: true, zlib: {} }
-}));
-
-
-//coockie
-
-
-app.use(cookieParser('jwtCookieToken'))
-
-
-//midellwere
-
-initializePassaport();
-app.use(passport.initialize());
-app.use(passport.session());
-app.use(addLoggerB);
-
-
-
-//rutas
-
-app.engine('handlebars',handlebars.engine());
-app.set('views', __dirname + "/views");
-app.set('view engine','handlebars');
-
-
-
-
-// app.use('/api/products', productRoutes);
-// app.use('/api/carts', cartsRouters);
-app.use('/', viewsRouters);
-app.use('/user', userViewRouters);
-app.use('/api/sessions', sessionRouter);
-app.use("/github", githubLoginViewRouter);
-app.use('/test',testRouter);
-// app.use('/api/user', userRoutes);
-
-const CartExtendRouter = new cartExtendRouter();
-app.use("/api/extend/carts", CartExtendRouter.getRouter());
-
-const ProductExtendRouter = new productExtendRouter();
-app.use("/api/extend/products",ProductExtendRouter.getRouter());
-
-const UserExtendRouter = new userExtendRouter();
-app.use("/api/extend/user", UserExtendRouter.getRouter());
-
-app.use("/api/email", emailRouter);
-app.use("/api/sms", smsRouter);
-
-// Endpoint de prueba
-app.get("/loggerTest", (req, res) => {
-    req.logger.debug("Debug message"); // Log de nivel debug
-    req.logger.http("HTTP message"); // Log de nivel http
-    req.logger.info("Info message"); // Log de nivel info
-    req.logger.warning("Warning message"); // Log de nivel warning
-    req.logger.error("Error message"); // Log de nivel error
-    req.logger.fatal("Fatal message"); // Log de nivel fatal
-  
-    res.send("Logger test");
-});
-
-
-
-
-
-const httpServer = app.listen(PORT, () => {
-    console.log(`server run on port: ${PORT}`);
-})
-// const mongoInstance = async () => {
-//     try {
-//         await MongoSigleton.getIntance();
-//     } catch (error) {
-//         console.error(error);
-//     }
-// };
-// mongoInstance();
-
-
-//chat
-
-const socketServer = new Server(httpServer);
-let messages = []
-
-socketServer.on('connection', socket => {
-  
-    socket.on('message', async data =>{
-       // messages.push(data);
-        // socketServer.emit('messageLogs', messages )
-        let result = await messageModel.create(data)
-        let message = await messageModel.find()
-
-        socketServer.emit("messageLogs", message)
-
-    });
-
-    socket.on('userConnected', data =>{
-        socket.broadcast.emit('userConnected', data.user)
-    })
-    socket.on('authenticated', () => { 
-        let length = messages.length
-        if (length > 10) {
-            socketServer.emit('messageLogs', [...messages].splice(length-10,length))
-        } else if (length > 0) {
-            socketServer.emit('messageLogs', messages)
-        }
-    })
-
-
-})
 
 
 
@@ -282,6 +152,161 @@ socketServer.on('connection', socket => {
 //     }
 //     return testPasados;
 // }
+
+
+
+console.log(`Es cluster primario? : ${cluster.isPrimary}`);
+if (cluster.isPrimary) {
+    const numeroProcesadores = cpus().length;
+    console.log(`NumeroProcesadores en esta maquina: ${numeroProcesadores}`);
+    console.log("Proceso primario, generando Fork para un trabajador.");
+    for (let i = 0; i < numeroProcesadores - 1; i++) {
+        cluster.fork();
+    }
+} else {
+    console.log("Este es un proceso Fork! Soy un worker!!");
+    console.log(`Soy un proceso worker con el id: ${process.pid}`);
+
+    const app = express();
+    const PORT = config.port;
+
+ //const fileStore = FileStore(session)
+
+//server
+app.use(express.json());
+app.use(express.urlencoded({extended:true}));
+app.use(express.static(__dirname + '/public'));
+app.use(cors());
+app.use(session({
+    //store: new fileStore({path:"./sessions", ttl:40, retries: 0}),
+        store:MongoStore.create({
+        mongoUrl: "mongodb+srv://ezequielgaray37:eze251@cluster0.jwum4cn.mongodb.net/ecommerce",
+        mongoOptions: {useNewUrlParser: true, useUnifiedTopology: true},
+        ttl: 40
+    }),
+    secret:"CoderS3cret",
+    resave: false,
+    saveUninitialized: true
+}))
+
+// brotli
+app.use(compression({
+    brotli: { enabled: true, zlib: {} }
+}));
+
+
+//coockie
+
+
+app.use(cookieParser('jwtCookieToken'))
+
+
+//midellwere
+
+initializePassaport();
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(addLoggerB);
+
+//rutas
+
+app.engine('handlebars',handlebars.engine());
+app.set('views', __dirname + "/views");
+app.set('view engine','handlebars');
+
+
+
+
+// app.use('/api/products', productRoutes);
+// app.use('/api/carts', cartsRouters);
+app.use('/', viewsRouters);
+app.use('/user', userViewRouters);
+app.use('/api/sessions', sessionRouter);
+app.use("/github", githubLoginViewRouter);
+app.use('/test',testRouter);
+// app.use('/api/user', userRoutes);
+ 
+// app.use("/api/performance", performanceRouter);
+
+const CartExtendRouter = new cartExtendRouter();
+app.use("/api/extend/carts", CartExtendRouter.getRouter());
+
+const ProductExtendRouter = new productExtendRouter();
+app.use("/api/extend/products",ProductExtendRouter.getRouter());
+
+const UserExtendRouter = new userExtendRouter();
+app.use("/api/extend/user", UserExtendRouter.getRouter());
+
+app.use("/api/email", emailRouter);
+app.use("/api/sms", smsRouter);
+
+// Endpoint de prueba
+app.get("/loggerTest", (req, res) => {
+    req.logger.debug("Debug message"); 
+    req.logger.http("HTTP message"); 
+    req.logger.info("Info message"); 
+    req.logger.warning("Warning message"); 
+    req.logger.error("Error message"); 
+    req.logger.fatal("Fatal message"); 
+  
+    res.send("Logger test");
+});
+
+
+app.get("/", (req, res) => {
+        res.send({ status: "success", message: `Peticion atendida por el worker: ${process.pid}` });
+    });
+app.get("/docker", (req, res) => {
+        res.send("Hola Docker!");
+    });
+
+const httpServer = app.listen(PORT, () => {
+    console.log(`server run on port: ${PORT}`);
+})
+// const mongoInstance = async () => {
+//     try {
+//         await MongoSigleton.getIntance();
+//     } catch (error) {
+//         console.error(error);
+//     }
+// };
+// mongoInstance();
+
+
+//chat
+
+const socketServer = new Server(httpServer);
+let messages = []
+
+socketServer.on('connection', socket => {
+  
+    socket.on('message', async data =>{
+       // messages.push(data);
+        // socketServer.emit('messageLogs', messages )
+        let result = await messageModel.create(data)
+        let message = await messageModel.find()
+
+        socketServer.emit("messageLogs", message)
+
+    });
+
+    socket.on('userConnected', data =>{
+        socket.broadcast.emit('userConnected', data.user)
+    })
+    socket.on('authenticated', () => { 
+        let length = messages.length
+        if (length > 10) {
+            socketServer.emit('messageLogs', [...messages].splice(length-10,length))
+        } else if (length > 0) {
+            socketServer.emit('messageLogs', messages)
+        }
+    })
+
+
+})
+
+
+}
 
 
 
