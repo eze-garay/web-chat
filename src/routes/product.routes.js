@@ -1,5 +1,5 @@
 import CustomRouter from "../custom/custom.routes.js";
-import {passportCall} from "../utils.js"
+import {passportCall, adminValidation} from "../utils.js"
 import * as productControllers from "../controller/productsControllers.js"
 
 
@@ -10,7 +10,7 @@ export default class productExtendRouter extends CustomRouter {
        
         this.get('/', ["PUBLIC"],passportCall('jwt'), productControllers.getAllProducts);
         
-        this.get('/:pid',["PUBLIC"], productControllers.getProduct);
+        this.get('/:pid',["ADMIN"], productControllers.getProduct);
 
         this.post('/product',["PUBLIC"], productControllers.create);
 

@@ -74,7 +74,14 @@ export default class CustomRouter {
         console.log(policies);
       
         // Validar si tiene acceso público:
-        if (policies[0] === "PUBLIC") return next(); // Puede entrar cualquiera 
+        if (policies.includes("PUBLIC")) {
+          return next();
+        }
+      
+        // Validar si es un administrador:
+        if (policies.includes("ADMIN") && req.user && req.user.isAdmin) {
+          return next();
+        }
       
         // El JWT token se guarda en los headers de autorización.
         const authHeader = req.headers.authorization;
@@ -103,6 +110,8 @@ export default class CustomRouter {
           next();
         });
       };
+
+      
       
 
       

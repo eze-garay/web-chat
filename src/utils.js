@@ -113,8 +113,6 @@ export const adminValidation = async (req, res, next) => {
     } else {
       next();
     }
-  };
-
-
+};
 
 export default __dirname;

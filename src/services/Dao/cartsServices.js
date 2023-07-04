@@ -36,22 +36,22 @@ export default class CartServicesMongo {
       return { success: false, statusCode: 500, message: "No se ha podido crear el carrito" };
     }
   };
-
+// ver user cart y user id . desde el front
   addProductToCart = async (cid, pid) => {
     try {
      
-      const user = await UserModel.findOne({cid}).populate('cart');
-      //console.log(user)
+      let user = await UserModel.findOne({cid}).populate('cart');
+      console.log(user)
 
       if (!user) {
         return { success: false, statusCode: 500, message: "U no encontrado" };
       }
 
   
-      const cart = await CartsModel.findOne({ _id: user.cart._id });
+      let cart = await CartsModel.findOne({ _id: user.cart._id });
       
 
-      //console.log(cart)
+      console.log(cart)
   
     
       const productIndex = cart.products.findIndex(

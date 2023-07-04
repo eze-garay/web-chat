@@ -5,6 +5,7 @@ import { CartsModel } from "../services/Dao/DB/models/cartsModel.js";
 import { generateUserErrorInfo, userError } from "../services/Dao/Error/messages/user-creation-error.message.js";
 import CustomError from "../services/Dao/Error/CustomError.js";
 import EErrors from "../services/Dao/Error/errors-enum.js";
+import jwt from 'jsonwebtoken';
 import { faker } from "@faker-js/faker";
  // let newUser =  new userDto (user)
 
@@ -14,12 +15,18 @@ import { faker } from "@faker-js/faker";
  export async function login(req, res) {
   const { email, password } = req.body;
   try {
+    if (email === "adminCoder@coder.com" && password === "adminCod3r123") {
+      const adminToken = jwt.sign({ rol: 'admin' }, PRIVATE_KEY);
+      return res.send({ token: adminToken, message: 'Inicio de sesión como administrador' });
+    }
+
     const user = await UserServices.findUserByEmail(email);
 
     if (!user) {
       const errorInfo = userError({ email });
       throw new CustomError("Error de inicio de sesión", "No se encontró el correo electrónico", errorInfo, EErrors.DATABASE_ERROR);
     }
+
     if (!isValidPassword(user, password)) {
       console.warn("Las credenciales no coinciden " + email);
       return res.status(500).send({ success: false, payload: { error: "Las credenciales no coinciden ", msg: "Usuario o contraseña incorrecto" } });
@@ -43,10 +50,9 @@ import { faker } from "@faker-js/faker";
       httpOnly: true,
     });
 
-    res.json({ success: true,   status: "success", tokenUser } );
+    res.json({ success: true, status: "success", tokenUser });
   } catch (error) {
-    return res.status(500).send({ success: false, msg: error.message  });
-
+    return res.status(500).send({ success: false, msg: error.message });
   }
 }
 
