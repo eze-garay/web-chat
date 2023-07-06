@@ -1,12 +1,12 @@
 import express from 'express'
 import handlebars from 'express-handlebars';
-import "./src/db.js"
+import "./db.js"
 import {Server} from 'socket.io';
-import { messageModel } from './src/services/Dao/DB/models/messagesModel.js';
+import { messageModel } from './services/Dao/DB/models/messagesModel.js';
 import session from 'express-session';
 //import FileStore  from 'session-file-store';
 import MongoStore from 'connect-mongo';
-import __dirname from './src/utils.js';
+import __dirname from './utils.js';
 import passport from 'passport';
 import cors from 'cors';
 import compression from 'express-compression';
@@ -18,29 +18,29 @@ import { cpus } from 'os';
 
 
 
-import initializePassaport from './src/config/passport.config.js';
+import initializePassaport from './config/passport.config.js';
 import cookieParser from 'cookie-parser';
-import config from './src/config/config.js';
+import config from './config/config.js';
 // import { addLoggerA } from './src/config/loggers.js';
-import {addLoggerB} from './src/config/loggersCustom.js'
+import {addLoggerB} from './config/loggersCustom.js'
 
 
 
-import viewsRouters from './src/routes/views.routes.js'
-import userViewRouters from './src/routes/user.views.routes.js'
-import sessionRouter from './src/routes/sessions.routes.js'
+import viewsRouters from './routes/views.routes.js'
+import userViewRouters from './routes/user.views.routes.js'
+import sessionRouter from './routes/sessions.routes.js'
 // import cartsRouters from './src/routes/cart.routes.js'
 // import productRoutes from './src/routes/product.routes.js'
-import githubLoginViewRouter from './src/routes/github-login.views.router.js'
-import testRouter from './src/routes/test.js'
+import githubLoginViewRouter from './routes/github-login.views.router.js'
+import testRouter from './routes/test.js'
 // import userRoutes from './src/routes/user.routes.js'
 
 
-import cartExtendRouter from './src/routes/cart.routes.js';
-import productExtendRouter from './src/routes/product.routes.js'
-import userExtendRouter from './src/routes/user.routes.js'
-import emailRouter from './src/routes/email.routes.js'
-import smsRouter from  './src/routes/sms.Router.js'
+import cartExtendRouter from './routes/cart.routes.js';
+import productExtendRouter from './routes/product.routes.js'
+import userExtendRouter from './routes/user.routes.js'
+import emailRouter from './routes/email.routes.js'
+import smsRouter from  './routes/sms.Router.js'
 
 
 

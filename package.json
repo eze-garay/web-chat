@@ -5,14 +5,20 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js"
+    "start": "node src/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "engines": {
     "node": "16.x"
   },
   "keywords": [
-    "environment"
+    "environment",
+    "express",
+    "clusters",
+    "docker",
+    "loggers",
+    "performance"
+    
   ],
   "author": "",
   "license": "ISC",
