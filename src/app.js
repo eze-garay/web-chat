@@ -44,10 +44,6 @@ import smsRouter from  './routes/sms.Router.js'
 
 
 
-
-
-
-
 //test
 // const SERVER_PORT = config.port;
 // app.listen(SERVER_PORT, () => {
